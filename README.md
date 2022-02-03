@@ -1,3 +1,3 @@
-# common
+# karma-common
 
-Common code
+Common classes and utils for Karma
