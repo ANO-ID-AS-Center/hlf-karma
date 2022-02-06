@@ -6,11 +6,10 @@
     "description": "Karma chaincode",
     "main": "index.js",
     "scripts": {
-        "start": "node ../../../../build/chaincode/main.js --chaincode-id-name='main_1.20.0:209800e2693b775a6cb83e2cad517bef0c90f3194bf05bd3c2f966bc8dc83c46' --peer.address grpc://167.99.216.174:7052",
+        "start": "node ./build/main.js --chaincode-id-name='main_1.20.0:209800e2693b775a6cb83e2cad517bef0c90f3194bf05bd3c2f966bc8dc83c46' --peer.address grpc://167.99.216.174:7052",
         "start:dev": "export NODE_PATH=./node_modules; ts-node-dev --transpile-only main.ts --chaincode-id-name='main_1.20.0:209800e2693b775a6cb83e2cad517bef0c90f3194bf05bd3c2f966bc8dc83c46' --peer.address grpc://167.99.216.174:7052",
         "build": "tsc",
-        "build1": "npx tsc -p tsconfig.build.json && cp package* ../chaincode_compiled/ && cp ./common/package.json ../chaincode_compiled/common/package.json && cp ./ledger-core/package.json ../chaincode_compiled/ledger-core/package.json  ",
-        "rebuild": "rm -rf ../../../../build/chaincode/main.js && npm run build"
+        "rebuild": "rm -rf ./build && npm run build"
     },
     "dependencies": {
         "@hlf-core/transport": "^2.0.3",

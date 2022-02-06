@@ -1,5 +1,5 @@
 ## Requirements
-- node (> 12 version)
+- node (> 14 version)
 - npm
 - nvm
 - docker 
