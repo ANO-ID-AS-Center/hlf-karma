@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+*.code-workspace
+
+# bundle
+dist/**/*
+src/chaincode_compiled
+network/test/mychannel.block
+network/test/mychannel.tx
+src/chaincode/chaincode_deployed
+
+# misc
+.DS_Store
+lerna-debug.log
+npm-debug.log
+yarn-error.log
+/**/npm-debug.log
+/packages/**/.npmrc
+/packages/**/.npmignore
+/packages/**/LICENSE
+
+# env
+**/.env
+

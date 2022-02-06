@@ -1,0 +1,28 @@
+{
+    "name": "karma-chaincode",
+    "version": "2.0.0",
+    "author": "Renat Gubaev",
+    "license": "ISC",
+    "description": "Karma chaincode",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ../../../../build/chaincode/main.js --chaincode-id-name='main_1.20.0:209800e2693b775a6cb83e2cad517bef0c90f3194bf05bd3c2f966bc8dc83c46' --peer.address grpc://167.99.216.174:7052",
+        "start:dev": "export NODE_PATH=./node_modules; ts-node-dev --transpile-only main.ts --chaincode-id-name='main_1.20.0:209800e2693b775a6cb83e2cad517bef0c90f3194bf05bd3c2f966bc8dc83c46' --peer.address grpc://167.99.216.174:7052",
+        "build": "tsc",
+        "build1": "npx tsc -p tsconfig.build.json && cp package* ../chaincode_compiled/ && cp ./common/package.json ../chaincode_compiled/common/package.json && cp ./ledger-core/package.json ../chaincode_compiled/ledger-core/package.json  ",
+        "rebuild": "rm -rf ../../../../build/chaincode/main.js && npm run build"
+    },
+    "dependencies": {
+        "@hlf-core/transport": "^2.0.3",
+        "@project/common": "file:../../../externals/common",
+        "@project/module": "file:../../module",
+        "@ts-core/backend-nestjs": "^8.0.5",
+        "@ts-core/crypto-gost": "^2.0.1"
+    },
+    "devDependencies": {
+        "ts-node": "^10.4.0",
+        "ts-node-dev": "^1.1.8",
+        "tsconfig-paths": "^3.12.0",
+        "typescript": "^4.5.5"
+    }
+}

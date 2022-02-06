@@ -1,0 +1,14 @@
+{
+    "extends": "../../../../tsconfig.root.json",
+    "compilerOptions": {
+        "allowJs": true,
+        "rootDir": ".",
+        "outDir": "./build",
+        "baseUrl": ".",
+        "experimentalDecorators": true,
+        "paths": {
+            "*": ["node_modules/*"]
+        }
+    },
+    "include": ["src/", "node_modules/@project/"]
+}

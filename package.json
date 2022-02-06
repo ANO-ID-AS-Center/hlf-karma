@@ -1,0 +1,13 @@
+{
+    "name": "karma-chaincode",
+    "version": "2.0.0",
+    "description": "Test network for development karma project",
+    "main": "index.js",
+    "scripts": {},
+    "author": "Renat Gubaev",
+    "license": "ISC",
+    "dependencies": {},
+    "devDependencies": {
+        "prettier": "^2.5.1"
+    }
+}

@@ -1,0 +1,29 @@
+configVersion: 1
+project: karma
+---
+image: chaincode
+from: node:12.18.2-alpine
+docker:
+  WORKDIR: /app/chaincode
+git:
+  - add: /src
+    to: /app
+    stageDependencies:
+      install:
+        - chaincode/package.json
+        - chaincode/package-lock.json
+      setup:
+        - chaincode/tsconfig.json
+        - chaincode/tsconfig.build.json
+        - chaincode/src
+ansible:
+  beforeInstall:
+    - name: Install packages
+      shell: |
+        apk add --no-cache make gcc g++ python
+
+  install:
+    - name: Install npm dependencies
+      shell: npm ci
+      args:
+        chdir: /app/chaincode

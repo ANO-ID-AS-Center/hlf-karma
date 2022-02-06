@@ -1,0 +1,12 @@
+{
+    "extends": "../../../../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "../../../../build/chaincode",
+        "paths": {
+            "@project/module": ["file:./module"],
+            "@project/common": ["file:./common"]
+        }
+    },
+    "include": ["./src", "./module", "./common"]
+}
