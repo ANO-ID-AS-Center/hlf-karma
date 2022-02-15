@@ -9,10 +9,10 @@ import { LedgerRole } from '@project/common/ledger/role';
 import { LedgerUser } from '@project/common/ledger/user';
 import { CompanyService } from '../company/service/CompanyService';
 import { TransformUtil } from '@ts-core/common/util';
+import { ROOT_USER_CRYPTO_KEY, ROOT_USER_CRYPTO_ALGORITHM } from '@project/common/ledger';
 import { Genesis } from '@project/common/transport/command';
 import { ITransportFabricStub, TransportFabricStub } from '@hlf-core/transport/chaincode/stub';
 import { TransportFabricChaincodeReceiver } from '@hlf-core/transport/chaincode';
-import { TransportCryptoManagerEd25519 } from '@ts-core/common/transport/crypto';
 
 @Injectable()
 export class GenesisService extends LoggerWrapper {
@@ -24,10 +24,7 @@ export class GenesisService extends LoggerWrapper {
 
     private static KEY = 'GENESIS';
 
-    private static ROOT_USER_CRYPTO_KEY = 'e365007e85508c6b44d5101a1d59d0061a48fd1bcd393186ccb5e7ae938a59a8';
     private static ROOT_USER_DESCRIPTION = 'ROOT_USER';
-    private static ROOT_USER_CRYPTO_ALGORITHM = TransportCryptoManagerEd25519.ALGORITHM;
-
     private static ROOT_COMPANY_DESCRIPTION = 'ROOT_COMPANY';
 
     // --------------------------------------------------------------------------
@@ -98,7 +95,7 @@ export class GenesisService extends LoggerWrapper {
             {
                 roles: Object.values(LedgerRole),
                 description: GenesisService.ROOT_USER_DESCRIPTION,
-                cryptoKey: { value: GenesisService.ROOT_USER_CRYPTO_KEY, algorithm: GenesisService.ROOT_USER_CRYPTO_ALGORITHM }
+                cryptoKey: { value: ROOT_USER_CRYPTO_KEY, algorithm: ROOT_USER_CRYPTO_ALGORITHM }
             },
             true
         );
