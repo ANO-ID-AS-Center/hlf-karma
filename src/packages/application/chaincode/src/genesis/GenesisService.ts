@@ -9,7 +9,7 @@ import { LedgerRole } from '@project/common/ledger/role';
 import { LedgerUser } from '@project/common/ledger/user';
 import { CompanyService } from '../company/service/CompanyService';
 import { TransformUtil } from '@ts-core/common/util';
-import { ROOT_USER_CRYPTO_KEY, ROOT_USER_CRYPTO_ALGORITHM } from '@project/common/ledger';
+import { ROOT_USER_CRYPTO_ALGORITHM, ROOT_COMPANY_DESCRIPTION, ROOT_USER_CRYPTO_KEY_PUBLIC, ROOT_USER_DESCRIPTION } from '@project/common/ledger';
 import { Genesis } from '@project/common/transport/command';
 import { ITransportFabricStub, TransportFabricStub } from '@hlf-core/transport/chaincode/stub';
 import { TransportFabricChaincodeReceiver } from '@hlf-core/transport/chaincode';
@@ -23,9 +23,6 @@ export class GenesisService extends LoggerWrapper {
     // --------------------------------------------------------------------------
 
     private static KEY = 'GENESIS';
-
-    private static ROOT_USER_DESCRIPTION = 'ROOT_USER';
-    private static ROOT_COMPANY_DESCRIPTION = 'ROOT_COMPANY';
 
     // --------------------------------------------------------------------------
     //
@@ -94,13 +91,13 @@ export class GenesisService extends LoggerWrapper {
             holder,
             {
                 roles: Object.values(LedgerRole),
-                description: GenesisService.ROOT_USER_DESCRIPTION,
-                cryptoKey: { value: ROOT_USER_CRYPTO_KEY, algorithm: ROOT_USER_CRYPTO_ALGORITHM }
+                description: ROOT_USER_DESCRIPTION,
+                cryptoKey: { value: ROOT_USER_CRYPTO_KEY_PUBLIC, algorithm: ROOT_USER_CRYPTO_ALGORITHM }
             },
             true
         );
         // Add root company
-        let company = await this.company.add(holder, { description: GenesisService.ROOT_COMPANY_DESCRIPTION, ownerUid: user.uid }, true);
+        let company = await this.company.add(holder, { description: ROOT_COMPANY_DESCRIPTION, ownerUid: user.uid }, true);
         // Save genesis information
         return holder.stub.putState<IGenesis>(
             GenesisService.KEY,
