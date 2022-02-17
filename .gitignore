@@ -9,10 +9,9 @@ node_modules/
 
 # bundle
 dist/**/*
-src/chaincode_compiled
-network/test/mychannel.block
-network/test/mychannel.tx
-src/chaincode/chaincode_deployed
+src/**/build
+packages/**/*.d.ts
+packages/**/*.js
 
 # misc
 .DS_Store
@@ -25,5 +24,4 @@ yarn-error.log
 /packages/**/LICENSE
 
 # env
-**/.env
-**/build
+src/**/.env

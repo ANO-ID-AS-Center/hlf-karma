@@ -12,6 +12,7 @@ import { Logger } from '@ts-core/common/logger';
 import { PromiseHandler } from '@ts-core/common/promise';
 import { DateUtil } from '@ts-core/common/util';
 import { AbstractService } from '@project/module/core';
+import * as fabricUtils from 'fabric-shim/lib/logger';
 
 export class AppModule extends AbstractService implements OnApplicationBootstrap {
     // --------------------------------------------------------------------------
@@ -51,7 +52,6 @@ export class AppModule extends AbstractService implements OnApplicationBootstrap
 
     public constructor(@Inject(Logger) logger: Logger, settings: AppSettings, chaincode: Chaincode) {
         super(chaincode.name, settings, logger);
-        // fabricUtils.getLogger('Peer.js').transports.console.silent = true;
     }
 
     // --------------------------------------------------------------------------
@@ -71,7 +71,10 @@ export class AppModule extends AbstractService implements OnApplicationBootstrap
     private async initialize(): Promise<void> {
         await PromiseHandler.delay(DateUtil.MILISECONDS_SECOND);
         // Disable logger
-        // import * as fabricUtils from 'fabric-shim/lib/logger';
-        // fabricUtils.getLogger('lib/handler.js').silent = true;
+        /*
+        fabricUtils.getLogger('Peer.js').transports.console.silent = true;
+        fabricUtils.getLogger('lib/handler.js').silent = true;
+        fabricUtils.getLogger('c-api:lib/handler.js').silent = true;
+        */
     }
 }

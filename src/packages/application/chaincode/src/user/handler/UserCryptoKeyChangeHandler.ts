@@ -12,9 +12,9 @@ import { StubHolder } from '@hlf-core/transport/chaincode/stub';
 
 @Injectable()
 export class UserCryptoKeyChangeHandler extends TransportCommandFabricAsyncHandler<
-    IUserCryptoKeyChangeDto,
-    void,
-    UserCryptoKeyChangeCommand
+IUserCryptoKeyChangeDto,
+void,
+UserCryptoKeyChangeCommand
 > {
     // --------------------------------------------------------------------------
     //
