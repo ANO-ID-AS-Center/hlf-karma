@@ -1,24 +1,66 @@
-before_script:
-  - pwd
-  - type multiwerf && source <(multiwerf use 1.1 beta)
-  - type werf && source <(werf ci-env gitlab --tagging-strategy tag-or-branch --verbose)
-
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - .npm/
-
 stages:
   - build
+  - deploy
+
+#######################################################################
+
+variables:
+  KUBE_NAMESPACE: "karma-$CI_ENVIRONMENT_SLUG"
+  MASTER_BRANCH: "main"
+  IMAGE_NAME: "$CI_REGISTRY/karma/application/chaincode/main"
+  IMAGE_TAG: "$CI_PIPELINE_ID"
+
+#######################################################################
+
+.build_env: &build_env
+  stage: build
+  image: docker:19.03.12
+  tags:
+    - kube
+
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+
+  services:
+    - docker:19.03.12-dind
+
+  before_script:
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG -f $CI_PROJECT_DIR/docker/chaincode/Dockerfile-ci $CI_PROJECT_DIR
+    - if [ $CI_COMMIT_REF_NAME == $MASTER_BRANCH ]; then
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+    - fi
+
+#######################################################################
+
+.deploy_env: &deploy_env
+  stage: deploy
+  only:
+    - main
+  image: dtzar/helm-kubectl:3.8
+  tags:
+    - kube
+  script:
+    - CLI_POD=$(kubectl get pod -n $KUBE_NAMESPACE -l name=cli-fabric-tools -o jsonpath="{.items[0].metadata.name}")
+    - kubectl exec -n $KUBE_NAMESPACE $CLI_POD -- /opt/hyperledger/fabric/scripts/chaincode.sh $CHAINCODE_NAME $CHAINCODE_VERSION $CHAINCODE_PORT $CHAINCODE_SEQUENCE
+    - kubectl exec -n $KUBE_NAMESPACE $CLI_POD -- cat /opt/gopath/src/$CHAINCODE_NAME_$CHAINCODE_VERSION/chaincode.env > $CI_PROJECT_DIR/chaincode.env
+    - source $CI_PROJECT_DIR/chaincode.env
+    - helm upgrade chaincode-main $CI_PROJECT_DIR/helm --set image.name=$IMAGE_NAME,image.tag=$IMAGE_TAG,chaincode.name=$CHAINCODE_NAME,chaincode.port=$CHAINCODE_PORT,chaincode.id=$CORE_CHAINCODE_ID --namespace $KUBE_NAMESPACE --install
+
+#######################################################################
+
+.env_dev: &env_dev
+  environment:
+    name: dev
 
 build:
-  stage: build
-  script:
-    - werf build-and-publish --stages-storage :local
-  tags:
-    - werf
-  except:
-    - schedules
+  <<: *build_env
+
+deploy dev:
+  <<: *env_dev
+  <<: *deploy_env
