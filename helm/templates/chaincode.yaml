@@ -21,6 +21,8 @@ spec:
               value: "0.0.0.0:{{ .Values.chaincode.port }}"
             - name: CORE_CHAINCODE_ID
               value: "{{ .Values.chaincode.id }}"
+            - name: CHAINCODE_MODE
+              value: "EXTERNAL"
           ports:
             - containerPort: {{ .Values.chaincode.port }}
       imagePullSecrets:
