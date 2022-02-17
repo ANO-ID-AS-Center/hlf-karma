@@ -6,3 +6,4 @@ chaincode:
 image:
   name: $CI_REGISTRY/karma/application/chaincode/main
   tag: latest
+  secret: regcred

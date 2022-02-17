@@ -23,3 +23,5 @@ spec:
               value: "{{ .Values.chaincode.id }}"
           ports:
             - containerPort: {{ .Values.chaincode.port }}
+      imagePullSecrets:
+        - name: {{ .Values.image.secret }}
