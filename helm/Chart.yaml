@@ -1,7 +1,0 @@
-apiVersion: v2
-
-name: Chaincode
-
-version: 1.0.0
-
-type: application

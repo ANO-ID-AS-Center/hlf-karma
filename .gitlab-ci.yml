@@ -6,7 +6,7 @@ stages:
 
 variables:
   KUBE_NAMESPACE: "karma-$CI_ENVIRONMENT_SLUG"
-  MASTER_BRANCH: "main"
+  APP_NAME: "chaincode-main"
   IMAGE_NAME: "$CI_REGISTRY/karma/application/chaincode/main"
   IMAGE_TAG: "$CI_PIPELINE_ID"
 
@@ -32,7 +32,7 @@ variables:
 
   script:
     - docker build -t $IMAGE_NAME:$IMAGE_TAG -f $CI_PROJECT_DIR/docker/chaincode/Dockerfile-ci $CI_PROJECT_DIR
-    - if [ $CI_COMMIT_REF_NAME == $MASTER_BRANCH ]; then
+    - if [ $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH ]; then
     - docker push $IMAGE_NAME:$IMAGE_TAG
     - fi
 
@@ -40,17 +40,23 @@ variables:
 
 .deploy_env: &deploy_env
   stage: deploy
-  only:
-    - main
   image: dtzar/helm-kubectl:3.8
   tags:
     - kube
+  only:
+    - main
+  variables:
+    HELM_REPO_NAME: karma-helm-repo
+    HELM_REPO_URL: https://gitlab.project-karma.com/api/v4/projects/22/packages/helm/stable
+  before_script:
+    - helm repo add --username gitlab-ci-token --password $CI_JOB_TOKEN $HELM_REPO_NAME $HELM_REPO_URL
+    - helm repo update
   script:
     - CLI_POD=$(kubectl get pod -n $KUBE_NAMESPACE -l name=cli-fabric-tools -o jsonpath="{.items[0].metadata.name}")
     - kubectl exec -n $KUBE_NAMESPACE $CLI_POD -- /opt/hyperledger/fabric/scripts/chaincode.sh $CHAINCODE_NAME $CHAINCODE_VERSION $CHAINCODE_PORT $CHAINCODE_SEQUENCE
     - kubectl exec -n $KUBE_NAMESPACE $CLI_POD -- cat /opt/gopath/src/"$CHAINCODE_NAME"_"$CHAINCODE_VERSION"/chaincode.env > $CI_PROJECT_DIR/chaincode.env
     - source $CI_PROJECT_DIR/chaincode.env
-    - helm upgrade chaincode-main $CI_PROJECT_DIR/helm --set image.name=$IMAGE_NAME,image.tag=$IMAGE_TAG,chaincode.name=$CHAINCODE_NAME,chaincode.port=$CHAINCODE_PORT,chaincode.id=$CORE_CHAINCODE_ID --namespace $KUBE_NAMESPACE --install
+    - helm upgrade $APP_NAME $HELM_REPO_NAME/karma-chaincode-application --set image.name=$IMAGE_NAME,image.tag=$IMAGE_TAG,chaincode.name=$CHAINCODE_NAME,chaincode.port=$CHAINCODE_PORT,chaincode.id=$CORE_CHAINCODE_ID --namespace $KUBE_NAMESPACE --install
 
 #######################################################################
 
