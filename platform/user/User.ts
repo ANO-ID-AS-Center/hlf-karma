@@ -6,7 +6,7 @@ import { UserRole } from './UserRole';
 import { UserStatus } from './UserStatus';
 
 export class User {
-    id: number;
+    uid: string;
     type: UserType;
     login: string;
     status: UserStatus;
