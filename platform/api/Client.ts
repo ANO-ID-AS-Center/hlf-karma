@@ -8,7 +8,7 @@ import { User } from '../user';
 import { IUserListDto, IUserListDtoResponse, IUserGetDtoResponse, IUserEditDto, IUserEditDtoResponse } from '../api/user';
 import { IGeo } from '../geo';
 
-export class PlatformClient extends TransportHttp<ITransportHttpSettings> {
+export class Client extends TransportHttp<ITransportHttpSettings> {
     // --------------------------------------------------------------------------
     //
     //  Constructor

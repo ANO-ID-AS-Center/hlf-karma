@@ -1,2 +1,2 @@
 export * from './ErrorCode';
-export * from './PlatformClient';
+export * from './Client';
