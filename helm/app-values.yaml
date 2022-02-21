@@ -15,7 +15,7 @@ env:
 
 mounts:
   - mountPath: /application/build/data
-    subPath: /backend/hlf-explorer/data
+    subPath: backend/hlf-explorer/data
 
 ports:
   - internal: 3000

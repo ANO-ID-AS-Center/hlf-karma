@@ -13,7 +13,7 @@ env:
 
 mounts:
   - mountPath: /var/lib/postgresql/data
-    subPath: /backend/hlf-explorer-db/data
+    subPath: backend/hlf-explorer-db/data
 
 ports:
   - internal: 5432
