@@ -13,7 +13,6 @@ import { IDatabaseSettings } from '@ts-core/backend/settings';
 import { modulePath } from '@project/module';
 import { AbstractService } from '@project/module/core';
 import { HealthcheckModule } from '@project/module/healthcheck';
-// import * as fabricUtils from 'fabric-client/lib/utils.js';
 
 export class AppModule extends AbstractService implements OnApplicationBootstrap {
     // --------------------------------------------------------------------------
@@ -122,7 +121,6 @@ export class AppModule extends AbstractService implements OnApplicationBootstrap
 
     public constructor(@Inject(Logger) logger: Logger, settings: AppSettings, private transport: Transport) {
         super('HLF Explorer API', settings, logger);
-        // fabricUtils.getLogger('Peer.js').transports.console.silent = true;
     }
 
     // --------------------------------------------------------------------------

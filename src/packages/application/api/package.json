@@ -6,7 +6,7 @@
     "author": "Renat Gubaev",
     "license": "ISC",
     "scripts": {
-        "start": "ts-node --transpile-only main.ts",
+        "start": "CORE_CHAINCODE_LOGGING_LEVEL=CRITICAL ts-node --transpile-only main.ts",
         "start:dev": "ts-node-dev --transpile-only main.ts",
         "build": "tsc",
         "typeorm": "ts-node --transpile-only -r tsconfig-paths/register ../../../../node_modules/typeorm/cli.js --config ormconfig.ts",

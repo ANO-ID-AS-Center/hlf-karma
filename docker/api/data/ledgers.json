@@ -16,7 +16,7 @@
             "fabricIsDiscoveryAsLocalhost": false,
 
             "batch": {
-                "timeout": 1000000,
+                "timeout": 10000000,
                 "key": {
                     "publicKey": "e365007e85508c6b44d5101a1d59d0061a48fd1bcd393186ccb5e7ae938a59a8",
                     "privateKey": "e87501bc00a3db3ba436f7109198e0cb65c5f929eabcedbbb5a9874abc2c73a3e365007e85508c6b44d5101a1d59d0061a48fd1bcd393186ccb5e7ae938a59a8"
