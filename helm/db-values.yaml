@@ -1,0 +1,22 @@
+image:
+  name: registry.project-karma.com/karma/application/common/postgres
+  tag: 11.4-alpine
+
+volume:
+  name: hlf-volume
+
+env:
+  POSTGRES_USER: hlf-explorer
+  POSTGRES_PASSWORD: hlf-explorer
+  POSTGRES_DB: hlf-explorer
+  POSTGRES_DB_PORT: 5432
+
+mounts:
+  - mountPath: /var/lib/postgresql/data
+    subPath: /backend/hlf-explorer-db/data
+
+ports:
+  - internal: 5432
+    external: 30432
+
+imagePullSecrets: regcred
