@@ -20,7 +20,7 @@ variables:
     - kube
 
   variables:
-    IMAGE_NAME: "$CI_REGISTRY/karma/application/hlf-explorer/$APP_NAME"
+    IMAGE_NAME: "$CI_REGISTRY/karma/hlf-explorer/backend/$APP_NAME"
     IMAGE_TAG: "$CI_PIPELINE_ID"
     GIT_SUBMODULE_STRATEGY: recursive
     DOCKER_HOST: tcp://docker:2375
