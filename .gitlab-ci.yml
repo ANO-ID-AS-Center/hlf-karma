@@ -66,7 +66,7 @@ variables:
   variables:
     HELM_REPO_NAME: karma-helm-repo
     HELM_REPO_URL: https://gitlab.project-karma.com/api/v4/projects/21/packages/helm/stable
-    IMAGE_NAME: "$CI_REGISTRY/karma/application/hlf-explorer/$APP_NAME"
+    IMAGE_NAME: "$CI_REGISTRY/karma/hlf-explorer/backend/$APP_NAME"
     IMAGE_TAG: "$CI_PIPELINE_ID"
   before_script:
     - helm repo add --username gitlab-ci-token --password $CI_JOB_TOKEN $HELM_REPO_NAME $HELM_REPO_URL
