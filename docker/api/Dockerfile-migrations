@@ -7,9 +7,10 @@ RUN npm i
 
 # ----------------------------------- Patching corrupted fabric-shim -----------#
 RUN cp /build/patch/index.d.ts /build/node_modules/fabric-shim/types/index.d.ts
+RUN cp /build/patch/package.json /build/src/packages/application/api/package.json
 # ------------------------------------------------------------------------------#
 
-RUN cd /build/src/packages/application/api && npm i && npm run build
+RUN cd /build/src/packages/application/api && npm i
 
 FROM registry.project-karma.com/karma/application/common/node:14
 # Set directory
@@ -22,7 +23,9 @@ COPY --from=build /build/src/packages/application/api/node_modules /application/
 COPY --from=build /build/src/packages/application/api/build/node_modules /application/build/node_modules
 # Copy compiled files to working directory
 COPY --from=build /build/src/packages/application/api/build/src/packages/application/api /application/build
+# Copy package.json
+COPY --from=build /build/src/packages/application/api/package.json /application/build
 # Set directory
 WORKDIR /application/build
 # Run command
-CMD node main.js
+CMD npm run typeorm migration:run

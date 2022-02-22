@@ -40,6 +40,12 @@ variables:
     - docker push $IMAGE_NAME:$IMAGE_TAG
     - fi
 
+    - docker build -t $IMAGE_NAME-migrations:$IMAGE_TAG -f $CI_PROJECT_DIR/docker/api/Dockerfile-migrations $CI_PROJECT_DIR
+    - if [ $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH ]; then
+    - docker push $IMAGE_NAME-migrations:$IMAGE_TAG
+    - fi
+
+
 #######################################################################
 
 .db_env: &db_env
@@ -76,7 +82,7 @@ variables:
     - else
     - sleep 5
     - fi
-    - helm install hlf-explorer-db-migrations $HELM_REPO_NAME/karma-one-time-job -f $CI_PROJECT_DIR/helm/db-migrations-values.yaml --set image.name=$IMAGE_NAME,image.tag=$IMAGE_TAG --namespace $KUBE_NAMESPACE
+    - helm install hlf-explorer-db-migrations $HELM_REPO_NAME/karma-one-time-job -f $CI_PROJECT_DIR/helm/db-migrations-values.yaml --set image.name=$IMAGE_NAME-migrations,image.tag=$IMAGE_TAG --namespace $KUBE_NAMESPACE
 
 #######################################################################
 
