@@ -22,6 +22,8 @@ COPY --from=build /build/src/packages/application/api/node_modules /application/
 COPY --from=build /build/src/packages/application/api/build/node_modules /application/build/node_modules
 # Copy compiled files to working directory
 COPY --from=build /build/src/packages/application/api/build/src/packages/application/api /application/build
+# Copy package.json
+COPY --from=build /build/src/packages/application/api/package.json /application/build
 # Set directory
 WORKDIR /application/build
 # Run command
