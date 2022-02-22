@@ -17,6 +17,7 @@ mounts:
   - mountPath: /application/build/data
     subPath: backend/hlf-explorer/data
 
-command: "npm run typeorm migration:run"
+command: "npm"
+args: ["run", "typeorm migration:run"]
 
 imagePullSecrets: regcred
