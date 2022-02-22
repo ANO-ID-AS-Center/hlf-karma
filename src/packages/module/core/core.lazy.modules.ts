@@ -7,6 +7,7 @@
 import { UserModule } from '@feature/user';
 import { LoginModule } from '@feature/login';
 import { ProfileModule } from '@feature/profile';
+import { PaymentModule } from '@feature/payment';
 
 export const TRANSPORT_LAZY_MODULES = [
     {
@@ -18,6 +19,11 @@ export const TRANSPORT_LAZY_MODULES = [
         id: UserModule.ID,
         commands: LoginModule.COMMANDS,
         path: async () => (await import('@feature/user')).UserModule
+    },
+    {
+        id: PaymentModule.ID,
+        commands: PaymentModule.COMMANDS,
+        path: async () => (await import('@feature/payment')).PaymentModule
     },
     {
         id: ProfileModule.ID,
