@@ -10,7 +10,7 @@ RUN cp /build/patch/index.d.ts /build/node_modules/fabric-shim/types/index.d.ts
 RUN cp /build/patch/package.json /build/src/packages/application/api/package.json
 # ------------------------------------------------------------------------------#
 
-RUN cd /build/src/packages/application/api && npm i
+RUN cd /build/src/packages/application/api && npm i && npm run build
 
 FROM registry.project-karma.com/karma/application/common/node:14
 # Set directory
@@ -24,7 +24,7 @@ COPY --from=build /build/src/packages/application/api/build/node_modules /applic
 # Copy compiled files to working directory
 COPY --from=build /build/src/packages/application/api/build/src/packages/application/api /application/build
 # Copy package.json
-COPY --from=build /build/src/packages/application/api/package.json /application/build
+COPY --from=build /build/src/packages/application/api/* /application/build
 # Set directory
 WORKDIR /application/build
 # Run command
