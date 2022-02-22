@@ -17,8 +17,6 @@ mounts:
   - mountPath: /application/build/data
     subPath: backend/hlf-explorer/data
 
-ports:
-  - internal: 3000
-    external: 30100
+command: "npm run typeorm migration:run"
 
 imagePullSecrets: regcred

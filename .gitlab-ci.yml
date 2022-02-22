@@ -1,6 +1,7 @@
 stages:
   - build
   - db
+  - migrations
   - deploy
 
 #######################################################################
@@ -10,6 +11,8 @@ variables:
   APP_NAME: "hlf-explorer-api"
   HELM_REPO_NAME: karma-helm-repo
   HELM_REPO_URL: https://gitlab.project-karma.com/api/v4/projects/21/packages/helm/stable
+  IMAGE_NAME: "$CI_REGISTRY/karma/hlf-explorer/backend/$APP_NAME"
+  IMAGE_TAG: "$CI_PIPELINE_ID"
 
 #######################################################################
 
@@ -20,8 +23,6 @@ variables:
     - kube
 
   variables:
-    IMAGE_NAME: "$CI_REGISTRY/karma/hlf-explorer/backend/$APP_NAME"
-    IMAGE_TAG: "$CI_PIPELINE_ID"
     GIT_SUBMODULE_STRATEGY: recursive
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
@@ -56,6 +57,29 @@ variables:
 
 #######################################################################
 
+.migrations_env: &migrations_env
+  stage: migrations
+  image: alpine/helm
+  tags:
+    - kube
+  only:
+    - main
+  variables:
+    HELM_REPO_NAME: karma-helm-repo
+    HELM_REPO_URL: https://gitlab.project-karma.com/api/v4/projects/24/packages/helm/stable
+  before_script:
+    - helm repo add --username gitlab-ci-token --password $CI_JOB_TOKEN $HELM_REPO_NAME $HELM_REPO_URL
+    - helm repo update
+  script:
+    - if ! helm delete -n karma-dev hlf-explorer-db-migrations; then
+    - echo "No helm chart installed found"
+    - else
+    - sleep 5
+    - fi
+    - helm install hlf-explorer-db-migrations $HELM_REPO_NAME/karma-one-time-job -f $CI_PROJECT_DIR/helm/db-migrations-values.yaml --set image.name=$IMAGE_NAME,image.tag=$IMAGE_TAG --namespace $KUBE_NAMESPACE
+
+#######################################################################
+
 .deploy_env: &deploy_env
   stage: deploy
   image: alpine/helm
@@ -66,8 +90,6 @@ variables:
   variables:
     HELM_REPO_NAME: karma-helm-repo
     HELM_REPO_URL: https://gitlab.project-karma.com/api/v4/projects/21/packages/helm/stable
-    IMAGE_NAME: "$CI_REGISTRY/karma/hlf-explorer/backend/$APP_NAME"
-    IMAGE_TAG: "$CI_PIPELINE_ID"
   before_script:
     - helm repo add --username gitlab-ci-token --password $CI_JOB_TOKEN $HELM_REPO_NAME $HELM_REPO_URL
     - helm repo update
@@ -86,6 +108,10 @@ build:
 db dev:
   <<: *env_dev
   <<: *db_env
+
+migrations dev:
+  <<: *env_dev
+  <<: *migrations_env
 
 deploy dev:
   <<: *env_dev
