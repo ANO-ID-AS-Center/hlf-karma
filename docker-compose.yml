@@ -8,7 +8,7 @@ services:
     volumes:
       - ./docker/api/data:/application/build/data
     depends_on:
-      - hlf-explorer_db
+      - hlf-explorer-db
     ports:
       - 3000:3000
     working_dir: /application/build
@@ -17,7 +17,7 @@ services:
       - default
       - ledger
 
-  hlf-explorer_db:
+  hlf-explorer-db:
     image: postgres:11.4-alpine
     env_file:
       - ./docker/database/.env
@@ -34,5 +34,4 @@ volumes:
 
 networks:
   ledger:
-    external:
       name: ledger_network
