@@ -1,9 +1,14 @@
+FROM registry.project-karma.com/karma/application/common/node:14 as build
+WORKDIR /build
+# Install dependencies and building
+COPY . .
+RUN npm ci --only-production
+RUN npm run explorer:build
+
 FROM registry.project-karma.com/karma/application/common/node:14
 WORKDIR /application
-COPY src/packages/application/explorer /application/explorer
-COPY htdocs/explorer /application/explorer
-COPY build /application
-RUN npm ci --only-production
+COPY --from=build /build/build /application
+COPY --from=build /build/node_modules /application/node_modules
 
 ENV SOURCE=explorer
 CMD node server.js
