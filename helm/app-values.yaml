@@ -4,7 +4,7 @@ volume:
 env:
   PORT: 80
   HTTP_PORT: 443
-  API_URL: http://hlf-explorer-api-svc:3000
+  API_URL: http://134.209.84.3:30100
 
 ports:
   - internal: 80
