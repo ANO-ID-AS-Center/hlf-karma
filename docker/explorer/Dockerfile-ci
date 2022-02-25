@@ -1,9 +1,9 @@
 FROM registry.project-karma.com/karma/application/common/node:14
 WORKDIR /application
-COPY src /application
+COPY src /application/src
 COPY htdocs /application
 COPY build /application
 RUN npm ci --only-production
 
-ENV SOURCE=htdocs/explorer
+ENV SOURCE=explorer
 CMD node server.js
