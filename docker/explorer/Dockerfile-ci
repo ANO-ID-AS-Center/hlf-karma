@@ -1,7 +1,7 @@
-FROM node:14
+FROM registry.project-karma.com/karma/application/common/node:14
 WORKDIR /application
 COPY build /application
 RUN npm ci --only-production
 
-ENV SOURCE=explorer
+ENV SOURCE=htdocs/explorer
 CMD node server.js
