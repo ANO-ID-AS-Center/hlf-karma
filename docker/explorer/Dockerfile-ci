@@ -1,5 +1,7 @@
 FROM registry.project-karma.com/karma/application/common/node:14
 WORKDIR /application
+COPY src /application
+COPY htdocs /application
 COPY build /application
 RUN npm ci --only-production
 
