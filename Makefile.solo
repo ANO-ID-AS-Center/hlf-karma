@@ -10,7 +10,7 @@ CHAINCODE_PATH="/opt/gopath/src/github.com/chaincode/chaincode_compiled"
 CHAINCODE_SEQUENCE=1
 CHAINCODE_CONSTRUCTOR='{"Args":[]}'
 
-CHANNEL_NAME=mychannel
+CHANNEL_NAME=primary
 
 ORDERER=--orderer orderer.example.com:7050
 
