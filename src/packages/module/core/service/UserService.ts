@@ -4,7 +4,7 @@ import { LoginService } from './LoginService';
 import { IInitDtoResponse } from '@common/platform/api/login';
 import { User } from '../lib/user';
 import { TransformUtil } from '@ts-core/common/util';
-import { UserPreferences } from '@common/platform/user';
+import { UserPreferences, UserType } from '@common/platform/user';
 import * as _ from 'lodash';
 import { ExtendedError } from '@ts-core/common/error';
 import { Transport } from '@ts-core/common/transport';
@@ -54,13 +54,36 @@ export class UserService extends UserBaseService<User, UserServiceEvent> {
         if (_.isEmpty(item)) {
             return false;
         }
-        await this.transport.sendListen(new UserSaveCommand({ uid: this.user.id.toString(), preferences: item }));
+        await this.transport.sendListen(new UserSaveCommand({ id: this.user.id, preferences: item }));
         return true;
     }
 
     public get preferences(): UserPreferences {
         return this.isLogined ? this.user.preferences : null;
     }
+
+    //--------------------------------------------------------------------------
+    //
+    // 	Public Properties
+    //
+    //--------------------------------------------------------------------------
+
+    public get isDonor(): boolean {
+        return this.hasUser ? this.user.type === UserType.DONOR : false;
+    }
+    public get isUndefined(): boolean {
+        return this.hasUser ? this.user.type === UserType.UNDEFINED : false;
+    }
+    public get isAdministrator(): boolean {
+        return this.hasUser ? this.user.type === UserType.ADMINISTRATOR : false;
+    }
+    public get isCompanyManager(): boolean {
+        return this.hasUser ? this.user.type === UserType.COMPANY_MANAGER : false;
+    }
+    public get isCompanyWorker(): boolean {
+        return this.hasUser ? this.user.type === UserType.COMPANY_WORKER : false;
+    }
+
 }
 
 export enum UserServiceEvent { }

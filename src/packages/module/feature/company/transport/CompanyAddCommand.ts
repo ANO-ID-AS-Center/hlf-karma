@@ -1,15 +1,14 @@
+import { Company } from '@project/common/platform/company';
 import { TransportCommandAsync } from '@ts-core/common/transport';
-import { User } from '@common/platform/user';
-import { UserUid } from '@ts-core/angular';
 
-export class ProfileEditCommand extends TransportCommandAsync<IProfileEditDto, IProfileEditDtoResponse> {
+export class CompanyAddCommand extends TransportCommandAsync<void, ICompanyAddDtoResponse> {
     // --------------------------------------------------------------------------
     //
     //  Public Static Properties
     //
     // --------------------------------------------------------------------------
 
-    public static readonly NAME = 'ProfileEditCommand';
+    public static readonly NAME = 'CompanyAddCommand';
 
     // --------------------------------------------------------------------------
     //
@@ -17,10 +16,9 @@ export class ProfileEditCommand extends TransportCommandAsync<IProfileEditDto, I
     //
     // --------------------------------------------------------------------------
 
-    constructor(request?: IProfileEditDto) {
-        super(ProfileEditCommand.NAME, request);
+    constructor() {
+        super(CompanyAddCommand.NAME);
     }
 }
 
-export type IProfileEditDto = UserUid;
-export type IProfileEditDtoResponse = User;
+export type ICompanyAddDtoResponse = Company;

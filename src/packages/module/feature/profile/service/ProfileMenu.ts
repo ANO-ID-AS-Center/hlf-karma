@@ -8,7 +8,7 @@ import { Transport } from '@ts-core/common/transport';
 import { LoginOpenCommand } from '@feature/login/transport';
 import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ProfileEditCommand } from '../transport/command';
+import { UserEditCommand } from '@feature/user/transport';
 
 @Injectable()
 export class ProfileMenu extends ListItems<IListItem<void>> {
@@ -55,7 +55,7 @@ export class ProfileMenu extends ListItems<IListItem<void>> {
 
         item = new ListItem('user.preferences.preferences', ProfileMenu.PREFERENCES, null, 'fas fa fa-cog mr-2');
         item.checkEnabled = () => user.isLogined;
-        item.action = async () => transport.send(new ProfileEditCommand());
+        item.action = async () => transport.send(new UserEditCommand(user.user.id));
         this.add(item);
 
         merge(user.logined, user.logouted)

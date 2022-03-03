@@ -1,0 +1,153 @@
+<div class="d-flex flex-shrink-0 align-items-center p-3">
+    <p class="mat-title flex-grow-1 text-one-line mouse-inactive" [vi-translate]="'company.add.add'"></p>
+    <button class="flex-shrink-0 ml-2" mat-raised-button color="primary" [disabled]="form.invalid || form.pristine" (click)="submit()">
+        <span [vi-translate]="'general.save.save'"></span>
+    </button>
+</div>
+
+<mat-progress-bar class="border flex-shrink-0" [mode]="isDisabled ? 'indeterminate' : 'determinate'"></mat-progress-bar>
+
+<form class="flex-grow-1 px-3 pt-3 pb-2 row no-gutters vertical-scroll-only" #form="ngForm">
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <input
+                #innInput="ngModel"
+                matInput
+                name="inn"
+                [(ngModel)]="inn"
+                type="text"
+                required
+                [minlength]="innMinLength"
+                [maxlength]="innMaxLength"
+                [disabled]="isDisabled"
+            />
+            <button mat-icon-button matSuffix (click)="load()" [disabled]="isDisabled || innInput.errors">
+                <span class="fas fa-arrow-alt-circle-down"></span>
+            </button>
+            <mat-placeholder [vi-translate]="'company.preferences.inn'"></mat-placeholder>
+            <mat-error *ngIf="!(innInput.valid || !innInput.touched)" [innerHTML]="innInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+
+    <mat-accordion class="d-block border rounded mb-3" style="overflow: hidden">
+        <mat-expansion-panel [expanded]="false" [disabled]="!object">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <p class="mat-body-strong" [vi-translate]="'company.add.nalogObject'"></p>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row p-3">
+                <div class="col-12">
+                    <mat-form-field class="d-block">
+                        <input matInput name="ceo" [value]="object?.ceo" required disabled />
+                        <mat-placeholder [vi-translate]="'company.preferences.ceo'"></mat-placeholder>
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field class="d-block">
+                        <input matInput name="kpp" [value]="object?.kpp" required disabled />
+                        <mat-placeholder [vi-translate]="'company.preferences.kpp'"></mat-placeholder>
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field class="d-block">
+                        <input matInput name="ogrn" [value]="object?.ogrn" required disabled />
+                        <mat-placeholder [vi-translate]="'company.preferences.ogrn'"></mat-placeholder>
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field class="d-block">
+                        <input matInput name="name" [value]="object?.name" required disabled />
+                        <mat-placeholder [vi-translate]="'company.preferences.name'"></mat-placeholder>
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field class="d-block">
+                        <input matInput name="name" [value]="object?.nameShort" required disabled />
+                        <mat-placeholder [vi-translate]="'company.preferences.nameShort'"></mat-placeholder>
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field class="d-block">
+                        <input matInput name="address" [value]="object?.address" required disabled />
+                        <mat-placeholder [vi-translate]="'company.preferences.address'"></mat-placeholder>
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field class="d-block">
+                        <input matInput name="address" [value]="object?.date | viMomentDate : 'LL'" required disabled />
+                        <mat-placeholder [vi-translate]="'company.preferences.founded'"></mat-placeholder>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <input
+                #titleInput="ngModel"
+                matInput
+                name="title"
+                [(ngModel)]="title"
+                type="text"
+                required
+                [minlength]="titleMinLength"
+                [maxlength]="titleMaxLength"
+                [disabled]="!object || isDisabled"
+            />
+            <mat-placeholder [vi-translate]="'company.preferences.title'"></mat-placeholder>
+            <mat-error *ngIf="!(titleInput.valid || !titleInput.touched)" [innerHTML]="titleInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <input
+                #addressPostInput="ngModel"
+                matInput
+                name="addressPost"
+                [(ngModel)]="addressPost"
+                type="text"
+                required
+                [maxlength]="addressMaxLength"
+                [disabled]="!object || isDisabled"
+            />
+            <mat-placeholder [vi-translate]="'company.preferences.addressPost'"></mat-placeholder>
+            <mat-error *ngIf="!(addressPostInput.valid || !addressPostInput.touched)" [innerHTML]="addressPostInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <input
+                #phoneInput="ngModel"
+                matInput
+                name="phone"
+                [(ngModel)]="phone"
+                type="text"
+                [maxlength]="phoneMaxLength"
+                [disabled]="!object || isDisabled"
+            />
+            <mat-placeholder [vi-translate]="'company.preferences.phone'"></mat-placeholder>
+            <mat-error *ngIf="!(phoneInput.valid || !phoneInput.touched)" [innerHTML]="phoneInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <input
+                #websiteInput="ngModel"
+                matInput
+                name="website"
+                [(ngModel)]="website"
+                type="text"
+                [maxlength]="websiteMaxLength"
+                [disabled]="!object || isDisabled"
+            />
+            <mat-placeholder [vi-translate]="'company.preferences.website'"></mat-placeholder>
+            <mat-error *ngIf="!(websiteInput.valid || !websiteInput.touched)" [innerHTML]="websiteInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+
+</form>

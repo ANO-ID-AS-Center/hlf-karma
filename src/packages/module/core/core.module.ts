@@ -37,6 +37,10 @@ import { DateUtil } from '@ts-core/common/util';
 import { Client } from '@common/platform/api';
 import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { UserMapCollection } from './lib/user';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 //--------------------------------------------------------------------------
 //
@@ -56,12 +60,10 @@ const modules = [
     VIComponentModule,
 
     // Have to import it here, even if it's not using in core
-    /*
     MatDatepickerModule,
     MatMomentDateModule,
     MatAutocompleteModule,
     MatBottomSheetModule,
-    */
 ];
 
 //--------------------------------------------------------------------------

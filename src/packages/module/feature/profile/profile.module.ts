@@ -4,17 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from '@shared/shared.module';
 import { ProfileInfoComponent } from './component/profile-info/profile-info.component';
-import { ProfileEditComponent } from './component/profile-edit/profile-edit.component';
-import { ProfileEditHandler, ProfileMenu } from './service';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ProfileMenu } from './service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TransportLazyModule } from '@ts-core/angular';
 import { Transport } from '@ts-core/common/transport';
-import { ProfileEditCommand } from './transport/command';
+import { UserModule } from '../user';
 
 //--------------------------------------------------------------------------
 //
@@ -23,19 +17,16 @@ import { ProfileEditCommand } from './transport/command';
 //--------------------------------------------------------------------------
 
 const providers = [ProfileMenu];
-const declarations = [ProfileInfoComponent, ProfileEditComponent];
+const declarations = [ProfileInfoComponent];
 
 @NgModule({
     imports: [
         CommonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
+
         MatButtonModule,
         MatMenuModule,
         MatProgressBarModule,
-        MatDatepickerModule,
+        UserModule,
         SharedModule
     ],
     exports: declarations,
@@ -50,7 +41,7 @@ export class ProfileModule extends TransportLazyModule<ProfileModule> {
     //--------------------------------------------------------------------------
 
     public static ID = 'ProfileModule';
-    public static COMMANDS = [ProfileEditCommand.NAME];
+    public static COMMANDS = [];
 
     //--------------------------------------------------------------------------
     //
@@ -58,7 +49,7 @@ export class ProfileModule extends TransportLazyModule<ProfileModule> {
     //
     //--------------------------------------------------------------------------
 
-    constructor(reference: NgModuleRef<ProfileModule>, transport: Transport, open: ProfileEditHandler) {
+    constructor(reference: NgModuleRef<ProfileModule>, transport: Transport) {
         super(reference, transport);
     }
 

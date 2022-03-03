@@ -25,7 +25,11 @@ export class RootModule {
             return;
         }
         loader.prefixes.push(
-            'User.json'
+            'Login.json',
+            'User.json',
+            'Payment.json',
+            'Profile.json',
+            'Company.json',
         );
     }
 

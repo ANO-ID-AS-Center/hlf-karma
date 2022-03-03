@@ -27,12 +27,13 @@ export class UserSaveHandler extends TransportCommandAsyncHandler<IUserEditDto, 
     // --------------------------------------------------------------------------
 
     protected async execute(params: IUserEditDto): Promise<IUserEditDtoResponse> {
-        if (_.isNil(params.uid)) {
-            if (this.user.isLogined) {
-                params.uid = this.user.id.toString();
-            }
+        if (_.isNil(params.id) && this.user.isLogined) {
+            params.id = this.user.user.id;
+        }
+        if (_.isNil(params.id)) {
             throw new ExtendedError('Unable to save user: uid is nil');
         }
+
         let item = await this.api.userEdit(params);
         if (this.user.isUser(item)) {
             this.user.userUpdate(item);

@@ -4,7 +4,7 @@ import { LoadingService, LoadingServiceManager } from '@ts-core/frontend/service
 import { LoadableEvent } from '@ts-core/common';
 import * as _ from 'lodash';
 import { ApplicationComponent, LoginBaseServiceEvent, LoginResolver, ViewUtil, WindowService } from '@ts-core/angular';
-import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
+import { TransportHttp, TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import { LanguageService } from '@ts-core/frontend/language';
 import { ThemeService } from '@ts-core/frontend/theme';
 import { RouterService, SettingsService } from '@core/service';
@@ -16,6 +16,9 @@ import { Client } from '@common/platform/api';
 import 'numeral/locales/ru';
 import 'moment/locale/ru';
 import { ExtendedError } from '@ts-core/common/error';
+import { Transport } from '@ts-core/common/transport';
+import { ProfileQuizOpenCommand } from '@feature/profile-quiz/transport';
+import { CompanyAddCommand } from '@feature/company/transport';
 
 @Component({
     selector: 'root',
@@ -41,6 +44,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         protected settings: SettingsService,
         protected language: LanguageService,
         protected theme: ThemeService,
+        protected transport: Transport,
         icon: MatIconRegistry
     ) {
         super();
@@ -145,13 +149,18 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
     private async redirect(): Promise<void> {
         let url = LoginResolver.loggedInUrl;
 
+        if (this.user.isUndefined) {
+            this.transport.send(new ProfileQuizOpenCommand());
+        }
+        else if (this.user.isCompanyManager) {
+            this.transport.send(new CompanyAddCommand());
+        }
         /*
         if (!UserIsTwoFaEnabledGuard.canActivate(this.user.user)) {
             url = RouterService.DEFAULT_URL;
             await this.windows.info('user.twoFa.saveConfirmation').closePromise;
             this.shell.twoFaCreate();
         }
-        
         if (this.user.user.isNeedResetPassword) {
             await this.windows.info('login.passwordChangeConfirmation').closePromise;
             this.shell.passwordChangeOpen();

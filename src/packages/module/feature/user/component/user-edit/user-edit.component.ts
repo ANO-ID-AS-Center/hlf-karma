@@ -1,22 +1,21 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
 import { IWindowContent, SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
 import { LanguageService } from '@ts-core/frontend/language';
-import { UserService } from '@core/service';
+import { UserService, PipeService } from '@core/service';
 import * as _ from 'lodash';
-import { User, UserPreferences } from '@common/platform/user';
+import { User, UserPreferences, UserPreferencesProjectCancelStrategy } from '@common/platform/user';
 import { ISerializable } from '@ts-core/common';
 import { IUserEditDto } from '@common/platform/api/user';
-import { USER_PREFERENCES_NAME_MIN_LENGTH, USER_PREFERENCES_DESCRIPTION_MAX_LENGTH, USER_PREFERENCES_NAME_MAX_LENGTH } from '@common/platform/user';
+import { UserType, UserStatus, USER_PREFERENCES_NAME_MIN_LENGTH, USER_PREFERENCES_DESCRIPTION_MAX_LENGTH, USER_PREFERENCES_NAME_MAX_LENGTH } from '@common/platform/user';
 import moment, { Moment } from 'moment';
 import { LoginResource } from '@common/platform/api/login';
-import { UserPreferencesProjectCancelStrategy } from '@common/platform/user';
 import { Transport } from '@ts-core/common/transport';
 
 @Component({
-    selector: 'profile-edit',
-    templateUrl: 'profile-edit.component.html'
+    selector: 'user-edit',
+    templateUrl: 'user-edit.component.html'
 })
-export class ProfileEditComponent extends IWindowContent implements ISerializable<IUserEditDto> {
+export class UserEditComponent extends IWindowContent implements ISerializable<IUserEditDto> {
     //--------------------------------------------------------------------------
     //
     //  Constants
@@ -31,11 +30,16 @@ export class ProfileEditComponent extends IWindowContent implements ISerializabl
     //
     //--------------------------------------------------------------------------
 
-    private _profile: User;
+    private _user: User;
 
-    public title: string;
+    public types: SelectListItems<SelectListItem<UserType>>;
+    public locales: SelectListItems<SelectListItem<string>>;
     public isMales: SelectListItems<SelectListItem<boolean>>;
+    public statuses: SelectListItems<SelectListItem<UserStatus>>;
     public projectCancelStrategies: SelectListItems<SelectListItem<UserPreferencesProjectCancelStrategy>>;
+
+    public type: UserType;
+    public status: UserStatus;
 
     public name: string;
     public phone: string;
@@ -46,6 +50,7 @@ export class ProfileEditComponent extends IWindowContent implements ISerializabl
     public location: string;
     public latitude: number;
     public longitude: number;
+    public ledgerUid: string;
     public resource: LoginResource;
     public birthday: Moment;
     public description: string;
@@ -60,22 +65,31 @@ export class ProfileEditComponent extends IWindowContent implements ISerializabl
     constructor(
         container: ViewContainerRef,
         private transport: Transport,
-        private language: LanguageService,
-        private user: UserService,
-        private windows: WindowService
+        private pipe: PipeService,
+        private service: UserService,
+        private windows: WindowService,
     ) {
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
 
-        this.isMales = new SelectListItems(language);
-        this.isMales.add(new SelectListItem('user.preferences.isMale.true', 0, true));
-        this.isMales.add(new SelectListItem('user.preferences.isMale.false', 1, false));
+        this.types = this.addDestroyable(new SelectListItems(this.pipe.language));
+        Object.values(UserType).forEach((item, index) => this.types.add(new SelectListItem(`user.type.${item}`, index, item)));
+        this.types.complete();
+        
+        this.statuses = this.addDestroyable(new SelectListItems(this.pipe.language));
+        Object.values(UserStatus).forEach((item, index) => this.statuses.add(new SelectListItem(`user.status.${item}`, index, item)));
+        this.statuses.complete();
+
+        this.locales = this.addDestroyable(new SelectListItems(this.pipe.language));
+        ['ru'].forEach((item, index) => this.locales.add(new SelectListItem(`user.preferences.locale.${item}`, index, item)));
+        this.locales.complete();
+
+        this.isMales = this.addDestroyable(new SelectListItems(this.pipe.language));
+        [true, false].forEach((item, index) => this.isMales.add(new SelectListItem(`user.preferences.isMale.${item}`, index, item)));
         this.isMales.complete();
 
-        this.projectCancelStrategies = new SelectListItems(language);
-        Object.values(UserPreferencesProjectCancelStrategy).forEach((item, index) =>
-            this.projectCancelStrategies.add(new SelectListItem(`user.projectCancelStrategy.${item}`, index, item))
-        );
+        this.projectCancelStrategies = this.addDestroyable(new SelectListItems(this.pipe.language));
+        Object.values(UserPreferencesProjectCancelStrategy).forEach((item, index) => this.projectCancelStrategies.add(new SelectListItem(`user.preferences.projectCancelStrategy.${item}`, index, item)));
         this.projectCancelStrategies.complete();
     }
 
@@ -85,91 +99,83 @@ export class ProfileEditComponent extends IWindowContent implements ISerializabl
     //
     //--------------------------------------------------------------------------
 
-    private commitProfileProperties(): void {
+    private commitUserProperties(): void {
         let value = null;
 
-        value = this.getTitle();
-        if (value !== this.title) {
-            this.title = value;
+        value = this.user.type;
+        if (value !== this.type) {
+            this.type = value;
         }
 
-        value = this.profile.preferences.name;
+        value = this.user.status;
+        if (value !== this.status) {
+            this.status = value;
+        }
+
+        value = this.user.preferences.name;
         if (value !== this.name) {
             this.name = value;
         }
 
-        value = this.profile.resource;
+        value = this.user.resource;
         if (value !== this.name) {
             this.resource = value;
         }
 
-        value = this.profile.preferences.phone;
+        value = this.user.preferences.phone;
         if (value !== this.phone) {
             this.phone = value;
         }
 
-        value = this.profile.preferences.email;
+        value = this.user.preferences.email;
         if (value !== this.email) {
             this.email = value;
         }
 
-        value = this.profile.preferences.locale;
+        value = this.user.preferences.locale;
         if (value !== this.locale) {
             this.locale = value;
         }
 
-        value = this.profile.preferences.isMale;
+        value = this.user.preferences.isMale;
         if (value !== this.isMale) {
             this.isMale = value;
         }
 
-        value = this.profile.preferences.birthday;
+        value = this.user.preferences.birthday;
         if (value !== this.birthday) {
             this.birthday = moment(value);
         }
 
-        value = this.profile.preferences.picture;
+        value = this.user.preferences.picture;
         if (value !== this.picture) {
             this.picture = value;
         }
 
-        value = this.profile.preferences.projectCancelStrategy;
-        if (value !== this.projectCancelStrategy) {
-            this.projectCancelStrategy = value;
-        }
-
-        value = this.profile.preferences.description;
+        value = this.user.preferences.description;
         if (value !== this.description) {
             this.description = value;
         }
 
-        value = this.profile.preferences.location;
+        value = this.user.preferences.location;
         if (value !== this.location) {
             this.location = value;
         }
 
-        value = this.profile.preferences.latitude;
+        value = this.user.preferences.latitude;
         if (value !== this.latitude) {
             this.latitude = value;
         }
 
-        value = this.profile.preferences.longitude;
+        value = this.user.preferences.longitude;
         if (value !== this.longitude) {
             this.longitude = value;
         }
-    }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Private Properties
-    //
-    //--------------------------------------------------------------------------
-
-    private getTitle(): string {
-        if (this.user.id === this.profile.id) {
-            return this.language.translate('user.preferences.preferences');
+        value = this.user.preferences.projectCancelStrategy;
+        if (value !== this.projectCancelStrategy) {
+            this.projectCancelStrategy = value;
         }
-        return this.profile.login;
     }
 
     //--------------------------------------------------------------------------
@@ -180,12 +186,12 @@ export class ProfileEditComponent extends IWindowContent implements ISerializabl
 
     public async submit(): Promise<void> {
         await this.windows.question('general.save.confirmation').yesNotPromise;
-        this.emit(ProfileEditComponent.EVENT_SUBMITTED);
+        this.emit(UserEditComponent.EVENT_SUBMITTED);
     }
 
     public async geoSelect(): Promise<void> {
         /*
-        let item = await this.transport.sendListen(new GeoSelectCommand(this.profile.preferences.toGeo()), { timeout: DateUtil.MILISECONDS_DAY });
+        let item = await this.transport.sendListen(new GeoSelectCommand(this.user.preferences.toGeo()), { timeout: DateUtil.MILISECONDS_DAY });
         this.location = item.location;
         this.latitude = item.latitude;
         this.longitude = item.longitude;
@@ -195,16 +201,24 @@ export class ProfileEditComponent extends IWindowContent implements ISerializabl
     public serialize(): IUserEditDto {
         let preferences = {} as Partial<UserPreferences>;
         preferences.name = this.name;
+        preferences.phone = this.phone;
+        preferences.email = this.email;
+        preferences.locale = this.locale;
         preferences.isMale = this.isMale;
         preferences.location = this.location;
         preferences.latitude = this.latitude;
         preferences.longitude = this.longitude;
         preferences.description = this.description;
+        preferences.projectCancelStrategy = this.projectCancelStrategy;
         if (!_.isNil(this.birthday)) {
             preferences.birthday = this.birthday.toDate();
         }
-
-        return { uid: this.user.id.toString(), preferences };
+        let item: IUserEditDto = { id: this.user.id, preferences };
+        if (this.isAdministrator) {
+            item.type = this.type;
+            item.status = this.status;
+        }
+        return item;
     }
 
     //--------------------------------------------------------------------------
@@ -222,18 +236,21 @@ export class ProfileEditComponent extends IWindowContent implements ISerializabl
     public get descriptionMaxLength(): number {
         return USER_PREFERENCES_DESCRIPTION_MAX_LENGTH;
     }
+    public get isAdministrator(): boolean {
+        return this.service.isAdministrator;
+    }
 
-    public get profile(): User {
-        return this._profile;
+    public get user(): User {
+        return this._user;
     }
     @Input()
-    public set profile(value: User) {
-        if (value === this._profile) {
+    public set user(value: User) {
+        if (value === this._user) {
             return;
         }
-        this._profile = value;
+        this._user = value;
         if (!_.isNil(value)) {
-            this.commitProfileProperties();
+            this.commitUserProperties();
         }
     }
 }

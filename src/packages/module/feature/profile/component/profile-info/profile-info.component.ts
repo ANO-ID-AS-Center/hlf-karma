@@ -35,14 +35,14 @@ export class ProfileInfoComponent extends DestroyableContainer {
         container: ViewContainerRef,
         public menu: ProfileMenu,
         private pipe: PipeService,
-        private service: UserService,
+        private user: UserService,
         private themeAsset: ThemeAssetService
     ) {
         super();
         ViewUtil.addClasses(container.element, 'd-block mouse-active');
 
         this.commitUserProperties();
-        merge(service.logined, service.logouted, service.changed, pipe.language.completed)
+        merge(user.logined, user.changed, pipe.language.completed)
             .pipe(takeUntil(this.destroyed))
             .subscribe(() => this.commitUserProperties());
     }
@@ -56,12 +56,14 @@ export class ProfileInfoComponent extends DestroyableContainer {
     private commitUserProperties(): void {
         let value = null;
 
-        value = this.getName();
+        value = this.pipe.userTitle.transform(this.profile);
         if (value !== this.name) {
             this.name = value;
         }
 
-        value = this.getDescription();
+        console.log(this.profile.type);
+
+        value = this.pipe.language.translate(`user.type.${this.profile.type}`);
         if (value !== this.description) {
             this.description = value;
         }
@@ -78,25 +80,14 @@ export class ProfileInfoComponent extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    public getName(): string {
-        if (!_.isEmpty(this.profile.preferences.name)) {
-            return this.profile.preferences.name;
-        }
-        return this.profile.login;
-    }
-
-    public getDescription(): string {
-        return this.pipe.language.translate(`user.type.${this.profile.type}`);
-    }
-
     public getPicture(): string {
-        if (_.isNil(this.profile)) {
+        if (_.isNil(this.profile.preferences.picture)) {
             return this.themeAsset.getIcon('moon64');
         }
         return this.profile.preferences.picture;
     }
 
     public get profile(): User {
-        return this.service.user;
+        return this.user.user;
     }
 }

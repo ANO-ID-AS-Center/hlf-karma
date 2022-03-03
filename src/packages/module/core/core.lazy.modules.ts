@@ -6,7 +6,9 @@
 
 import { UserModule } from '@feature/user';
 import { LoginModule } from '@feature/login';
+import { CompanyModule } from '@feature/company';
 import { ProfileModule } from '@feature/profile';
+import { ProfileQuizModule } from '@feature/profile-quiz';
 import { PaymentModule } from '@feature/payment';
 
 export const TRANSPORT_LAZY_MODULES = [
@@ -17,8 +19,13 @@ export const TRANSPORT_LAZY_MODULES = [
     },
     {
         id: UserModule.ID,
-        commands: LoginModule.COMMANDS,
+        commands: UserModule.COMMANDS,
         path: async () => (await import('@feature/user')).UserModule
+    },
+    {
+        id: CompanyModule.ID,
+        commands: CompanyModule.COMMANDS,
+        path: async () => (await import('@feature/company')).CompanyModule
     },
     {
         id: PaymentModule.ID,
@@ -29,5 +36,10 @@ export const TRANSPORT_LAZY_MODULES = [
         id: ProfileModule.ID,
         commands: ProfileModule.COMMANDS,
         path: async () => (await import('@feature/profile')).ProfileModule
+    },
+    {
+        id: ProfileQuizModule.ID,
+        commands: ProfileQuizModule.COMMANDS,
+        path: async () => (await import('@feature/profile-quiz')).ProfileQuizModule
     }
 ];

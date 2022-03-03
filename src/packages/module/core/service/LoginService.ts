@@ -57,7 +57,10 @@ export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoR
 
     protected async logoutRequest(): Promise<void> {
         await this.social.signOut(true);
-        await this.api.logout();
+        try {
+            await this.api.logout();
+        }
+        catch (error) {}
     }
 
     protected reset(): void {

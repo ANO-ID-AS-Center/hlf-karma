@@ -1,0 +1,37 @@
+{
+    "company": {
+        "user": "Компания",
+        "companies": "Компании",
+        "login": "Логин",
+        "createdDate": "Создан",
+        "add": {
+            "add": "Добавить компанию",
+            "nalogObject": "Данные из налоговой",
+            "noNalogObject": "Не удалось найти организацию с таким ИНН",
+            "manyNalogObject": "Найдено несколько организаций с таким ИНН, проверьте уникальность"
+        },
+        "preferences": {
+            "title": "Название",
+            "email": "Email",
+            "phone": "Телефон",
+            "picture": "Логотип",
+            "website": "Сайт",
+            "location": "⇛geo.location",
+
+            "ceo": "Генеральный директор",
+            "inn": "ИНН",
+            "kpp": "КПП",
+            "ogrn": "ОГРН",
+            "name": "Название",
+            "founded": "Дата",
+            "nameShort": "Короткое название",
+            "address": "Адрес",
+            "addressPost": "Почтовый адрес"
+        },
+        "status": {
+            "status": "Статус",
+            "ACTIVE": "Активен",
+            "NON_ACTIVE": "Не активен"
+        }
+    }
+}

@@ -1,18 +1,15 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ICdkTableCellEvent, ICdkTableSettings, MenuTriggerForDirective, ViewUtil } from '@ts-core/angular';
-import { UserRemovedEvent, UserAddedEvent } from '@common/transport/event/user';
-import { takeUntil } from 'rxjs/operators';
-import { merge, delay } from 'rxjs';
-import { DateUtil } from '@ts-core/common/util';
 import { Transport } from '@ts-core/common/transport';
 import { LedgerUser } from '@common/ledger/user';
 import { PipeService, UserService } from '@core/service';
 import { UserMapCollection, UserTableSettings } from '@core/lib/user';
 import * as _ from 'lodash';
-import { title } from 'process';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { User } from '@common/platform/user';
+import { PaymentOpenCommand } from '@feature/payment/transport';
+import { CoinObjectType } from '@common/transport/command/coin';
+import { UserMenu } from '@feature/user/service';
 
 @Component({
     templateUrl: 'users-page.component.html',
@@ -26,7 +23,6 @@ export class UsersPageComponent extends DestroyableContainer {
 
     @ViewChild(MenuTriggerForDirective, { static: true })
     public trigger: MenuTriggerForDirective;
-
     public settings: ICdkTableSettings<User>;
 
     // --------------------------------------------------------------------------
@@ -39,6 +35,7 @@ export class UsersPageComponent extends DestroyableContainer {
         element: ElementRef,
         pipe: PipeService,
         user: UserService,
+        private menu: UserMenu,
         private transport: Transport,
         public items: UserMapCollection
     ) {
@@ -63,8 +60,8 @@ export class UsersPageComponent extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    public async add(): Promise<void> {
-        // this.transport.send(new UserAddCommand());
+    public async test(): Promise<void> {
+        this.transport.send(new PaymentOpenCommand({ id: 0, type: CoinObjectType.COMPANY }));
     }
 
     // --------------------------------------------------------------------------
@@ -78,7 +75,7 @@ export class UsersPageComponent extends DestroyableContainer {
             // this.transport.send(new UserOpenCommand(item.data));
         }
         else {
-            // this.menu.refresh(item.data);
+            this.menu.refresh(item.data);
             this.trigger.openMenuOn(item.event.target);
         }
     }

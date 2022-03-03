@@ -15,7 +15,7 @@
         <p
             class="d-block flex-shrink-0 border-top mat-caption p-2 text-one-line text-center mouse-inactive mt-auto"
             tabindex="-1"
-            [innerHTML]="'general.footer' | viTranslate"
+            [vi-translate]="'general.footer'"
         ></p>
     </mat-sidenav>
 
@@ -28,7 +28,6 @@
             <div class="flex-grow-1 py-3 container">
                 <router-outlet></router-outlet>
             </div>
-            
         </div>
     </mat-sidenav-content>
 

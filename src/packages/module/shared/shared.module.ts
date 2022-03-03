@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
+import { UserTitlePipe } from './pipe';
 
 //--------------------------------------------------------------------------
 //
@@ -15,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 const providers = [];
 const imports = [VICommonModule, VIComponentModule, CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatTooltipModule];
 
-const declarations = [];
+const declarations = [UserTitlePipe];
 
 @NgModule({
     imports: [CommonModule, ...imports],
