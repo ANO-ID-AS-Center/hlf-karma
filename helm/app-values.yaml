@@ -1,0 +1,15 @@
+volume:
+  name: hlf-volume
+
+env:
+  PORT: 80
+  HTTP_PORT: 443
+  API_URL: http://167.172.46.33:30300
+
+ports:
+  - internal: 80
+    external: 30000
+  - internal: 443
+    external: 30043
+
+imagePullSecrets: regcred
