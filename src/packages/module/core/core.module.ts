@@ -41,6 +41,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { CompanyMapCollection } from './lib/company';
 
 //--------------------------------------------------------------------------
 //
@@ -164,7 +165,8 @@ class HammerConfig extends HammerGestureConfig {
             }
         },
 
-        UserMapCollection
+        UserMapCollection,
+        CompanyMapCollection
     ]
 })
 export class CoreModule { }

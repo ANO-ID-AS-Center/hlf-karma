@@ -35,7 +35,7 @@ export class UsersPageComponent extends DestroyableContainer {
         element: ElementRef,
         pipe: PipeService,
         user: UserService,
-        private menu: UserMenu,
+        public menu: UserMenu,
         private transport: Transport,
         public items: UserMapCollection
     ) {
@@ -72,7 +72,7 @@ export class UsersPageComponent extends DestroyableContainer {
 
     public async cellClickedHandler(item: ICdkTableCellEvent<LedgerUser>): Promise<void> {
         if (item.column !== UserTableSettings.COLUMN_NAME_MENU) {
-            // this.transport.send(new UserOpenCommand(item.data));
+            /// this.transport.send(new UserOpenCommand(item.data));
         }
         else {
             this.menu.refresh(item.data);

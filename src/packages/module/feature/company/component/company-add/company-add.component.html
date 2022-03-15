@@ -14,7 +14,7 @@
                 #innInput="ngModel"
                 matInput
                 name="inn"
-                [(ngModel)]="inn"
+                [(ngModel)]="preferences.inn"
                 type="text"
                 required
                 [minlength]="innMinLength"
@@ -29,59 +29,7 @@
         </mat-form-field>
     </div>
 
-    <mat-accordion class="d-block border rounded mb-3" style="overflow: hidden">
-        <mat-expansion-panel [expanded]="false" [disabled]="!object">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <p class="mat-body-strong" [vi-translate]="'company.add.nalogObject'"></p>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="row p-3">
-                <div class="col-12">
-                    <mat-form-field class="d-block">
-                        <input matInput name="ceo" [value]="object?.ceo" required disabled />
-                        <mat-placeholder [vi-translate]="'company.preferences.ceo'"></mat-placeholder>
-                    </mat-form-field>
-                </div>
-                <div class="col-12">
-                    <mat-form-field class="d-block">
-                        <input matInput name="kpp" [value]="object?.kpp" required disabled />
-                        <mat-placeholder [vi-translate]="'company.preferences.kpp'"></mat-placeholder>
-                    </mat-form-field>
-                </div>
-                <div class="col-12">
-                    <mat-form-field class="d-block">
-                        <input matInput name="ogrn" [value]="object?.ogrn" required disabled />
-                        <mat-placeholder [vi-translate]="'company.preferences.ogrn'"></mat-placeholder>
-                    </mat-form-field>
-                </div>
-                <div class="col-12">
-                    <mat-form-field class="d-block">
-                        <input matInput name="name" [value]="object?.name" required disabled />
-                        <mat-placeholder [vi-translate]="'company.preferences.name'"></mat-placeholder>
-                    </mat-form-field>
-                </div>
-                <div class="col-12">
-                    <mat-form-field class="d-block">
-                        <input matInput name="name" [value]="object?.nameShort" required disabled />
-                        <mat-placeholder [vi-translate]="'company.preferences.nameShort'"></mat-placeholder>
-                    </mat-form-field>
-                </div>
-                <div class="col-12">
-                    <mat-form-field class="d-block">
-                        <input matInput name="address" [value]="object?.address" required disabled />
-                        <mat-placeholder [vi-translate]="'company.preferences.address'"></mat-placeholder>
-                    </mat-form-field>
-                </div>
-                <div class="col-12">
-                    <mat-form-field class="d-block">
-                        <input matInput name="address" [value]="object?.date | viMomentDate : 'LL'" required disabled />
-                        <mat-placeholder [vi-translate]="'company.preferences.founded'"></mat-placeholder>
-                    </mat-form-field>
-                </div>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
+    <company-nalog-preferences [preferences]="preferences" [isDisabled]="!isNalogLoaded"></company-nalog-preferences>
 
     <div class="col-12">
         <mat-form-field class="d-block">
@@ -89,12 +37,12 @@
                 #titleInput="ngModel"
                 matInput
                 name="title"
-                [(ngModel)]="title"
+                [(ngModel)]="preferences.title"
                 type="text"
                 required
                 [minlength]="titleMinLength"
                 [maxlength]="titleMaxLength"
-                [disabled]="!object || isDisabled"
+                [disabled]="isDisabled || !isNalogLoaded"
             />
             <mat-placeholder [vi-translate]="'company.preferences.title'"></mat-placeholder>
             <mat-error *ngIf="!(titleInput.valid || !titleInput.touched)" [innerHTML]="titleInput.errors | viNgModelError"></mat-error>
@@ -107,11 +55,11 @@
                 #addressPostInput="ngModel"
                 matInput
                 name="addressPost"
-                [(ngModel)]="addressPost"
+                [(ngModel)]="preferences.addressPost"
                 type="text"
                 required
                 [maxlength]="addressMaxLength"
-                [disabled]="!object || isDisabled"
+                [disabled]="isDisabled || !isNalogLoaded"
             />
             <mat-placeholder [vi-translate]="'company.preferences.addressPost'"></mat-placeholder>
             <mat-error *ngIf="!(addressPostInput.valid || !addressPostInput.touched)" [innerHTML]="addressPostInput.errors | viNgModelError"></mat-error>
@@ -124,10 +72,10 @@
                 #phoneInput="ngModel"
                 matInput
                 name="phone"
-                [(ngModel)]="phone"
+                [(ngModel)]="preferences.phone"
                 type="text"
                 [maxlength]="phoneMaxLength"
-                [disabled]="!object || isDisabled"
+                [disabled]="isDisabled || !isNalogLoaded"
             />
             <mat-placeholder [vi-translate]="'company.preferences.phone'"></mat-placeholder>
             <mat-error *ngIf="!(phoneInput.valid || !phoneInput.touched)" [innerHTML]="phoneInput.errors | viNgModelError"></mat-error>
@@ -140,14 +88,13 @@
                 #websiteInput="ngModel"
                 matInput
                 name="website"
-                [(ngModel)]="website"
+                [(ngModel)]="preferences.website"
                 type="text"
                 [maxlength]="websiteMaxLength"
-                [disabled]="!object || isDisabled"
+                [disabled]="isDisabled || !isNalogLoaded"
             />
             <mat-placeholder [vi-translate]="'company.preferences.website'"></mat-placeholder>
             <mat-error *ngIf="!(websiteInput.valid || !websiteInput.touched)" [innerHTML]="websiteInput.errors | viNgModelError"></mat-error>
         </mat-form-field>
     </div>
-
 </form>

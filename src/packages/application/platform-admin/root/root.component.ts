@@ -3,15 +3,15 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { LoadingService, LoadingServiceManager } from '@ts-core/frontend/service';
 import { LoadableEvent } from '@ts-core/common';
 import * as _ from 'lodash';
-import { ApplicationComponent, LoginBaseServiceEvent, LoginResolver, ViewUtil, WindowService } from '@ts-core/angular';
-import { TransportHttp, TransportHttpCommandAsync } from '@ts-core/common/transport/http';
+import { ApplicationComponent, ViewUtil, WindowService } from '@ts-core/angular';
+import { TransportHttpCommandAsync } from '@ts-core/common/transport/http';
 import { LanguageService } from '@ts-core/frontend/language';
 import { ThemeService } from '@ts-core/frontend/theme';
 import { RouterService, SettingsService } from '@core/service';
 import { Language } from '@ts-core/language';
 import { takeUntil, filter, map, merge } from 'rxjs';
 import { RouteConfigLoadEnd, RouteConfigLoadStart } from '@angular/router';
-import { LoginService, UserService } from '@core/service';
+import { LoginService, CompanyService, UserService } from '@core/service';
 import { Client } from '@common/platform/api';
 import 'numeral/locales/ru';
 import 'moment/locale/ru';
@@ -38,6 +38,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         private windows: WindowService,
         private api: Client,
         private user: UserService,
+        private company: CompanyService,
         private login: LoginService,
         private router: RouterService,
         protected renderer: Renderer2,
@@ -45,7 +46,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         protected language: LanguageService,
         protected theme: ThemeService,
         protected transport: Transport,
-        icon: MatIconRegistry
+        icon: MatIconRegistry,
     ) {
         super();
         icon.setDefaultFontSetClass('fas');
@@ -87,24 +88,16 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
             }
         });
 
-        // Login
-        this.login.events.subscribe(data => {
-            switch (data.type) {
-                case LoginBaseServiceEvent.LOGIN_ERROR:
-                    this.router.navigate(RouterService.LOGIN_URL);
-                    break;
-                case LoginBaseServiceEvent.LOGOUT_STARTED:
-                    this.windows.removeAll();
-                    break;
-                case LoginBaseServiceEvent.LOGOUT_FINISHED:
-                    this.router.navigate(LoginResolver.logoutUrl);
-                    break;
-            }
-        });
-
         // User
         this.user.logined.subscribe(() => {
-            this.redirect();
+            if (this.user.isUndefined) {
+                this.transport.send(new ProfileQuizOpenCommand());
+            }
+            else if (this.user.isCompanyManager) {
+                if (_.isNil(this.company.hasCompany)) {
+                    this.transport.send(new CompanyAddCommand());
+                }
+            }
         });
     }
 
@@ -120,7 +113,7 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         if (error.code === ExtendedError.HTTP_CODE_UNAUTHORIZED) {
             await this.windows.info(this.language.translate('error.unauthorized')).closePromise;
             this.login.logout();
-        } if (command.isHandleError) {
+        } else if (command.isHandleError) {
             this.windows.info(error.message);
         }
     }
@@ -133,39 +126,5 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         this.router.navigate(`${RouterService.MESSAGE_URL}/${message}`);
     }
 
-    protected readyHandler(): void {
-        this.tryToLoginIfNeed();
-    }
-
-    private tryToLoginIfNeed(): void {
-        if (!this.login.isAutoLogin || this.login.isLoggedIn) {
-            return;
-        }
-        if (!this.login.tryLoginBySid()) {
-            this.router.navigate(RouterService.LOGIN_URL);
-        }
-    }
-
-    private async redirect(): Promise<void> {
-        let url = LoginResolver.loggedInUrl;
-
-        if (this.user.isUndefined) {
-            this.transport.send(new ProfileQuizOpenCommand());
-        }
-        else if (this.user.isCompanyManager) {
-            this.transport.send(new CompanyAddCommand());
-        }
-        /*
-        if (!UserIsTwoFaEnabledGuard.canActivate(this.user.user)) {
-            url = RouterService.DEFAULT_URL;
-            await this.windows.info('user.twoFa.saveConfirmation').closePromise;
-            this.shell.twoFaCreate();
-        }
-        if (this.user.user.isNeedResetPassword) {
-            await this.windows.info('login.passwordChangeConfirmation').closePromise;
-            this.shell.passwordChangeOpen();
-        }
-        */
-        this.router.navigate(url);
-    }
+    protected readyHandler(): void { }
 }

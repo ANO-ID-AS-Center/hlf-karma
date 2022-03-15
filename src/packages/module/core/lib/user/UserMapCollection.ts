@@ -1,9 +1,8 @@
-import { User } from '@common/platform/user';
+import { User, UserPreferences } from '@common/platform/user';
 import { CdkTablePaginableMapCollection, ICdkTableColumn, ICdkTableSettings } from '@ts-core/angular';
 import { IPagination } from '@ts-core/common/dto';
 import * as _ from 'lodash';
 import { Client } from '@common/platform/api';
-import { UserPreferences } from '@common/platform/user';
 import { PipeService, UserService } from '../../service';
 import { Injectable } from '@angular/core';
 import { TransformUtil } from '@ts-core/common/util';
@@ -18,7 +17,7 @@ export class UserMapCollection extends CdkTablePaginableMapCollection<User, User
     // --------------------------------------------------------------------------
 
     constructor(private api: Client) {
-        super(`uid`);
+        super(`id`);
         this.sort.createdDate = false;
     }
 
@@ -66,12 +65,14 @@ export class UserTableSettings implements ICdkTableSettings<User> {
             headerId: 'user.preferences.email',
             headerClassName: 'pl-3',
             className: 'pl-3',
+            isDisableSort: true,
             format: item => hasPreferences(item, 'email') ? item.preferences.email : item.login,
         })
 
         this.columns.push({
             name: 'name',
             headerId: 'user.preferences.name',
+            isDisableSort: true,
             format: item => pipe.userTitle.transform(item)
         })
         if (user.isAdministrator) {
@@ -92,16 +93,12 @@ export class UserTableSettings implements ICdkTableSettings<User> {
             format: item => pipe.momentDate.transform(item.createdDate)
         });
 
-
-
-        this.columns.push(
-            {
-                name: UserTableSettings.COLUMN_NAME_MENU,
-                headerId: '',
-                isDisableSort: true,
-                className: 'fas fa-ellipsis-v'
-            });
-
+        this.columns.push({
+            name: UserTableSettings.COLUMN_NAME_MENU,
+            headerId: '',
+            isDisableSort: true,
+            className: 'fas fa-ellipsis-v'
+        });
     }
 
 

@@ -22,10 +22,10 @@ $light-warn: mat.define-palette(mat.$red-palette);
 
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 
-/*
 $light-theme: vi-mat-theme-background-change($light-theme, 'body', #fafafa);
 $light-theme: vi-mat-theme-background-change($light-theme, 'background', #ffffff);
 
+/*
 $light-theme: vi-mat-theme-foreground-change($light-theme, 'text', #141414);
 $light-theme: vi-mat-theme-foreground-change($light-theme, 'icon', #141414);
 $light-theme: vi-mat-theme-foreground-change($light-theme, 'icons', #141414);

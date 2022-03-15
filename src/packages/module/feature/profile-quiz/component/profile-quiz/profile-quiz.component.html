@@ -17,8 +17,8 @@
         </div>
     </form>
 
-    <div class="d-flex mt-3" *ngIf="tabs.selectedData === 'COMPANY_WORKER'">
-        <p class="p-3 flex-grow-1 border background rounded text-multi-line" [innerHTML]="user.user.uid"></p>
+    <div class="d-flex mt-3" *ngIf="tabs.selectedData === 'COMPANY_WORKER'" [vi-click-to-copy]="uid">
+        <p #uid class="p-3 flex-grow-1 border background rounded text-multi-line" [innerHTML]="user.user.uid"></p>
     </div>
 
 </div>

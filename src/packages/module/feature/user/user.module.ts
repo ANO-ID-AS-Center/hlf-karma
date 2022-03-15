@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule, NgModuleRef } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-import { TransportLazyModule, VICommonModule } from '@ts-core/angular';
+import { TransportLazyModule } from '@ts-core/angular';
 import { UserEditHandler, UserOpenHandler, UserSaveHandler } from './service';
 import { Transport } from '@ts-core/common/transport';
 import { UserEditCommand, UserOpenCommand, UserSaveCommand } from './transport';
@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { UserContainerComponent } from './component/user-container/user-container.component';
 
 //--------------------------------------------------------------------------
 //
@@ -22,7 +23,7 @@ import { FormsModule } from '@angular/forms';
 //--------------------------------------------------------------------------
 
 const providers = [];
-const declarations = [UserEditComponent];
+const declarations = [UserEditComponent, UserContainerComponent];
 
 @NgModule({
     imports: [

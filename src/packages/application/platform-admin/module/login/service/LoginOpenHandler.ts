@@ -5,7 +5,7 @@ import { PromiseHandler } from '@ts-core/common/promise';
 import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
 import * as _ from 'lodash';
 import { LoginContainerComponent } from '@feature/login/component';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { LoginOpenCommand, ILoginOpenDtoResponse } from '@feature/login/transport';
 
 @Injectable({ providedIn: 'root' })

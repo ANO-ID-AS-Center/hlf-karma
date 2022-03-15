@@ -6,7 +6,7 @@ import { Logger } from '@ts-core/common/logger';
 import { PromiseHandler } from '@ts-core/common/promise';
 import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
 import * as _ from 'lodash';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { UserEditComponent } from '../component';
 import { UserEditCommand, UserSaveCommand } from '../transport';
 

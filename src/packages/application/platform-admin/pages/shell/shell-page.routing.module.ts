@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RouterService } from '@core/service';
+import { CompanyGuard, CompaniesGuard } from '@feature/company/guard';
+import { UsersGuard } from '@feature/user/guard';
 import { ShellPageComponent } from './shell-page.component';
 
 const routes: Routes = [
@@ -10,13 +12,28 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: RouterService.USERS_URL
+                redirectTo: RouterService.USER_URL
+            },
+            {
+                path: RouterService.USER_URL,
+                loadChildren: async () => (await import('../user/user-page.module')).UserPageModule
             },
             {
                 path: RouterService.USERS_URL,
+                canActivate: [UsersGuard],
                 loadChildren: async () => (await import('@page/users/users-page.module')).UsersPageModule
             },
-            { path: '**', redirectTo: RouterService.USERS_URL }
+            {
+                path: RouterService.COMPANY_URL,
+                canActivate: [CompanyGuard],
+                loadChildren: async () => (await import('../company/company-page.module')).CompanyPageModule
+            },
+            {
+                path: RouterService.COMPANIES_URL,
+                canActivate: [CompaniesGuard],
+                loadChildren: async () => (await import('@page/companies/companies-page.module')).CompaniesPageModule
+            },
+            { path: '**', redirectTo: '/' }
         ]
     }
 ];

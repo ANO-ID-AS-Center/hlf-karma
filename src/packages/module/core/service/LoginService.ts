@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@common/platform/api';
-import { LoginBaseService, CookieService } from '@ts-core/angular';
+import { LoginBaseService, CookieService, LoginNotGuard, LoginGuard, WindowService, LoginBaseServiceEvent } from '@ts-core/angular';
 import { SocialAuthService, SocialUser } from 'angularx-social-login';
 import { ILoginDto, ILoginDtoResponse, IInitDtoResponse, LoginResource } from '@common/platform/api/login';
 import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';
+import { RouterService } from './RouterService';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoResponse, IInitDtoResponse> {
@@ -22,9 +23,24 @@ export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoR
     //
     //--------------------------------------------------------------------------
 
-    constructor(private cookies: CookieService, private api: Client, private social: SocialAuthService) {
+    constructor(router: RouterService, windows: WindowService, private cookies: CookieService, private api: Client, private social: SocialAuthService) {
         super();
+
+        this.events.subscribe(data => {
+            switch (data.type) {
+                case LoginBaseServiceEvent.LOGIN_COMPLETE:
+                    router.navigate(LoginNotGuard.redirectUrl);
+                    break;
+                case LoginBaseServiceEvent.LOGOUT_FINISHED:
+                    router.navigate(LoginGuard.redirectUrl);
+                    break;
+                case LoginBaseServiceEvent.LOGOUT_STARTED:
+                    windows.removeAll();
+                    break;
+            }
+        });
     }
+
 
     //--------------------------------------------------------------------------
     //
@@ -39,7 +55,6 @@ export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoR
 
     protected parseLoginResponse(data: ILoginDtoResponse): void {
         this._sid = data.sid;
-
         if (this.sid) {
             this.cookies.put('sid', this.sid);
         } else {
@@ -56,16 +71,23 @@ export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoR
     }
 
     protected async logoutRequest(): Promise<void> {
-        await this.social.signOut(true);
+        await this.logoutSocial();
         try {
             await this.api.logout();
         }
-        catch (error) {}
+        catch (error) { }
+    }
+
+    protected async logoutSocial(): Promise<void> {
+        try {
+            await this.social.signOut(true);
+        }
+        catch (error) { }
     }
 
     protected reset(): void {
         super.reset();
-        this.social.signOut(true);
+        this.logoutSocial();
         this.cookies.remove('sid');
         this.cookies.remove('resource');
     }

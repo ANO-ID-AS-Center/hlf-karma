@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserBaseService } from '@ts-core/angular';
+import { UserBaseService, UserBaseServiceEvent } from '@ts-core/angular';
 import { LoginService } from './LoginService';
 import { IInitDtoResponse } from '@common/platform/api/login';
 import { User } from '../lib/user';
@@ -9,9 +9,13 @@ import * as _ from 'lodash';
 import { ExtendedError } from '@ts-core/common/error';
 import { Transport } from '@ts-core/common/transport';
 import { UserSaveCommand } from '@feature/user/transport';
+import { UserRole } from '@project/common/platform/user';
+import { Company } from '@project/common/platform/company';
+import { ObservableData } from '@ts-core/common/observer';
 
 @Injectable({ providedIn: 'root' })
 export class UserService extends UserBaseService<User, UserServiceEvent> {
+
     //--------------------------------------------------------------------------
     //
     // 	Constructor
@@ -58,18 +62,20 @@ export class UserService extends UserBaseService<User, UserServiceEvent> {
         return true;
     }
 
-    public get preferences(): UserPreferences {
-        return this.isLogined ? this.user.preferences : null;
-    }
-
     //--------------------------------------------------------------------------
     //
     // 	Public Properties
     //
     //--------------------------------------------------------------------------
 
+    public get preferences(): UserPreferences {
+        return this.isLogined ? this.user.preferences : null;
+    }
     public get isDonor(): boolean {
         return this.hasUser ? this.user.type === UserType.DONOR : false;
+    }
+    public get isEditor(): boolean {
+        return this.hasUser ? this.user.type === UserType.EDITOR : false;
     }
     public get isUndefined(): boolean {
         return this.hasUser ? this.user.type === UserType.UNDEFINED : false;
@@ -77,13 +83,12 @@ export class UserService extends UserBaseService<User, UserServiceEvent> {
     public get isAdministrator(): boolean {
         return this.hasUser ? this.user.type === UserType.ADMINISTRATOR : false;
     }
-    public get isCompanyManager(): boolean {
-        return this.hasUser ? this.user.type === UserType.COMPANY_MANAGER : false;
-    }
     public get isCompanyWorker(): boolean {
         return this.hasUser ? this.user.type === UserType.COMPANY_WORKER : false;
     }
-
+    public get isCompanyManager(): boolean {
+        return this.hasUser ? this.user.type === UserType.COMPANY_MANAGER : false;
+    }
 }
 
 export enum UserServiceEvent { }

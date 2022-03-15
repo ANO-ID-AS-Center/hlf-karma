@@ -1,0 +1,56 @@
+<mat-accordion class="d-block border rounded mb-3" style="overflow: hidden">
+    <mat-expansion-panel [expanded]="false" [disabled]="isDisabled">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <p class="mat-body-strong">
+                    <span [vi-translate]="'company.add.nalogObject'"></span>
+                    <span class="ml-1" [innerHTML]="preferences?.inn" *ngIf="preferences"></span>
+                </p>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row p-3">
+            <div class="col-12">
+                <mat-form-field class="d-block">
+                    <input matInput name="ceo" [value]="preferences?.ceo" required disabled />
+                    <mat-placeholder [vi-translate]="'company.preferences.ceo'"></mat-placeholder>
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-form-field class="d-block">
+                    <input matInput name="kpp" [value]="preferences?.kpp" required disabled />
+                    <mat-placeholder [vi-translate]="'company.preferences.kpp'"></mat-placeholder>
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-form-field class="d-block">
+                    <input matInput name="ogrn" [value]="preferences?.ogrn" required disabled />
+                    <mat-placeholder [vi-translate]="'company.preferences.ogrn'"></mat-placeholder>
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-form-field class="d-block">
+                    <input matInput name="name" [value]="preferences?.name" required disabled />
+                    <mat-placeholder [vi-translate]="'company.preferences.name'"></mat-placeholder>
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-form-field class="d-block">
+                    <input matInput name="name" [value]="preferences?.nameShort" required disabled />
+                    <mat-placeholder [vi-translate]="'company.preferences.nameShort'"></mat-placeholder>
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-form-field class="d-block">
+                    <input matInput name="address" [value]="preferences?.address" required disabled />
+                    <mat-placeholder [vi-translate]="'company.preferences.address'"></mat-placeholder>
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-form-field class="d-block">
+                    <input matInput name="address" [value]="preferences?.founded | viMomentDate: 'LL'" required disabled />
+                    <mat-placeholder [vi-translate]="'company.preferences.founded'"></mat-placeholder>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

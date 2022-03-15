@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { IWindowContent, SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { UserService, PipeService } from '@core/service';
 import { merge } from 'rxjs';
 import * as _ from 'lodash';

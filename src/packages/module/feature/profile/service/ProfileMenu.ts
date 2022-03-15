@@ -7,7 +7,7 @@ import { LoginService, UserService } from '@core/service';
 import { Transport } from '@ts-core/common/transport';
 import { LoginOpenCommand } from '@feature/login/transport';
 import { merge } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { UserEditCommand } from '@feature/user/transport';
 
 @Injectable()
@@ -21,7 +21,6 @@ export class ProfileMenu extends ListItems<IListItem<void>> {
     private static PREFERENCES = 20;
 
     private static LOGIN = 1000;
-
 
     // --------------------------------------------------------------------------
     //
@@ -38,14 +37,14 @@ export class ProfileMenu extends ListItems<IListItem<void>> {
     ) {
         super(language, true);
 
-        let item: IListItem = null;
+        let item: MenuListItem = null;
 
-        item = new ListItem('login.login.login', ProfileMenu.LOGIN, null, 'fas fa fa-sign-in-alt mr-2');
+        item = new MenuListItem('login.login.login', ProfileMenu.LOGIN, null, 'fas fa fa-sign-in-alt mr-2');
         item.checkEnabled = () => !login.isLoading && !user.isLogined;
         item.action = async () => transport.sendListen(new LoginOpenCommand());
         this.add(item);
 
-        item = new ListItem('login.logout.logout', ProfileMenu.LOGIN, null, 'fas fa fa-sign-out-alt mr-2');
+        item = new MenuListItem('login.logout.logout', ProfileMenu.LOGIN, null, 'fas fa fa-sign-out-alt mr-2');
         item.checkEnabled = () => !login.isLoading && user.isLogined;
         item.action = async () => {
             await windows.question('login.logout.confirmation').yesNotPromise;
@@ -53,7 +52,7 @@ export class ProfileMenu extends ListItems<IListItem<void>> {
         };
         this.add(item);
 
-        item = new ListItem('user.preferences.preferences', ProfileMenu.PREFERENCES, null, 'fas fa fa-cog mr-2');
+        item = new MenuListItem('user.preferences.preferences', ProfileMenu.PREFERENCES, null, 'fas fa fa-cog mr-2');
         item.checkEnabled = () => user.isLogined;
         item.action = async () => transport.send(new UserEditCommand(user.user.id));
         this.add(item);
@@ -65,4 +64,9 @@ export class ProfileMenu extends ListItems<IListItem<void>> {
         this.complete();
         this.refresh();
     }
+}
+
+class MenuListItem extends ListItem<void> {
+    action: (item: ListItem) => void;
+    checkEnabled: (item: ListItem) => boolean;
 }

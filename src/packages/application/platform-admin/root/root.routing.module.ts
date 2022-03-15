@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, NoPreloading } from '@angular/router';
-import { LanguageResolver, LoginGuard, LoginNotGuard, LoginResolver } from '@ts-core/angular';
+import { LanguageResolver, LoginResolver, LoginNotGuard, LoginIfCanGuard } from '@ts-core/angular';
 import { RouterService } from '@core/service';
 
 const routes: Routes = [
     {
         path: RouterService.LOGIN_URL,
         resolve: {
-            language: LanguageResolver
+            language: LanguageResolver,
         },
-        canActivate: [LoginNotGuard],
+        // canActivate: [LoginNotGuard],
         loadChildren: () => import('../pages/login/login-page.module').then(item => item.LoginPageModule)
     },
     {
@@ -18,7 +18,7 @@ const routes: Routes = [
             login: LoginResolver,
             language: LanguageResolver
         },
-        canActivate: [LoginGuard],
+        canActivate: [LoginIfCanGuard],
         loadChildren: () => import('../pages/shell/shell-page.module').then(item => item.ShellPageModule)
     }
 ];

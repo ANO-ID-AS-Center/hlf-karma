@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '@ts-core/angular';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { User } from '@core/lib/user';
 import { ThemeAssetService } from '@ts-core/frontend/theme';
 import { UserService, PipeService, LoginService } from '@core/service';
@@ -60,8 +60,6 @@ export class ProfileInfoComponent extends DestroyableContainer {
         if (value !== this.name) {
             this.name = value;
         }
-
-        console.log(this.profile.type);
 
         value = this.pipe.language.translate(`user.type.${this.profile.type}`);
         if (value !== this.description) {

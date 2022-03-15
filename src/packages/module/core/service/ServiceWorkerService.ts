@@ -3,7 +3,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { WindowService } from '@ts-core/angular';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ServiceWorkerService extends DestroyableContainer {

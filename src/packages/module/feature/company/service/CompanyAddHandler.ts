@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@project/common/platform/api';
-import { Company } from '@project/common/platform/company';
-import { UserUid, WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
+import { WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
 import { PromiseHandler } from '@ts-core/common/promise';
 import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
 import * as _ from 'lodash';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
+import { CompanyService } from '@core/service';
 import { CompanyAddComponent } from '../component/company-add/company-add.component';
 import { CompanyAddCommand, ICompanyAddDtoResponse } from '../transport';
 
@@ -18,7 +18,7 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
     //
     // --------------------------------------------------------------------------
 
-    constructor(transport: Transport, logger: Logger, private windows: WindowService, private api: Client) {
+    constructor(transport: Transport, logger: Logger, private company: CompanyService, private windows: WindowService, private api: Client) {
         super(logger, transport, CompanyAddCommand.NAME);
     }
 
@@ -28,7 +28,7 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
     //
     // --------------------------------------------------------------------------
 
-    protected async execute(): Promise<Company> {
+    protected async execute(): Promise<ICompanyAddDtoResponse> {
         let windowId = 'companyAdd';
         if (this.windows.setOnTop(windowId)) {
             return Promise.reject('Already opened');
@@ -37,14 +37,14 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
         let config = new WindowConfig(true, false, 600);
         config.id = windowId;
 
-        let promise = PromiseHandler.create<Company>();
+        let promise = PromiseHandler.create<ICompanyAddDtoResponse>();
         let content = this.windows.open(CompanyAddComponent, config) as CompanyAddComponent;
 
         content.events.pipe(takeUntil(content.destroyed)).subscribe(async event => {
             switch (event) {
                 case CompanyAddComponent.EVENT_SUBMITTED:
-                    let item = await this.api.nalogSearch
-                    //promise.resolve(item);
+                    let item = this.company.company = await this.api.companyAdd({ preferences: content.serialize() });
+                    promise.resolve(item);
                     content.close();
                     break;
                 case WindowEvent.CLOSED:

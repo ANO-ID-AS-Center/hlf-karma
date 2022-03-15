@@ -1,29 +1,22 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { IWindowContent, ViewUtil, WindowService } from '@ts-core/angular';
-import { UserService, PipeService } from '@core/service';
+import { ViewUtil, WindowService } from '@ts-core/angular';
+import { PipeService } from '@core/service';
 import * as _ from 'lodash';
 import { ISerializable } from '@ts-core/common';
 import { } from '@common/platform/company';
 import { Transport } from '@ts-core/common/transport';
 import {
-    COMPANY_PREFERENCES_TITLE_MIN_LENGTH,
-    COMPANY_PREFERENCES_EMAIL_MAX_LENGTH,
-    COMPANY_PREFERENCES_INN_MIN_LENGTH,
-    COMPANY_PREFERENCES_INN_MAX_LENGTH,
-    COMPANY_PREFERENCES_TITLE_MAX_LENGTH,
-    COMPANY_PREFERENCES_WEBSITE_MAX_LENGTH,
-    COMPANY_PREFERENCES_ADDRESS_MAX_LENGTH,
-    COMPANY_PREFERENCES_PHONE_MAX_LENGTH,
     CompanyPreferences
 } from '@project/common/platform/company';
 import { Client } from '@project/common/platform/api';
-import { INalogObject } from '@project/common/platform/api/nalog';
+import { ObjectUtil } from '@ts-core/common/util';
+import { CompanyBaseComponent } from '../CompanyBaseComponent';
 
 @Component({
     selector: 'company-add',
     templateUrl: 'company-add.component.html'
 })
-export class CompanyAddComponent extends IWindowContent implements ISerializable<Partial<CompanyPreferences>> {
+export class CompanyAddComponent extends CompanyBaseComponent implements ISerializable<Partial<CompanyPreferences>> {
     //--------------------------------------------------------------------------
     //
     //  Constants
@@ -38,19 +31,7 @@ export class CompanyAddComponent extends IWindowContent implements ISerializable
     //
     //--------------------------------------------------------------------------
 
-    public inn: string;
-    public object: INalogObject;
-
-    public title: string;
-    public phone: string;
-    public email: string;
-    public website: string;
-    public picture: string;
-    public addressPost: string;
-
-    public location: string;
-    public latitude: number;
-    public longitude: number;
+    public isNalogLoaded: boolean;
 
     //--------------------------------------------------------------------------
     //
@@ -68,7 +49,8 @@ export class CompanyAddComponent extends IWindowContent implements ISerializable
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
 
-        this.inn = '7751161170';
+        this._preferences = new CompanyPreferences();
+        this.preferences.inn = '7751161170';
     }
 
     //--------------------------------------------------------------------------
@@ -87,25 +69,28 @@ export class CompanyAddComponent extends IWindowContent implements ISerializable
         if (this.isDisabled) {
             return;
         }
+
         this.isDisabled = true;
+        this.isNalogLoaded = false;
+
+        let nalog = null;
         try {
-            let items = await this.api.nalogSearch(this.inn);
-            if (_.isEmpty(items)) {
+            let [item] = await this.api.nalogSearch(this.preferences.inn);
+            nalog = item;
+            if (_.isEmpty(item)) {
                 this.windows.info(`company.add.noNalogObject`);
                 return;
             }
-            if (items.length > 1) {
-                this.windows.info(`company.add.manyNalogObject`);
-                return;
-            }
-            let item = this.object = items[0];
-            this.title = item.nameShort;
-            this.addressPost = item.address;
+            ObjectUtil.copyProperties(item, this.preferences);
+            this.preferences.title = this.preferences.nameShort;
+            this.preferences.addressPost = this.preferences.address;
         }
         finally {
             this.isDisabled = false;
+            this.isNalogLoaded = !_.isNil(nalog);
         }
     }
+
     public async submit(): Promise<void> {
         await this.windows.question('general.save.confirmation').yesNotPromise;
         this.emit(CompanyAddComponent.EVENT_SUBMITTED);
@@ -121,44 +106,7 @@ export class CompanyAddComponent extends IWindowContent implements ISerializable
     }
 
     public serialize(): Partial<CompanyPreferences> {
-        let preferences = {} as Partial<CompanyPreferences>;
-        preferences.title = this.title;
-        preferences.phone = this.phone;
-        preferences.email = this.email;
-        preferences.location = this.location;
-        preferences.latitude = this.latitude;
-        preferences.longitude = this.longitude;
-        return preferences;
+        return this.preferences;
     }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Public Properties
-    //
-    //--------------------------------------------------------------------------
-
-    public get phoneMaxLength(): number {
-        return COMPANY_PREFERENCES_PHONE_MAX_LENGTH;
-    }
-    public get websiteMaxLength(): number {
-        return COMPANY_PREFERENCES_WEBSITE_MAX_LENGTH;
-    }
-    public get addressMaxLength(): number {
-        return COMPANY_PREFERENCES_ADDRESS_MAX_LENGTH;
-    }
-    public get emailMaxLength(): number {
-        return COMPANY_PREFERENCES_EMAIL_MAX_LENGTH;
-    }
-    public get innMinLength(): number {
-        return COMPANY_PREFERENCES_INN_MIN_LENGTH;
-    }
-    public get innMaxLength(): number {
-        return COMPANY_PREFERENCES_INN_MAX_LENGTH;
-    }
-    public get titleMinLength(): number {
-        return COMPANY_PREFERENCES_TITLE_MIN_LENGTH;
-    }
-    public get titleMaxLength(): number {
-        return COMPANY_PREFERENCES_TITLE_MAX_LENGTH;
-    }
 }

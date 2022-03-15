@@ -43,10 +43,6 @@ export class ProfileQuizOpenHandler extends TransportCommandHandler<void, Profil
                 case ProfileQuizComponent.EVENT_SUBMITTED:
                     let item = await this.api.userType({ type: content.serialize() });
                     this.user.userUpdate(item);
-                    console.log(item, this.user.isCompanyManager);
-                    if (this.user.isCompanyManager) {
-                        console.log(123);
-                    }
                     content.close();
                     break;
             }

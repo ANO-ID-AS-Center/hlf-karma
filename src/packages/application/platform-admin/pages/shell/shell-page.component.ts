@@ -2,7 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { NotificationService, ShellBaseComponent, ViewUtil } from '@ts-core/angular';
 import { RouterService, SettingsService } from '@core/service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { ShellMenu } from './service';
 import { MatSidenavContent } from '@angular/material/sidenav';
 import { Transport } from '@ts-core/common/transport';
@@ -33,7 +33,6 @@ export class ShellPageComponent extends ShellBaseComponent implements AfterViewI
         breakpointObserver: BreakpointObserver,
         element: ElementRef,
         router: RouterService,
-        private transport: Transport,
         public settings: SettingsService,
         public menu: ShellMenu
     ) {
