@@ -8,6 +8,8 @@ import { UserCompany } from '@project/common/platform/user';
 import { LedgerCompanyRole } from '@project/common/ledger/role';
 import { CompanyStatus } from '@project/common/platform/company';
 import { CompanyVerifyCommand, CompanyToVerifyCommand, CompanyRejectCommand, CompanyActivateCommand } from '../transport';
+import { ProjectAddCommand } from '@feature/project/transport';
+
 
 @Injectable({ providedIn: 'root' })
 export class CompanyMenu extends ListItems<IListItem<void>> {
@@ -21,6 +23,8 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
     private static VERIFY = 20;
     private static REJECT = 30;
     private static ACTIVATE = 40;
+
+    private static PROJECT_ADD = 50;
 
     // --------------------------------------------------------------------------
     //
@@ -57,16 +61,10 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
         item.className = 'text-danger';
         this.add(item);
 
-        /*
-        item = new ListItem('user.cryptoKeyChange', UserMenu.CRYPTO_KEY_CHANGE, null, 'fas fa-key mr-2');
-        item.action = (item, user) => transport.send(new UserCryptoKeyChangeCommand(user));
+        item = new ListItem('project.action.add.add', CompanyMenu.PROJECT_ADD, null, 'fas fa-cube mr-2');
+        item.checkEnabled = (item, company) => this.isCanProjectAdd(company);
+        item.action = (item, company) => transport.send(new ProjectAddCommand());
         this.add(item);
-
-        item = new ListItem('general.remove', UserMenu.REMOVE, null, 'fas fa-times-circle mr-2');
-        item.className = 'text-danger';
-        item.action = (item, user) => transport.send(new UserRemoveCommand(user));
-        this.add(item);
-        */
 
         this.complete();
     }
@@ -97,6 +95,9 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
         }
         return (company.status === CompanyStatus.DRAFT || company.status === CompanyStatus.REJECTED) &&
             (company.roles.includes(LedgerCompanyRole.COMPANY_MANAGER));
+    }
+    private isCanProjectAdd(company: UserCompany): boolean {
+        return company.status === CompanyStatus.ACTIVE && company.roles.includes(LedgerCompanyRole.PROJECT_MANAGER)
     }
 }
 

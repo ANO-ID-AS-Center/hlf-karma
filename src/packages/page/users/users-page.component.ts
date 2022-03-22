@@ -10,6 +10,7 @@ import { User } from '@common/platform/user';
 import { PaymentOpenCommand } from '@feature/payment/transport';
 import { CoinObjectType } from '@common/transport/command/coin';
 import { UserMenu } from '@feature/user/service';
+import { UserOpenCommand } from '@feature/user/transport';
 
 @Component({
     templateUrl: 'users-page.component.html',
@@ -70,9 +71,9 @@ export class UsersPageComponent extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    public async cellClickedHandler(item: ICdkTableCellEvent<LedgerUser>): Promise<void> {
+    public async cellClickedHandler(item: ICdkTableCellEvent<User>): Promise<void> {
         if (item.column !== UserTableSettings.COLUMN_NAME_MENU) {
-            /// this.transport.send(new UserOpenCommand(item.data));
+            this.transport.send(new UserOpenCommand(item.data.id));
         }
         else {
             this.menu.refresh(item.data);

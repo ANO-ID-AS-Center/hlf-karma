@@ -6,6 +6,7 @@ import { ISerializable } from '@ts-core/common';
 import { } from '@common/platform/company';
 import { Transport } from '@ts-core/common/transport';
 import {
+    Company,
     CompanyPreferences
 } from '@project/common/platform/company';
 import { Client } from '@project/common/platform/api';
@@ -41,24 +42,16 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
 
     constructor(
         container: ViewContainerRef,
-        private transport: Transport,
-        private pipe: PipeService,
         private api: Client,
         private windows: WindowService,
     ) {
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
 
-        this._preferences = new CompanyPreferences();
-        this.preferences.inn = '7751161170';
+        this.company = new Company();
+        this.company.preferences = new CompanyPreferences();
+        this.company.preferences.inn = '7751161170';
     }
-
-    //--------------------------------------------------------------------------
-    //
-    // 	Private Methods
-    //
-    //--------------------------------------------------------------------------
-
     //--------------------------------------------------------------------------
     //
     //  Public Methods
@@ -75,15 +68,15 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
 
         let nalog = null;
         try {
-            let [item] = await this.api.nalogSearch(this.preferences.inn);
+            let [item] = await this.api.nalogSearch(this.company.preferences.inn);
             nalog = item;
             if (_.isEmpty(item)) {
                 this.windows.info(`company.add.noNalogObject`);
                 return;
             }
-            ObjectUtil.copyProperties(item, this.preferences);
-            this.preferences.title = this.preferences.nameShort;
-            this.preferences.addressPost = this.preferences.address;
+            ObjectUtil.copyProperties(item, this.company.preferences);
+            this.company.preferences.title = this.company.preferences.nameShort;
+            this.company.preferences.addressPost = this.company.preferences.address;
         }
         finally {
             this.isDisabled = false;
@@ -92,7 +85,7 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
     }
 
     public async submit(): Promise<void> {
-        await this.windows.question('general.save.confirmation').yesNotPromise;
+        await this.windows.question('company.action.save.confirmation').yesNotPromise;
         this.emit(CompanyAddComponent.EVENT_SUBMITTED);
     }
 
@@ -106,7 +99,6 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
     }
 
     public serialize(): Partial<CompanyPreferences> {
-        return this.preferences;
+        return this.company.preferences;
     }
-
 }

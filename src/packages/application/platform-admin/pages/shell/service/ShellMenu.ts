@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs';
 import { CompanyGuard, CompaniesGuard } from '@feature/company/guard';
 import { merge } from 'rxjs';
 import { UsersGuard } from '@feature/user/guard';
+import { ProjectsGuard } from '@feature/project/guard';
 
 @Injectable()
 export class ShellMenu extends SelectListItems<ISelectListItem<string>> {
@@ -20,6 +21,7 @@ export class ShellMenu extends SelectListItems<ISelectListItem<string>> {
     private static USER = 9;
     private static COMPANY = 10;
     private static COMPANIES = 20;
+    private static PROJECTS = 30;
 
     // --------------------------------------------------------------------------
     //
@@ -27,7 +29,7 @@ export class ShellMenu extends SelectListItems<ISelectListItem<string>> {
     //
     // --------------------------------------------------------------------------
 
-    constructor(language: LanguageService, user: UserService, company: CompanyService, router: RouterService, usersGuard: UsersGuard, companyGuard: CompanyGuard, companiesGuard: CompaniesGuard) {
+    constructor(language: LanguageService, user: UserService, company: CompanyService, router: RouterService, usersGuard: UsersGuard, companyGuard: CompanyGuard, companiesGuard: CompaniesGuard, projectsGuard: ProjectsGuard) {
         super(language);
 
         let item: ISelectListItem = null;
@@ -42,6 +44,9 @@ export class ShellMenu extends SelectListItems<ISelectListItem<string>> {
 
         item = this.add(new ShellListItem('company.companies', ShellMenu.COMPANIES, `/${RouterService.COMPANIES_URL}`, 'fas fa-building-columns'));
         item.checkEnabled = () => companiesGuard.canActivate() === true;
+
+        item = this.add(new ShellListItem('project.projects', ShellMenu.PROJECTS, `/${RouterService.PROJECTS_URL}`, 'fas fa-hands-helping'));
+        item.checkEnabled = () => projectsGuard.canActivate() === true;
 
         for (let item of this.collection) {
             item.action = item => router.navigate(item.data);

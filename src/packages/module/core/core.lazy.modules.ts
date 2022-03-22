@@ -10,6 +10,7 @@ import { CompanyModule } from '@feature/company';
 import { ProfileModule } from '@feature/profile';
 import { ProfileQuizModule } from '@feature/profile-quiz';
 import { PaymentModule } from '@feature/payment';
+import { ProjectModule } from '@feature/project';
 
 export const TRANSPORT_LAZY_MODULES = [
     {
@@ -36,6 +37,11 @@ export const TRANSPORT_LAZY_MODULES = [
         id: ProfileModule.ID,
         commands: ProfileModule.COMMANDS,
         path: async () => (await import('@feature/profile')).ProfileModule
+    },
+    {
+        id: ProjectModule.ID,
+        commands: ProjectModule.COMMANDS,
+        path: async () => (await import('@feature/project')).ProjectModule
     },
     {
         id: ProfileQuizModule.ID,

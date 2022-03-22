@@ -64,13 +64,12 @@ export class UserEditComponent extends IWindowContent implements ISerializable<I
 
     constructor(
         container: ViewContainerRef,
-        private transport: Transport,
         private pipe: PipeService,
         private service: UserService,
         private windows: WindowService,
     ) {
         super(container);
-        ViewUtil.addClasses(container.element, 'd-flex flex-column');
+        ViewUtil.addClasses(container, 'd-flex flex-column');
 
         this.types = this.addDestroyable(new SelectListItems(this.pipe.language));
         Object.values(UserType).forEach((item, index) => this.types.add(new SelectListItem(`user.type.${item}`, index, item)));
@@ -185,7 +184,7 @@ export class UserEditComponent extends IWindowContent implements ISerializable<I
     //--------------------------------------------------------------------------
 
     public async submit(): Promise<void> {
-        await this.windows.question('general.save.confirmation').yesNotPromise;
+        await this.windows.question('user.action.save.confirmation').yesNotPromise;
         this.emit(UserEditComponent.EVENT_SUBMITTED);
     }
 

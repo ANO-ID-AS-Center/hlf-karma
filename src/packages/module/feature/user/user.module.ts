@@ -5,7 +5,7 @@ import { TransportLazyModule } from '@ts-core/angular';
 import { UserEditHandler, UserOpenHandler, UserSaveHandler } from './service';
 import { Transport } from '@ts-core/common/transport';
 import { UserEditCommand, UserOpenCommand, UserSaveCommand } from './transport';
-import { UserEditComponent } from './component';
+import { UserEditComponent, UserContainerComponent, UserDetailsComponent } from './component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -14,7 +14,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { UserContainerComponent } from './component/user-container/user-container.component';
 
 //--------------------------------------------------------------------------
 //
@@ -23,7 +22,7 @@ import { UserContainerComponent } from './component/user-container/user-containe
 //--------------------------------------------------------------------------
 
 const providers = [];
-const declarations = [UserEditComponent, UserContainerComponent];
+const declarations = [UserEditComponent, UserDetailsComponent, UserContainerComponent];
 
 @NgModule({
     imports: [

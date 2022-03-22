@@ -29,20 +29,10 @@ export class UserMenu extends ListItems<IListItem<void>> {
 
         let item: IListItem<void> = null;
 
-        item = new ListItem('general.edit', UserMenu.EDIT, null, 'fas fa-edit mr-2');
+        item = new ListItem('user.action.edit.edit', UserMenu.EDIT, null, 'fas fa-edit mr-2');
         item.checkEnabled = (item, user) => service.isAdministrator || service.isUser(user);
         item.action = (item, user) => transport.send(new UserEditCommand(user.id));
         this.add(item)
-        /*
-        item = new ListItem('user.cryptoKeyChange', UserMenu.CRYPTO_KEY_CHANGE, null, 'fas fa-key mr-2');
-        item.action = (item, user) => transport.send(new UserCryptoKeyChangeCommand(user));
-        this.add(item);
-
-        item = new ListItem('general.remove', UserMenu.REMOVE, null, 'fas fa-times-circle mr-2');
-        item.className = 'text-danger';
-        item.action = (item, user) => transport.send(new UserRemoveCommand(user));
-        this.add(item);
-        */
 
         this.complete();
     }

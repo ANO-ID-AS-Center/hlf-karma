@@ -17,6 +17,7 @@ export class RouterService extends RouterBaseService {
     public static USER_URL = 'user';
     public static USERS_URL = 'users';
     public static COMPANY_URL = 'company';
+    public static PROJECTS_URL = 'projects';
     public static COMPANIES_URL = 'companies';
 
     public static MESSAGE_URL = 'message';

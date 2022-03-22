@@ -9,9 +9,6 @@ import * as _ from 'lodash';
 import { ExtendedError } from '@ts-core/common/error';
 import { Transport } from '@ts-core/common/transport';
 import { UserSaveCommand } from '@feature/user/transport';
-import { UserRole } from '@project/common/platform/user';
-import { Company } from '@project/common/platform/company';
-import { ObservableData } from '@ts-core/common/observer';
 
 @Injectable({ providedIn: 'root' })
 export class UserService extends UserBaseService<User, UserServiceEvent> {

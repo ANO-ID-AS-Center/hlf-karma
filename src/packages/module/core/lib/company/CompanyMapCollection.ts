@@ -60,25 +60,30 @@ export class CompanyTableSettings implements ICdkTableSettings<UserCompany> {
 
     constructor(pipe: PipeService, user: UserService) {
         this.columns = [];
+        
+        this.columns.push({
+            name: CompanyTableSettings.COLUMN_NAME_MENU,
+            headerId: '',
+            headerClassName: 'pl-3',
+            className: 'pl-3 fas fa-ellipsis-v',
+            isDisableSort: true,
+        });
         this.columns.push({
             name: 'title',
             headerId: 'company.preferences.title',
-            headerClassName: 'pl-3',
-            className: 'pl-3',
             isDisableSort: true,
             format: item => item.preferences.title
         })
-
         this.columns.push({
             name: 'status',
             headerId: 'company.status.status',
             isDisableSort: true,
             className: item => {
-                switch(item.status) {
+                switch (item.status) {
                     case CompanyStatus.VERIFICATION_PROCESS:
                         return 'text-warning';
                     case CompanyStatus.REJECTED:
-                        case CompanyStatus.NON_ACTIVE:
+                    case CompanyStatus.NON_ACTIVE:
                         return 'text-danger';
                 }
                 return null;
@@ -112,13 +117,6 @@ export class CompanyTableSettings implements ICdkTableSettings<UserCompany> {
             name: 'createdDate',
             headerId: 'user.createdDate',
             format: item => pipe.momentDate.transform(item.createdDate)
-        });
-
-        this.columns.push({
-            name: CompanyTableSettings.COLUMN_NAME_MENU,
-            headerId: '',
-            isDisableSort: true,
-            className: 'fas fa-ellipsis-v'
         });
     }
 

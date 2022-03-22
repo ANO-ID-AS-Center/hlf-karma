@@ -1,20 +1,23 @@
-import { Component, ElementRef, Input } from '@angular/core';
-import { ViewUtil } from '@ts-core/angular';
+import { Component, ElementRef, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { IWindowContent, MenuTriggerForDirective, ViewUtil } from '@ts-core/angular';
 import * as _ from 'lodash';
 import { User } from '@common/platform/user';
-import { DestroyableContainer } from '@ts-core/common';
+import { UserMenu } from '../../service';
 
 @Component({
     selector: 'user-container',
     templateUrl: 'user-container.component.html'
 })
-export class UserContainerComponent extends DestroyableContainer {
+export class UserContainerComponent extends IWindowContent {
 
     //--------------------------------------------------------------------------
     //
     // 	Properties
     //
     //--------------------------------------------------------------------------
+
+    @ViewChild(MenuTriggerForDirective, { static: true })
+    public trigger: MenuTriggerForDirective;
 
     private _user: User;
 
@@ -24,11 +27,9 @@ export class UserContainerComponent extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    constructor(
-        container: ElementRef
-    ) {
-        super();
-        ViewUtil.addClasses(container, 'd-block');
+    constructor(container: ViewContainerRef, public menu: UserMenu,) {
+        super(container);
+        ViewUtil.addClasses(container, 'd-flex flex-column');
     }
 
     //--------------------------------------------------------------------------
@@ -39,6 +40,17 @@ export class UserContainerComponent extends DestroyableContainer {
 
     private commitUserProperties(): void {
         let value = null;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Event Handlers
+    //
+    // --------------------------------------------------------------------------
+
+    public async menuOpen(event: MouseEvent): Promise<void> {
+        this.menu.refresh(this.user);
+        this.trigger.openMenuOn(event.target);
     }
 
     //--------------------------------------------------------------------------

@@ -61,10 +61,15 @@ export class UserTableSettings implements ICdkTableSettings<User> {
 
         this.columns = [];
         this.columns.push({
+            name: UserTableSettings.COLUMN_NAME_MENU,
+            headerId: '',
+            headerClassName: 'pl-3',
+            className: 'pl-3 fas fa-ellipsis-v',
+            isDisableSort: true,
+        });
+        this.columns.push({
             name: 'email',
             headerId: 'user.preferences.email',
-            headerClassName: 'pl-3',
-            className: 'pl-3',
             isDisableSort: true,
             format: item => hasPreferences(item, 'email') ? item.preferences.email : item.login,
         })
@@ -91,13 +96,6 @@ export class UserTableSettings implements ICdkTableSettings<User> {
             name: 'createdDate',
             headerId: 'user.createdDate',
             format: item => pipe.momentDate.transform(item.createdDate)
-        });
-
-        this.columns.push({
-            name: UserTableSettings.COLUMN_NAME_MENU,
-            headerId: '',
-            isDisableSort: true,
-            className: 'fas fa-ellipsis-v'
         });
     }
 

@@ -32,7 +32,7 @@ export class LoginOpenHandler extends TransportCommandAsyncHandler<void, ILoginO
             return Promise.reject('Already opened');
         }
 
-        let config = new WindowConfig(true, false, 360);
+        let config = new WindowConfig(true, false, 600);
         config.id = windowId;
         let promise = PromiseHandler.create<ILoginOpenDtoResponse>();
 

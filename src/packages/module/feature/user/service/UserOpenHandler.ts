@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@project/common/platform/api';
-import { UserUid, WindowConfig, WindowService } from '@ts-core/angular';
+import { UserUid, WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
 import { Transport, TransportCommandHandler } from '@ts-core/common/transport';
 import * as _ from 'lodash';
+import { takeUntil } from 'rxjs';
+import { UserContainerComponent } from '../component';
 import { UserOpenCommand } from '../transport';
 
 @Injectable({ providedIn: 'root' })
@@ -32,19 +34,10 @@ export class UserOpenHandler extends TransportCommandHandler<UserUid, UserOpenCo
 
         let user = await this.api.userGet(params);
 
-        let config = new WindowConfig(true, false, 360);
+        let config = new WindowConfig(false, false, 600);
         config.id = windowId;
 
-        /*
         let content = this.windows.open(UserContainerComponent, config) as UserContainerComponent;
-        content.events.pipe(takeUntil(content.destroyed)).subscribe(async event => {
-            switch (event) {
-                case WindowEvent.CLOSED:
-  
-                    break;
-            }
-        });
-        */
-
+        content.user = user;
     }
 }

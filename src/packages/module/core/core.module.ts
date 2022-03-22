@@ -17,8 +17,6 @@ import {
     ITransportLazyModuleData,
     TransportLazy,
     LazyModuleLoader,
-    WindowService,
-    NotificationService,
     PipeBaseService,
     LoginBaseService,
     UserBaseService
@@ -42,6 +40,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { CompanyMapCollection } from './lib/company';
+import { ProjectMapCollection } from './lib/project';
 
 //--------------------------------------------------------------------------
 //
@@ -166,7 +165,8 @@ class HammerConfig extends HammerGestureConfig {
         },
 
         UserMapCollection,
-        CompanyMapCollection
+        CompanyMapCollection,
+        ProjectMapCollection
     ]
 })
 export class CoreModule { }

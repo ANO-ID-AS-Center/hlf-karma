@@ -9,7 +9,7 @@ import { LanguageService } from '@ts-core/frontend/language';
 import { ThemeService } from '@ts-core/frontend/theme';
 import { RouterService, SettingsService } from '@core/service';
 import { Language } from '@ts-core/language';
-import { takeUntil, filter, map, merge } from 'rxjs';
+import { takeUntil, filter, map, merge, delay } from 'rxjs';
 import { RouteConfigLoadEnd, RouteConfigLoadStart } from '@angular/router';
 import { LoginService, CompanyService, UserService } from '@core/service';
 import { Client } from '@common/platform/api';
@@ -89,12 +89,12 @@ export class RootComponent extends ApplicationComponent<SettingsService> {
         });
 
         // User
-        this.user.logined.subscribe(() => {
+        this.user.logined.pipe(delay(0)).subscribe(() => {
             if (this.user.isUndefined) {
                 this.transport.send(new ProfileQuizOpenCommand());
             }
             else if (this.user.isCompanyManager) {
-                if (_.isNil(this.company.hasCompany)) {
+                if (!this.company.hasCompany) {
                     this.transport.send(new CompanyAddCommand());
                 }
             }

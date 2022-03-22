@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RouterService } from '@core/service';
 import { CompanyGuard, CompaniesGuard } from '@feature/company/guard';
 import { UsersGuard } from '@feature/user/guard';
+import { ProjectsGuard } from '@feature/project/guard';
 import { ShellPageComponent } from './shell-page.component';
 
 const routes: Routes = [
@@ -32,6 +33,11 @@ const routes: Routes = [
                 path: RouterService.COMPANIES_URL,
                 canActivate: [CompaniesGuard],
                 loadChildren: async () => (await import('@page/companies/companies-page.module')).CompaniesPageModule
+            },
+            {
+                path: RouterService.PROJECTS_URL,
+                canActivate: [ProjectsGuard],
+                loadChildren: async () => (await import('@page/projects/projects-page.module')).ProjectsPageModule
             },
             { path: '**', redirectTo: '/' }
         ]

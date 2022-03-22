@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LanguageService } from '@ts-core/frontend/language';
 import { PipeBaseService } from '@ts-core/angular';
-import { UserTitlePipe } from '@shared/pipe';
+import { UserTitlePipe, RolePipe } from '@shared/pipe';
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +13,7 @@ export class PipeService extends PipeBaseService {
     //
     //--------------------------------------------------------------------------
 
+    private static ROLE: RolePipe;
     private static USER_TITLE: UserTitlePipe;
 
     //--------------------------------------------------------------------------
@@ -30,6 +31,13 @@ export class PipeService extends PipeBaseService {
     // 	Public Properties
     //
     //--------------------------------------------------------------------------
+
+    public get role(): RolePipe {
+        if (!PipeService.ROLE) {
+            PipeService.ROLE = new RolePipe(this.language);
+        }
+        return PipeService.ROLE;
+    }
 
     public get userTitle(): UserTitlePipe {
         if (!PipeService.USER_TITLE) {

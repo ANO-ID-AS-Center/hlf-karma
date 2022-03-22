@@ -1,26 +1,14 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
 import { ViewUtil } from '@ts-core/angular';
 import * as _ from 'lodash';
-import { } from '@common/platform/company';
-import { CompanyPreferences } from '@project/common/platform/company';
-import { DestroyableContainer } from '@ts-core/common';
+import { Company } from '@common/platform/company';
+import { CompanyBaseComponent } from '../CompanyBaseComponent';
 
 @Component({
     selector: 'company-nalog-preferences',
     templateUrl: 'company-nalog-preferences.component.html'
 })
-export class CompanyNalogPreferencesComponent extends DestroyableContainer {
-
-    //--------------------------------------------------------------------------
-    //
-    // 	Properties
-    //
-    //--------------------------------------------------------------------------
-
-    @Input()
-    public isDisabled: boolean;
-    @Input()
-    public preferences: CompanyPreferences;
+export class CompanyNalogPreferencesComponent extends CompanyBaseComponent {
 
     //--------------------------------------------------------------------------
     //
@@ -29,9 +17,21 @@ export class CompanyNalogPreferencesComponent extends DestroyableContainer {
     //--------------------------------------------------------------------------
 
     constructor(container: ViewContainerRef) {
-        super();
+        super(container);
         ViewUtil.addClasses(container.element, 'd-block');
     }
 
+    //--------------------------------------------------------------------------
+    //
+    // 	Public Properties
+    //
+    //--------------------------------------------------------------------------
 
+    public get company(): Company {
+        return super.company;
+    }
+    @Input()
+    public set company(value: Company) {
+        super.company = value;
+    }
 }

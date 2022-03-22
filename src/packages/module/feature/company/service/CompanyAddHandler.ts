@@ -53,6 +53,5 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
             }
         });
         return promise.promise;
-
     }
 }

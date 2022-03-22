@@ -1,76 +1,70 @@
-import { Component, ElementRef, Input, ViewContainerRef } from '@angular/core';
-import { ViewUtil } from '@ts-core/angular';
+import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { ISelectListItem, MenuTriggerForDirective, SelectListItem, SelectListItems, ViewUtil } from '@ts-core/angular';
 import * as _ from 'lodash';
-import { Company } from '@common/platform/company';
+import { CompanyMenu } from '@feature/company/service';
+import { LanguageService } from '@ts-core/frontend/language';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
+import { Company } from '@project/common/platform/company';
 
 @Component({
     selector: 'company-container',
-    templateUrl: 'company-container.component.html'
+    templateUrl: 'company-container.component.html',
 })
 export class CompanyContainerComponent extends CompanyBaseComponent {
-
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     //
     // 	Properties
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    private _company: Company;
+    @ViewChild(MenuTriggerForDirective, { static: true })
+    public trigger: MenuTriggerForDirective;
 
-    //--------------------------------------------------------------------------
+    public tabs: SelectListItems<ISelectListItem<string>>;
+
+    // --------------------------------------------------------------------------
     //
     // 	Constructor
     //
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-    constructor(container: ViewContainerRef) {
+    constructor(
+        container: ViewContainerRef,
+        language: LanguageService,
+        public menu: CompanyMenu,
+    ) {
         super(container);
-        ViewUtil.addClasses(container, 'd-block');
+        ViewUtil.addClasses(container, 'd-flex flex-column');
+
+        this.tabs = new SelectListItems(language);
+        this.tabs.add(new SelectListItem('company.company', 0, 'COMPANY'));
+        this.tabs.add(new SelectListItem('user.users', 1, 'USERS'));
+        this.tabs.complete(1);
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Event Handlers
+    //
+    // --------------------------------------------------------------------------
+
+    public async menuOpen(event: MouseEvent): Promise<void> {
+        this.menu.refresh(this.company);
+        this.trigger.openMenuOn(event.target);
     }
 
     //--------------------------------------------------------------------------
     //
-    // 	Private Methods
-    //
-    //--------------------------------------------------------------------------
-
-    private commitCompanyProperties(): void {
-        let value = null;
-        this._preferences = this.company.preferences;
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Public Methods
-    //
-    //--------------------------------------------------------------------------
-
-    public destroy(): void {
-        if (this.isDestroyed) {
-            return;
-        }
-        super.destroy();
-        this.company = null;
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Public Properties
+    // 	Public Properties
     //
     //--------------------------------------------------------------------------
 
     public get company(): Company {
-        return this._company;
+        return super.company;
     }
     @Input()
     public set company(value: Company) {
-        if (value === this._company) {
-            return;
-        }
-        this._company = value;
-        if (!_.isNil(value)) {
-            this.commitCompanyProperties();
-        }
+        super.company = value;
     }
+
 }

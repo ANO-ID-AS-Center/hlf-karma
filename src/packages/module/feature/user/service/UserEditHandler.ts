@@ -36,7 +36,7 @@ export class UserEditHandler extends TransportCommandAsyncHandler<UserUid, IUser
 
         let item = await this.api.userGet(params);
 
-        let config = new WindowConfig(true, false, 360);
+        let config = new WindowConfig(false, false, 600);
         config.id = windowId;
 
         let promise = PromiseHandler.create<IUserEditDtoResponse>();

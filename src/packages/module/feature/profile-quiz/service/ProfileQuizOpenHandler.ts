@@ -33,7 +33,7 @@ export class ProfileQuizOpenHandler extends TransportCommandHandler<void, Profil
             return Promise.reject('Already opened');
         }
 
-        let config = new WindowConfig(false, false, 600, 400);
+        let config = new WindowConfig(true, false, 600, 400);
         config.id = windowId;
         config.disableClose = true;
 

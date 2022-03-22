@@ -1,26 +1,23 @@
-<div class="row">
-    <div class="col-12">
-        <mat-form-field class="d-block">
-            <input matInput name="status" [value]="'company.status.' + company?.status | viTranslatePure" disabled />
-            <mat-placeholder [vi-translate]="'company.status.status'"></mat-placeholder>
-        </mat-form-field>
-    </div>
-    <div class="col-12">
-        <mat-form-field class="d-block">
-            <input matInput name="phone" [value]="company?.preferences.phone | viPrettify" disabled />
-            <mat-placeholder [vi-translate]="'company.preferences.phone'"></mat-placeholder>
-        </mat-form-field>
-    </div>
-    <div class="col-12">
-        <mat-form-field class="d-block">
-            <input matInput name="website" [value]="company?.preferences.website | viPrettify" disabled />
-            <mat-placeholder [vi-translate]="'company.preferences.website'"></mat-placeholder>
-        </mat-form-field>
-    </div>
-    <div class="col-12">
-        <mat-form-field class="d-block">
-            <input matInput name="addressPost" [value]="company?.preferences.addressPost | viPrettify" disabled />
-            <mat-placeholder [vi-translate]="'company.preferences.addressPost'"></mat-placeholder>
-        </mat-form-field>
-    </div>
+<div class="d-flex flex-shrink-0 align-items-center p-3">
+    <button class="flex-shrink-0" mat-icon-button [title]="'general.menu' | viTranslate" tabindex="-1" (click)="menuOpen($event)">
+        <span class="fas fas fa-ellipsis-v"></span>
+    </button>
+    <p class="mat-title flex-grow-1 text-one-line mouse-inactive" [innerHTML]="company?.preferences.title"></p>
 </div>
+
+<vi-tab-group class="d-block flex-shrink-0 border-top" className="tabs-stretch no-border flex-shrink-0" [list]="tabs"></vi-tab-group>
+
+<div class="p-3 d-flex flex-grow-1 scroll-vertical">
+    <div class="flex-grow-1" *ngIf="tabs.selectedData === 'COMPANY'">
+        <p class="p-3 border background rounded mouse-inactive mb-3" [vi-translate]="'company.status.' + company?.status + 'Description'"></p>
+        <company-nalog-preferences [company]="company"></company-nalog-preferences>
+        <company-details [company]="company"></company-details>
+    </div>
+
+    <company-users class="flex-grow-1 border rounded" [company]="company" *ngIf="tabs.selectedData === 'USERS'"></company-users>
+</div>
+
+<mat-menu #matMenu [overlapTrigger]="false">
+    <vi-menu-list [list]="menu"></vi-menu-list>
+</mat-menu>
+<span [vi-menu-trigger-for]="matMenu"></span>

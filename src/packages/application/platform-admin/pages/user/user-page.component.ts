@@ -11,14 +11,6 @@ import { UserMenu } from '@feature/user/service';
     templateUrl: 'user-page.component.html',
 })
 export class UserPageComponent extends DestroyableContainer {
-    // --------------------------------------------------------------------------
-    //
-    // 	Properties
-    //
-    // --------------------------------------------------------------------------
-
-    @ViewChild(MenuTriggerForDirective, { static: true })
-    public trigger: MenuTriggerForDirective;
 
     // --------------------------------------------------------------------------
     //
@@ -26,32 +18,9 @@ export class UserPageComponent extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    constructor(
-        element: ElementRef,
-        private service: UserService,
-        private transport: Transport,
-        public menu: UserMenu,
-    ) {
+    constructor(element: ElementRef, private service: UserService) {
         super();
         ViewUtil.addClasses(element, 'd-flex scroll-vertical w-100 h-100');
-    }
-
-    // --------------------------------------------------------------------------
-    //
-    // 	Public Methods
-    //
-    // --------------------------------------------------------------------------
-
-
-    // --------------------------------------------------------------------------
-    //
-    // 	Event Handlers
-    //
-    // --------------------------------------------------------------------------
-
-    public async menuOpen(event: MouseEvent): Promise<void> {
-        this.menu.refresh(this.user);
-        this.trigger.openMenuOn(event.target);
     }
 
     // --------------------------------------------------------------------------
@@ -63,5 +32,4 @@ export class UserPageComponent extends DestroyableContainer {
     public get user(): User {
         return this.service.user;
     }
-
 }

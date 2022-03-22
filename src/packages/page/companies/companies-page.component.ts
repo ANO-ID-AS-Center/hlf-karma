@@ -1,13 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ICdkTableCellEvent, ICdkTableSettings, MenuTriggerForDirective, ViewUtil } from '@ts-core/angular';
-import { Transport } from '@ts-core/common/transport';
-import { LedgerUser } from '@common/ledger/user';
 import { PipeService, UserService } from '@core/service';
 import * as _ from 'lodash';
 import { CompanyMapCollection, CompanyTableSettings } from '@core/lib/company';
 import { UserCompany } from '@project/common/platform/user';
-import { CompanyMenu } from '../../module/feature/company/service';
+import { CompanyMenu } from '@feature/company/service';
+import { Transport } from '@ts-core/common/transport';
+import { CompanyOpenCommand } from '@feature/company/transport';
 
 @Component({
     templateUrl: 'companies-page.component.html',
@@ -33,6 +33,7 @@ export class CompaniesPageComponent extends DestroyableContainer {
         element: ElementRef,
         pipe: PipeService,
         user: UserService,
+        private transport: Transport,
         public menu: CompanyMenu,
         public items: CompanyMapCollection
     ) {
@@ -43,21 +44,7 @@ export class CompaniesPageComponent extends DestroyableContainer {
         if (!this.items.isDirty) {
             this.items.reload();
         }
-
-        /*
-        merge(api.monitor.getEventDispatcher(UserAddedEvent.NAME), api.monitor.getEventDispatcher(UserRemovedEvent.NAME))
-            .pipe(delay(DateUtil.MILISECONDS_SECOND), takeUntil(this.destroyed))
-            .subscribe(() => this.items.reload());
-        */
     }
-
-    // --------------------------------------------------------------------------
-    //
-    // 	Public Methods
-    //
-    // --------------------------------------------------------------------------
-
-
 
     // --------------------------------------------------------------------------
     //
@@ -65,9 +52,9 @@ export class CompaniesPageComponent extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    public async cellClickedHandler(item: ICdkTableCellEvent<LedgerUser>): Promise<void> {
+    public async cellClickedHandler(item: ICdkTableCellEvent<UserCompany>): Promise<void> {
         if (item.column !== CompanyTableSettings.COLUMN_NAME_MENU) {
-            /// this.transport.send(new UserOpenCommand(item.data));
+            this.transport.send(new CompanyOpenCommand(item.data.id));
         }
         else {
             this.menu.refresh(item.data);

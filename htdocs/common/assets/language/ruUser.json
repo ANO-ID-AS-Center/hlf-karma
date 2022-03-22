@@ -4,15 +4,30 @@
         "users": "Пользователи",
         "login": "Логин",
         "createdDate": "Создан",
+        "action": {
+            "save": {
+                "save": "Сохранить",
+                "confirmation": "Вы уверены что хотите сохранить пользователя?",
+                "notification": "Пользователь сохранен"
+            },
+            "edit": {
+                "edit": "Редактировать",
+                "confirmation": "Вы уверены что хотите отредактировать пользователя?",
+                "notification": "Пользователь изменен"
+            },
+            "roleEdit": {
+                "roleEdit": "Редактировать роли",
+                "confirmation": "Вы уверены что хотите редактировать роли пользователя?",
+                "notification": "Роли пользователя изменены"
+            }
+        },
         "preferences": {
             "preferences": "Настройки",
             "name": "Имя",
             "email": "Email",
-
             "location": "⇛geo.location",
             "locale": "Язык",
             "birthday": "Дата рождения",
-            "tarotDesk": "Колода Таро",
             "description": "О себе",
             "projectCancelStrategy": {
                 "projectCancelStrategy": "При закрытии проекта, как распорядиться средствами?",

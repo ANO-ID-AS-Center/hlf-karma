@@ -53,7 +53,7 @@ export class CompanyService extends Destroyable {
     }
 
     protected commitCompanyProperties(): void {
-        this.observer.next(new ObservableData(CompanyServiceEvent.CHANGED,));
+        this.observer.next(new ObservableData(CompanyServiceEvent.CHANGED, this.company));
     }
 
     //--------------------------------------------------------------------------
@@ -127,6 +127,9 @@ export class CompanyService extends Destroyable {
         return !_.isNil(this.company);
     }
 
+    public get id(): number {
+        return this.hasCompany ? this.company.id : null;
+    }
     public get company(): UserCompany {
         return this._company;
     }

@@ -1,7 +1,7 @@
 <div class="d-flex flex-shrink-0 align-items-center p-3">
-    <p class="mat-title flex-grow-1 text-one-line mouse-inactive" [vi-translate]="'company.add.add'"></p>
+    <p class="mat-title flex-grow-1 text-one-line mouse-inactive" [vi-translate]="'company.action.add.add'"></p>
     <button class="flex-shrink-0 ml-2" mat-raised-button color="primary" [disabled]="form.invalid || form.pristine" (click)="submit()">
-        <span [vi-translate]="'general.save.save'"></span>
+        <span [vi-translate]="'company.action.save.save'"></span>
     </button>
 </div>
 
@@ -14,7 +14,7 @@
                 #innInput="ngModel"
                 matInput
                 name="inn"
-                [(ngModel)]="preferences.inn"
+                [(ngModel)]="company.preferences.inn"
                 type="text"
                 required
                 [minlength]="innMinLength"
@@ -29,7 +29,7 @@
         </mat-form-field>
     </div>
 
-    <company-nalog-preferences [preferences]="preferences" [isDisabled]="!isNalogLoaded"></company-nalog-preferences>
+    <company-nalog-preferences [company]="company"></company-nalog-preferences>
 
     <div class="col-12">
         <mat-form-field class="d-block">
@@ -37,7 +37,7 @@
                 #titleInput="ngModel"
                 matInput
                 name="title"
-                [(ngModel)]="preferences.title"
+                [(ngModel)]="company.preferences.title"
                 type="text"
                 required
                 [minlength]="titleMinLength"
@@ -51,16 +51,17 @@
 
     <div class="col-12">
         <mat-form-field class="d-block">
-            <input
+            <textarea
                 #addressPostInput="ngModel"
                 matInput
                 name="addressPost"
-                [(ngModel)]="preferences.addressPost"
-                type="text"
+                [(ngModel)]="company.preferences.addressPost"
                 required
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
                 [maxlength]="addressMaxLength"
                 [disabled]="isDisabled || !isNalogLoaded"
-            />
+            ></textarea>
             <mat-placeholder [vi-translate]="'company.preferences.addressPost'"></mat-placeholder>
             <mat-error *ngIf="!(addressPostInput.valid || !addressPostInput.touched)" [innerHTML]="addressPostInput.errors | viNgModelError"></mat-error>
         </mat-form-field>
@@ -72,7 +73,7 @@
                 #phoneInput="ngModel"
                 matInput
                 name="phone"
-                [(ngModel)]="preferences.phone"
+                [(ngModel)]="company.preferences.phone"
                 type="text"
                 [maxlength]="phoneMaxLength"
                 [disabled]="isDisabled || !isNalogLoaded"
@@ -88,7 +89,7 @@
                 #websiteInput="ngModel"
                 matInput
                 name="website"
-                [(ngModel)]="preferences.website"
+                [(ngModel)]="company.preferences.website"
                 type="text"
                 [maxlength]="websiteMaxLength"
                 [disabled]="isDisabled || !isNalogLoaded"
