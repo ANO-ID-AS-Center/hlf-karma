@@ -3,6 +3,7 @@ import { ViewUtil } from '@ts-core/angular';
 import * as _ from 'lodash';
 import { Company } from '@common/platform/company';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
+import { UserCompany } from '@project/common/platform/user';
 
 @Component({
     selector: 'company-nalog-preferences',
@@ -27,11 +28,11 @@ export class CompanyNalogPreferencesComponent extends CompanyBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get company(): Company {
+    public get company(): UserCompany {
         return super.company;
     }
     @Input()
-    public set company(value: Company) {
+    public set company(value: UserCompany) {
         super.company = value;
     }
 }

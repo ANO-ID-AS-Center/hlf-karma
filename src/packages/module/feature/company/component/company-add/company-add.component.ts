@@ -1,23 +1,22 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { ViewUtil, WindowService } from '@ts-core/angular';
-import { PipeService } from '@core/service';
+import { SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
 import * as _ from 'lodash';
 import { ISerializable } from '@ts-core/common';
 import { } from '@common/platform/company';
-import { Transport } from '@ts-core/common/transport';
-import {
-    Company,
-    CompanyPreferences
-} from '@project/common/platform/company';
+import { Company, CompanyPreferences } from '@project/common/platform/company';
 import { Client } from '@project/common/platform/api';
 import { ObjectUtil } from '@ts-core/common/util';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
+import { ICompanyAddDto } from '@project/common/platform/api/company';
+import { PaymentAggregator, PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
+import { PipeService } from '@core/service';
+import { UserCompany } from '@project/common/platform/user';
 
 @Component({
     selector: 'company-add',
     templateUrl: 'company-add.component.html'
 })
-export class CompanyAddComponent extends CompanyBaseComponent implements ISerializable<Partial<CompanyPreferences>> {
+export class CompanyAddComponent extends CompanyBaseComponent implements ISerializable<ICompanyAddDto> {
     //--------------------------------------------------------------------------
     //
     //  Constants
@@ -33,6 +32,7 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
     //--------------------------------------------------------------------------
 
     public isNalogLoaded: boolean;
+    public paymentAggregatorTypes: SelectListItems<SelectListItem<PaymentAggregatorType>>;
 
     //--------------------------------------------------------------------------
     //
@@ -42,16 +42,27 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
 
     constructor(
         container: ViewContainerRef,
+        private pipe: PipeService,
         private api: Client,
         private windows: WindowService,
     ) {
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
 
-        this.company = new Company();
+        this.paymentAggregatorTypes = this.addDestroyable(new SelectListItems(this.pipe.language));
+        Object.values(PaymentAggregatorType).forEach((item, index) => this.paymentAggregatorTypes.add(new SelectListItem(`payment.aggregator.type.${item}`, index, item)));
+        this.paymentAggregatorTypes.complete();
+
+        this.company = new UserCompany();
         this.company.preferences = new CompanyPreferences();
         this.company.preferences.inn = '7751161170';
+
+        this.company.paymentAggregator = new PaymentAggregator();
+        this.company.paymentAggregator.type = PaymentAggregatorType.CLOUD_PAYMENTS;
+        this.company.paymentAggregator.uid = 'pk_7cf84ef18b04bbe7611e317958dc0';
+        this.company.paymentAggregator.key = '484fad603e581acc459923ac9476e4b9';
     }
+
     //--------------------------------------------------------------------------
     //
     //  Public Methods
@@ -98,7 +109,10 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
         */
     }
 
-    public serialize(): Partial<CompanyPreferences> {
-        return this.company.preferences;
+    public serialize(): ICompanyAddDto {
+        return {
+            preferences: this.company.preferences,
+            paymentAggregator: this.company.paymentAggregator
+        }
     }
 }

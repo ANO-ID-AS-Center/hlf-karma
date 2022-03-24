@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@project/common/platform/api';
-import { WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
+import { NotificationService, WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
 import { PromiseHandler } from '@ts-core/common/promise';
 import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
@@ -18,7 +18,7 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
     //
     // --------------------------------------------------------------------------
 
-    constructor(transport: Transport, logger: Logger, private company: CompanyService, private windows: WindowService, private api: Client) {
+    constructor(transport: Transport, logger: Logger, private windows: WindowService, private notifications: NotificationService, private company: CompanyService, private api: Client) {
         super(logger, transport, CompanyAddCommand.NAME);
     }
 
@@ -43,7 +43,8 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
         content.events.pipe(takeUntil(content.destroyed)).subscribe(async event => {
             switch (event) {
                 case CompanyAddComponent.EVENT_SUBMITTED:
-                    let item = this.company.company = await this.api.companyAdd({ preferences: content.serialize() });
+                    let item = this.company.company = await this.api.companyAdd(content.serialize());
+                    this.notifications.info(`company.action.add.notification`);
                     promise.resolve(item);
                     content.close();
                     break;

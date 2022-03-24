@@ -1,5 +1,6 @@
 
-import { Company, COMPANY_PREFERENCES_ADDRESS_MAX_LENGTH, COMPANY_PREFERENCES_EMAIL_MAX_LENGTH, COMPANY_PREFERENCES_INN_MAX_LENGTH, COMPANY_PREFERENCES_INN_MIN_LENGTH, COMPANY_PREFERENCES_PHONE_MAX_LENGTH, COMPANY_PREFERENCES_TITLE_MAX_LENGTH, COMPANY_PREFERENCES_TITLE_MIN_LENGTH, COMPANY_PREFERENCES_WEBSITE_MAX_LENGTH } from "@project/common/platform/company";
+import { Company, COMPANY_PREFERENCES_ADDRESS_MAX_LENGTH, COMPANY_PREFERENCES_EMAIL_MAX_LENGTH, COMPANY_PREFERENCES_INN_MAX_LENGTH, COMPANY_PREFERENCES_INN_MIN_LENGTH, COMPANY_PREFERENCES_PHONE_MAX_LENGTH, COMPANY_PREFERENCES_STRING_MAX_LENGTH, COMPANY_PREFERENCES_TITLE_MAX_LENGTH, COMPANY_PREFERENCES_TITLE_MIN_LENGTH, COMPANY_PREFERENCES_WEBSITE_MAX_LENGTH } from "@project/common/platform/company";
+import { UserCompany } from "@project/common/platform/user";
 import { IWindowContent } from "@ts-core/angular";
 import * as _ from 'lodash';
 
@@ -10,7 +11,7 @@ export abstract class CompanyBaseComponent extends IWindowContent {
     //
     //--------------------------------------------------------------------------
 
-    protected _company: Company;
+    protected _company: UserCompany;
 
     //--------------------------------------------------------------------------
     //
@@ -33,10 +34,10 @@ export abstract class CompanyBaseComponent extends IWindowContent {
     //
     //--------------------------------------------------------------------------
 
-    public get company(): Company {
+    public get company(): UserCompany {
         return this._company;
     }
-    public set company(value: Company) {
+    public set company(value: UserCompany) {
         if (value === this._company) {
             return;
         }
@@ -46,6 +47,9 @@ export abstract class CompanyBaseComponent extends IWindowContent {
         }
     }
 
+    public get stringMaxLength(): number {
+        return COMPANY_PREFERENCES_STRING_MAX_LENGTH;
+    }
     public get phoneMaxLength(): number {
         return COMPANY_PREFERENCES_PHONE_MAX_LENGTH;
     }

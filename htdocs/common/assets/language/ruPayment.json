@@ -1,7 +1,14 @@
 {
     "payment": {
+        "description": "Пожертвование в пользу {name}",
         "aggregator": {
-            "description": "Пожертвование в пользу {name}",
+            "uid": "UID проекта",
+            "key": "API ключ",
+            "aggregator": "Платежный аггрегатор",
+            "type": {
+                "type": "Тип",
+                "CLOUD_PAYMENTS": "Cloud Payments"
+            },
             "cloudpayments": {
                 "error": {
                     "REFER_TO_CARD_ISSUER": "Свяжитесь с вашим банком или воспользуйтесь другой картой",

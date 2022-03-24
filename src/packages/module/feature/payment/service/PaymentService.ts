@@ -2,7 +2,7 @@ import { Logger, LoggerWrapper } from '@ts-core/common/logger';
 import * as _ from 'lodash';
 import { Transport } from '@ts-core/common/transport';
 import { Injectable } from '@angular/core';
-import { PaymentAggregatorType } from '@project/common/platform/api/payment/aggregator';
+import { PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
 import { PaymentAggregatorManager } from '../lib';
 import { CloudPaymentsAggregator } from '../lib/aggregator';
 

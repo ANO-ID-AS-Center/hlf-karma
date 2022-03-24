@@ -8,6 +8,7 @@ import { UserService } from '@core/service';
 import { ProfileQuizComponent } from '../component/profile-quiz/profile-quiz.component';
 import { ProfileQuizOpenCommand } from '../transport';
 import { takeUntil } from 'rxjs';
+import { CompanyAddCommand } from '@feature/company/transport';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileQuizOpenHandler extends TransportCommandHandler<void, ProfileQuizOpenCommand> {
@@ -43,6 +44,9 @@ export class ProfileQuizOpenHandler extends TransportCommandHandler<void, Profil
                 case ProfileQuizComponent.EVENT_SUBMITTED:
                     let item = await this.api.userType({ type: content.serialize() });
                     this.user.userUpdate(item);
+                    if (this.user.isCompanyManager) {
+                        this.transport.send(new CompanyAddCommand());
+                    }
                     content.close();
                     break;
             }

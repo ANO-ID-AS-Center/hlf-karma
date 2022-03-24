@@ -39,7 +39,7 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
         this.tabs = new SelectListItems(language);
         this.tabs.add(new SelectListItem('project.project', 0, 'PROJECT'));
         this.tabs.add(new SelectListItem('user.users', 1, 'USERS'));
-        this.tabs.complete(1);
+        this.tabs.complete(0);
     }
 
     // --------------------------------------------------------------------------

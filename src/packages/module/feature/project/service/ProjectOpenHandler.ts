@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@project/common/platform/api';
+import { CoinObjectType } from '@project/common/transport/command/coin';
 import { WindowConfig, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
 import { Transport, TransportCommandHandler } from '@ts-core/common/transport';
@@ -31,6 +32,7 @@ export class ProjectOpenHandler extends TransportCommandHandler<number, ProjectO
             return Promise.reject('Already opened');
         }
 
+        
         let project = await this.api.projectGet(params);
 
         let config = new WindowConfig(false, false, 800, 600);

@@ -1,15 +1,10 @@
 
-import { PipeService } from "@core/service";
-import { IPaymentOpenDtoResponse, PaymentOpenResult } from "../../transport";
+import { IPaymentOpenDtoResponse } from "../../transport";
 import { PaymentAggregatorManager } from "../PaymentAggregatorManager";
-import { APP_INITIALIZER } from "@angular/core";
-import { APPLICATION_INJECTOR } from "@ts-core/angular";
 import { IPaymentAggregatorGetDtoResponse } from "@project/common/platform/api/payment";
 import * as _ from 'lodash';
 import { PromiseHandler } from "@ts-core/common/promise";
-import { LoadableStatus } from "@ts-core/common";
 import { ExtendedError } from "@ts-core/common/error";
-import { ICloudPayments } from "@project/common/platform/api/payment/aggregator/cloudpayments";
 
 export class CloudPaymentsAggregator extends PaymentAggregatorManager {
     // --------------------------------------------------------------------------
@@ -33,7 +28,7 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
 
         let options = {
             amount: item.amount,
-            publicId: item.uid,
+            publicId: item.aggregator.uid,
             currency: item.currency,
             accountId: item.details,
             description: this.pipe.language.translate('payment.aggregator.description', { name: item.target.name })

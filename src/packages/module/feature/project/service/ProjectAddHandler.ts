@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@project/common/platform/api';
-import { WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
+import { NotificationService, WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
 import { PromiseHandler } from '@ts-core/common/promise';
 import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
@@ -17,7 +17,7 @@ export class ProjectAddHandler extends TransportCommandAsyncHandler<void, IProje
     //
     // --------------------------------------------------------------------------
 
-    constructor(transport: Transport, logger: Logger, private windows: WindowService, private api: Client) {
+    constructor(transport: Transport, logger: Logger, private notifications: NotificationService, private windows: WindowService, private api: Client) {
         super(logger, transport, ProjectAddCommand.NAME);
     }
 
@@ -43,6 +43,7 @@ export class ProjectAddHandler extends TransportCommandAsyncHandler<void, IProje
             switch (event) {
                 case ProjectAddComponent.EVENT_SUBMITTED:
                     let item = await this.api.projectAdd({ preferences: content.serialize() });
+                    this.notifications.info(`project.action.add.notification`);
                     promise.resolve(item);
                     content.close();
                     break;

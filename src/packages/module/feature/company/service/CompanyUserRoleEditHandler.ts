@@ -47,6 +47,7 @@ export class CompanyUserRoleEditHandler extends TransportCommandAsyncHandler<ICo
             switch (event) {
                 case CompanyUserRoleEditComponent.EVENT_SUBMITTED:
                     let item = await this.api.companyUserRoleSet(params.companyId, params.userId, content.serialize());
+                    this.notifications.info(`user.action.roleEdit.notification`);
                     promise.resolve({ company: item });
                     content.close();
 

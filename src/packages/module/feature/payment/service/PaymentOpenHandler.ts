@@ -27,6 +27,6 @@ export class PaymentOpenHandler extends TransportCommandAsyncHandler<IPaymentOpe
 
     protected async execute(params: IPaymentOpenDto): Promise<IPaymentOpenDtoResponse> {
         let item = await this.api.paymentAggregatorGet(params);
-        return this.service.getAggregator(item.type).open(item);
+        return this.service.getAggregator(item.aggregator.type).open(item);
     }
 }

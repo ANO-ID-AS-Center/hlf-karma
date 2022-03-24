@@ -47,6 +47,7 @@ export class UserEditHandler extends TransportCommandAsyncHandler<UserUid, IUser
             switch (event) {
                 case UserEditComponent.EVENT_SUBMITTED:
                     item = await this.transport.sendListen(new UserSaveCommand(content.serialize()));
+                    
                     promise.resolve(item);
                     content.close();
                     break;

@@ -5,6 +5,7 @@ import { CompanyMenu } from '@feature/company/service';
 import { LanguageService } from '@ts-core/frontend/language';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { Company } from '@project/common/platform/company';
+import { UserCompany } from '@project/common/platform/user';
 
 @Component({
     selector: 'company-container',
@@ -39,7 +40,7 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
         this.tabs = new SelectListItems(language);
         this.tabs.add(new SelectListItem('company.company', 0, 'COMPANY'));
         this.tabs.add(new SelectListItem('user.users', 1, 'USERS'));
-        this.tabs.complete(1);
+        this.tabs.complete(0);
     }
 
     // --------------------------------------------------------------------------
@@ -59,11 +60,11 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get company(): Company {
+    public get company(): UserCompany {
         return super.company;
     }
     @Input()
-    public set company(value: Company) {
+    public set company(value: UserCompany) {
         super.company = value;
     }
 
