@@ -4,7 +4,7 @@ volume:
 env:
   PORT: 80
   HTTP_PORT: 443
-  API_URL: http://167.172.46.33:30300
+  API_URL: https://dev.project-karma.com/karma-platform-api
 
 ports:
   - internal: 80
