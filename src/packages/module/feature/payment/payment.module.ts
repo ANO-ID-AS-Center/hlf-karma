@@ -5,6 +5,12 @@ import { TransportLazyModule } from '@ts-core/angular';
 import { PaymentOpenHandler } from './service';
 import { Transport } from '@ts-core/common/transport';
 import { PaymentOpenCommand } from './transport';
+import { PaymentContainer } from './component';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 //--------------------------------------------------------------------------
 //
@@ -13,10 +19,18 @@ import { PaymentOpenCommand } from './transport';
 //--------------------------------------------------------------------------
 
 const providers = [PaymentOpenHandler];
-const declarations = [];
+const declarations = [PaymentContainer];
 
 @NgModule({
-    imports: [CommonModule, SharedModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        SharedModule
+    ],
     exports: declarations,
     declarations,
     providers

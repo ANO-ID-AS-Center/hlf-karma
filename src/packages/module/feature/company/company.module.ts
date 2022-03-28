@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { CompanyAddComponent, CompanyUserRoleEditComponent, CompanyUsersComponent, CompanyNalogPreferencesComponent, CompanyContainerComponent, CompanyDetailsComponent } from './component';
 import { CompanyOpenHandler } from './service/CompanyOpenHandler';
+import { PaymentModule } from '@feature/payment';
 
 //--------------------------------------------------------------------------
 //
@@ -38,7 +39,9 @@ const declarations = [CompanyAddComponent, CompanyContainerComponent, CompanyUse
         MatMenuModule,
         MatProgressBarModule,
         MatDatepickerModule,
-        SharedModule],
+        PaymentModule,
+        SharedModule
+    ],
     exports: declarations,
     declarations,
     providers

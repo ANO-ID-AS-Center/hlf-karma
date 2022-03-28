@@ -1,7 +1,7 @@
-import { LoadableStatus } from '@ts-core/common';
-import { ExtendedError } from '@ts-core/common/error';
+
 import { TransportCommandAsync } from '@ts-core/common/transport';
-import { IPaymentAggregatorGetDto } from '../../../../../externals/common/platform/api/payment';
+import { PaymentTarget } from '@common/platform/payment';
+import { PaymentAggregator } from '@project/common/platform/payment/aggregator';
 
 export class PaymentOpenCommand extends TransportCommandAsync<IPaymentOpenDto, IPaymentOpenDtoResponse> {
     // --------------------------------------------------------------------------
@@ -23,8 +23,15 @@ export class PaymentOpenCommand extends TransportCommandAsync<IPaymentOpenDto, I
     }
 }
 
-export interface IPaymentOpenDto extends IPaymentAggregatorGetDto { }
-export interface IPaymentOpenDtoResponse {}
+export interface IPaymentOpenDto {
+    target: PaymentTarget;
+    details: string;
+    aggregator: Partial<PaymentAggregator>;
+
+    amount: number;
+    currency: string;
+}
+export interface IPaymentOpenDtoResponse { }
 
 export enum PaymentOpenResult {
     ERRORED = 'ERRORED',

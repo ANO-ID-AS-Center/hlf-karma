@@ -57,16 +57,6 @@ export class UsersPageComponent extends DestroyableContainer {
 
     // --------------------------------------------------------------------------
     //
-    // 	Public Methods
-    //
-    // --------------------------------------------------------------------------
-
-    public async test(): Promise<void> {
-        this.transport.send(new PaymentOpenCommand({ id: 0, type: CoinObjectType.COMPANY }));
-    }
-
-    // --------------------------------------------------------------------------
-    //
     // 	Event Handlers
     //
     // --------------------------------------------------------------------------

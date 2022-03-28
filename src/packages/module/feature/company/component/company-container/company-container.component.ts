@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import { CompanyMenu } from '@feature/company/service';
 import { LanguageService } from '@ts-core/frontend/language';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
-import { Company } from '@project/common/platform/company';
 import { UserCompany } from '@project/common/platform/user';
 
 @Component({
@@ -40,6 +39,7 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
         this.tabs = new SelectListItems(language);
         this.tabs.add(new SelectListItem('company.company', 0, 'COMPANY'));
         this.tabs.add(new SelectListItem('user.users', 1, 'USERS'));
+        this.tabs.add(new SelectListItem('payment.donate', 2, 'DONATE'));
         this.tabs.complete(0);
     }
 

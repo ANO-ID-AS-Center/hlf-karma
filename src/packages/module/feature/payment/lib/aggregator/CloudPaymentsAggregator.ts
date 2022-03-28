@@ -1,10 +1,11 @@
 
-import { IPaymentOpenDtoResponse } from "../../transport";
+import { IPaymentOpenDto, IPaymentOpenDtoResponse } from "../../transport";
 import { PaymentAggregatorManager } from "../PaymentAggregatorManager";
 import { IPaymentAggregatorGetDtoResponse } from "@project/common/platform/api/payment";
 import * as _ from 'lodash';
 import { PromiseHandler } from "@ts-core/common/promise";
 import { ExtendedError } from "@ts-core/common/error";
+import { CoinObjectType } from "@project/common/transport/command/coin";
 
 export class CloudPaymentsAggregator extends PaymentAggregatorManager {
     // --------------------------------------------------------------------------
@@ -23,7 +24,7 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
     //
     // --------------------------------------------------------------------------
 
-    public async open(item: IPaymentAggregatorGetDtoResponse): Promise<IPaymentOpenDtoResponse> {
+    public async open(item: IPaymentOpenDto): Promise<IPaymentOpenDtoResponse> {
         await this.script.load();
 
         let options = {
@@ -31,7 +32,7 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
             publicId: item.aggregator.uid,
             currency: item.currency,
             accountId: item.details,
-            description: this.pipe.language.translate('payment.aggregator.description', { name: item.target.name })
+            description: this.pipe.language.translate(`payment.description.${item.target.type === CoinObjectType.COMPANY ? 'company' : 'project'}`, { name: item.target.value.preferences.title })
         } as any;
 
 
@@ -42,7 +43,8 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
             // data: {myProp: 'myProp value'}
         }
 
-        var widget = new window['cp'].CloudPayments();
+        let promise = PromiseHandler.create<IPaymentOpenDtoResponse, ExtendedError>();
+        let widget = new window['cp'].CloudPayments();
         widget.pay('auth', options,
             {
                 onFail: (reason, options) => promise.reject(new ExtendedError(reason)),
@@ -56,8 +58,6 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
                     }
                 }
             });
-
-        let promise = PromiseHandler.create<IPaymentOpenDtoResponse, ExtendedError>();
         return promise.promise;
     }
 }

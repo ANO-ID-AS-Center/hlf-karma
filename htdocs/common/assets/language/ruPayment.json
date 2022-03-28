@@ -1,6 +1,16 @@
 {
     "payment": {
-        "description": "Пожертвование в пользу {name}",
+        "donate": "Пожертвовать",
+        "payment": "Платеж",
+        "payments": "Платежи",
+        "description": {
+            "company": "Пожертвование в пользу организации \"{name}\"",
+            "project": "Пожертвование в пользу проекта \"{name}\""
+        },
+        "amount": "Сумма",
+        "currency": {
+            "currency": "Валюта"
+        },
         "aggregator": {
             "uid": "UID проекта",
             "key": "API ключ",

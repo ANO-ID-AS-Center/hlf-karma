@@ -15,6 +15,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { ProjectAddComponent, ProjectContainerComponent, ProjectDetailsComponent, ProjectUsersComponent, ProjectUserRoleEditComponent } from './component';
+import { PaymentModule } from '@feature/payment';
 
 //--------------------------------------------------------------------------
 //
@@ -37,6 +38,7 @@ const declarations = [ProjectAddComponent, ProjectDetailsComponent, ProjectConta
         MatMenuModule,
         MatProgressBarModule,
         MatDatepickerModule,
+        PaymentModule,
         SharedModule
     ],
     exports: declarations,
