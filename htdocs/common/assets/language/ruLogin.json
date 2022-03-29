@@ -17,5 +17,8 @@
             "FACEBOOK": "Facebook",
             "VK": "VK"
         }
+    },
+    "error": {
+        "unauthorized": "Необходимо войти в систему"
     }
 }

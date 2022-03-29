@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 //
 //--------------------------------------------------------------------------
 
-const providers = [PaymentOpenHandler];
+const providers = [];
 const declarations = [PaymentContainer];
 
 @NgModule({

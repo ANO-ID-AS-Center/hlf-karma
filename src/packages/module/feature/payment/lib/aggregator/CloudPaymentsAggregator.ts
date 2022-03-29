@@ -45,7 +45,7 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
 
         let promise = PromiseHandler.create<IPaymentOpenDtoResponse, ExtendedError>();
         let widget = new window['cp'].CloudPayments();
-        widget.pay('auth', options,
+        widget.pay('charge', options,
             {
                 onFail: (reason, options) => promise.reject(new ExtendedError(reason)),
                 onSuccess: (options) => promise.resolve({}),

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import * as _ from 'lodash';
-import { UserService } from '@core/service';
+import { UserService, CompanyService } from '@core/service';
 
 @Injectable({ providedIn: 'root' })
 export class UsersGuard implements CanActivate {
@@ -11,7 +11,7 @@ export class UsersGuard implements CanActivate {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private user: UserService, private router: Router) { }
+    constructor(private user: UserService, private company: CompanyService, private router: Router) { }
 
     // --------------------------------------------------------------------------
     //
@@ -20,7 +20,13 @@ export class UsersGuard implements CanActivate {
     // --------------------------------------------------------------------------
 
     public canActivate(): boolean | UrlTree {
-        return this.user.isAdministrator || this.user.isCompanyManager ? true : this.router.parseUrl('/');
+        if (this.user.isAdministrator) {
+            return true;
+        }
+        if (this.user.isCompanyManager || this.user.isCompanyWorker) {
+            return this.company.hasCompany ? true : this.router.parseUrl('/');
+        }
+        return this.router.parseUrl('/');
     }
 
 }

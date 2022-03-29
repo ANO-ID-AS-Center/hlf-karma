@@ -14,5 +14,11 @@
         "createdDate": "Создание",
         "header": "Platform Admin",
         "footer": "<a href='https://platform-admin.com' target='_blank' tabindex='-1'>Platform Admin</a> © 2022"
+    },
+    "serviceWorker": {
+        "update": {
+            "newVersionConfirmation": "Доступна новая версия, вы хотите обновить страницу?",
+            "errorNotification": "Произошла ошибка при обновлении страницы: <br/>{error}<br/><br/>Необходимо перезагрузить страницу"
+        }
     }
 }
