@@ -1,9 +1,7 @@
 
-import { TransportCommandAsync } from '@ts-core/common/transport';
-import { PaymentTarget } from '@common/platform/payment';
-import { PaymentAggregator } from '@project/common/platform/payment/aggregator';
+import { TransportCommand } from '@ts-core/common/transport';
 
-export class PaymentOpenCommand extends TransportCommandAsync<IPaymentOpenDto, IPaymentOpenDtoResponse> {
+export class PaymentOpenCommand extends TransportCommand<number> {
     // --------------------------------------------------------------------------
     //
     //  Public Static Properties
@@ -18,22 +16,7 @@ export class PaymentOpenCommand extends TransportCommandAsync<IPaymentOpenDto, I
     //
     // --------------------------------------------------------------------------
 
-    constructor(request: IPaymentOpenDto) {
+    constructor(request: number) {
         super(PaymentOpenCommand.NAME, request);
     }
-}
-
-export interface IPaymentOpenDto {
-    target: PaymentTarget;
-    details: string;
-    aggregator: Partial<PaymentAggregator>;
-
-    amount: number;
-    currency: string;
-}
-export interface IPaymentOpenDtoResponse { }
-
-export enum PaymentOpenResult {
-    ERRORED = 'ERRORED',
-    COMPLETED = 'COMPLETED',
 }

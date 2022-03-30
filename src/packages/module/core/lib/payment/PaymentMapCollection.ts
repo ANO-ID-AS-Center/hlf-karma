@@ -68,13 +68,15 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
             isDisableSort: true,
         });
         this.columns.push({
-            name: 'title',
-            headerId: 'payment.payment.type.type',
-            format: item => pipe.language.translate(`payment.payment.type.${item.type}`)
+            name: 'amount',
+            headerId: 'payment.amount',
+            headerClassName: 'pl-3',
+            isDisableSort: true,
+            format: item => pipe.paymentAmount.transform(item)
         })
         this.columns.push({
             name: 'status',
-            headerId: 'payment.payment.status.status',
+            headerId: 'payment.status.status',
             className: item => {
                 switch (item.status) {
                     case PaymentStatus.AUTHORIZED:
@@ -82,15 +84,12 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
                 }
                 return null;
             },
-            format: item => pipe.language.translate(`payment.payment.status.${item.status}`)
+            format: item => pipe.language.translate(`payment.status.${item.status}`)
         })
-
         this.columns.push({
-            name: 'amount',
-            headerId: 'payment.payment.amount',
-            headerClassName: 'pl-3',
-            isDisableSort: true,
-            format: item => `${item.amount} ${item.currency}`
+            name: 'type',
+            headerId: 'payment.aggregator.aggregator',
+            format: item => pipe.language.translate(`payment.aggregator.type.${item.type}`)
         })
 
         if (user.isAdministrator) {

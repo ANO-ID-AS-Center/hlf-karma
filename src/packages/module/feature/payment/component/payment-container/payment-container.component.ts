@@ -1,31 +1,26 @@
-import { Component, Input, ViewContainerRef } from '@angular/core';
-import { ISelectListItem, IWindowContent, SelectListItem, SelectListItems, ViewUtil } from '@ts-core/angular';
+import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { ISelectListItem, MenuTriggerForDirective, SelectListItem, SelectListItems, ViewUtil } from '@ts-core/angular';
 import * as _ from 'lodash';
-import { PipeService, UserService } from '@core/service';
-import { Transport } from '@ts-core/common/transport';
-import { IPaymentAggregatorGetDtoResponse } from '@project/common/platform/api/payment';
-import { Client } from '@project/common/platform/api';
-import { Company } from '@project/common/platform/company';
-import { CoinObjectType } from '@project/common/transport/command/coin';
-import { PaymentOpenCommand } from '../../transport';
-import { PaymentTarget, PaymentTargetValue } from '@project/common/platform/payment';
+import { Payment } from '@project/common/platform/payment';
+import { LanguageService } from '@ts-core/frontend/language';
+import { PaymentMenu } from '../../service';
+import { PaymentBaseComponent } from '../PaymentBaseComponent';
 
 @Component({
     selector: 'payment-container',
     templateUrl: 'payment-container.component.html'
 })
-export class PaymentContainer extends IWindowContent {
+export class PaymentContainerComponent extends PaymentBaseComponent {
     //--------------------------------------------------------------------------
     //
     // 	Properties
     //
     //--------------------------------------------------------------------------
 
-    protected _target: PaymentTargetValue;
-    protected _paymentAggregator: IPaymentAggregatorGetDtoResponse;
+    @ViewChild(MenuTriggerForDirective, { static: true })
+    public trigger: MenuTriggerForDirective;
 
-    public amounts: SelectListItems<ISelectListItem<number>>;
-    public currencies: SelectListItems<ISelectListItem<string>>;
+    public tabs: SelectListItems<ISelectListItem<string>>;
 
     //--------------------------------------------------------------------------
     //
@@ -34,57 +29,15 @@ export class PaymentContainer extends IWindowContent {
     //--------------------------------------------------------------------------
 
     constructor(container: ViewContainerRef,
-        private transport: Transport,
-        private pipe: PipeService,
-        private user: UserService,
-        private api: Client,
+        language: LanguageService,
+        public menu: PaymentMenu,
     ) {
         super(container);
-        ViewUtil.addClasses(container, 'd-block');
+        ViewUtil.addClasses(container, 'd-flex flex-column');
 
-        console.log(this);
-
-        this.amounts = new SelectListItems(pipe.language);
-        this.currencies = new SelectListItems(pipe.language);
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    // 	Private Methods
-    //
-    //--------------------------------------------------------------------------
-
-    protected commitTargetProperties(): void {
-        this.load();
-    }
-
-    protected commitPaymentAggregatorProperties(): void {
-        this.currencies.clear();
-        if (!_.isEmpty(this.paymentAggregator.currencies)) {
-            this.paymentAggregator.currencies.forEach((item, index) => this.currencies.add(new SelectListItem(item, index, item)));
-            this.currencies.complete(!_.isNil(this.paymentAggregator.currency) ? this.paymentAggregator.currency : 0);
-        }
-        this.amounts.clear();
-        if (!_.isEmpty(this.paymentAggregator.amounts)) {
-            this.paymentAggregator.amounts.forEach((item, index) => this.amounts.add(new SelectListItem(item.toString(), index, item)));
-            this.amounts.complete(0);
-        }
-    }
-
-    protected async load(): Promise<void> {
-        if (this.isDisabled) {
-            return;
-        }
-        this.isDisabled = true;
-        try {
-            this.paymentAggregator = await this.api.paymentAggregatorGet({
-                id: this.target.id,
-                type: this.target instanceof Company ? CoinObjectType.COMPANY : CoinObjectType.PROJECT
-            })
-        }
-        finally {
-            this.isDisabled = false;
-        }
+        this.tabs = new SelectListItems(language);
+        this.tabs.add(new SelectListItem('payment.payment', 0, 'PAYMENT'));
+        this.tabs.complete(0);
     }
 
     // --------------------------------------------------------------------------
@@ -93,15 +46,9 @@ export class PaymentContainer extends IWindowContent {
     //
     // --------------------------------------------------------------------------
 
-    public submit(): void {
-        this.transport.send(new PaymentOpenCommand({
-            amount: this.amounts.selectedData,
-            currency: this.currencies.selectedData,
-
-            target: this.paymentAggregator.target,
-            details: this.paymentAggregator.details,
-            aggregator: this.paymentAggregator.aggregator,
-        }))
+    public async menuOpen(event: MouseEvent): Promise<void> {
+        this.menu.refresh(this.payment);
+        this.trigger.openMenuOn(event.target);
     }
 
     public destroy(): void {
@@ -109,18 +56,7 @@ export class PaymentContainer extends IWindowContent {
             return;
         }
         super.destroy();
-
-        if (!_.isNil(this.amounts)) {
-            this.amounts.destroy();
-            this.amounts = null;
-        }
-        if (!_.isNil(this.currencies)) {
-            this.currencies.destroy();
-            this.currencies = null;
-        }
-
-        this.target = null;
-        this.paymentAggregator = null;
+        this.payment = null;
     }
 
     //--------------------------------------------------------------------------
@@ -129,33 +65,12 @@ export class PaymentContainer extends IWindowContent {
     //
     //--------------------------------------------------------------------------
 
-    public get target(): PaymentTargetValue {
-        return this._target;
+    public get payment(): Payment {
+        return super.payment;
     }
     @Input()
-    public set target(value: PaymentTargetValue) {
-        console.log(value);
-        if (value === this._target) {
-            return;
-        }
-        this._target = value;
-        if (!_.isNil(value)) {
-            this.commitTargetProperties();
-        }
-    }
-
-    public get paymentAggregator(): IPaymentAggregatorGetDtoResponse {
-        return this._paymentAggregator;
-    }
-    @Input()
-    public set paymentAggregator(value: IPaymentAggregatorGetDtoResponse) {
-        if (value === this._paymentAggregator) {
-            return;
-        }
-        this._paymentAggregator = value;
-        if (!_.isNil(value)) {
-            this.commitPaymentAggregatorProperties();
-        }
+    public set payment(value: Payment) {
+        super.payment = value;
     }
 
 }

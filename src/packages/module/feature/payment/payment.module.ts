@@ -2,15 +2,17 @@ import { CommonModule } from '@angular/common';
 import { NgModule, NgModuleRef } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { TransportLazyModule } from '@ts-core/angular';
-import { PaymentOpenHandler } from './service';
+import { PaymentWidgetOpenHandler, PaymentOpenHandler } from './service';
 import { Transport } from '@ts-core/common/transport';
-import { PaymentOpenCommand } from './transport';
-import { PaymentContainer } from './component';
+import { PaymentWidgetOpenCommand, PaymentOpenCommand } from './transport';
+import { PaymentContainerComponent, PaymentWidgetContainer, PaymentDetailsComponent } from './component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { PaymentAmountPipe } from './pipe';
 
 //--------------------------------------------------------------------------
 //
@@ -19,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 //--------------------------------------------------------------------------
 
 const providers = [];
-const declarations = [PaymentContainer];
+const declarations = [PaymentContainerComponent, PaymentWidgetContainer, PaymentDetailsComponent, PaymentAmountPipe];
 
 @NgModule({
     imports: [
@@ -29,7 +31,8 @@ const declarations = [PaymentContainer];
         MatInputModule,
         MatSelectModule,
         MatButtonModule,
-        SharedModule
+        MatMenuModule,
+        SharedModule,
     ],
     exports: declarations,
     declarations,
@@ -43,7 +46,7 @@ export class PaymentModule extends TransportLazyModule<PaymentModule> {
     //--------------------------------------------------------------------------
 
     public static ID = 'PaymentModule';
-    public static COMMANDS = [PaymentOpenCommand.NAME];
+    public static COMMANDS = [PaymentOpenCommand.NAME, PaymentWidgetOpenCommand.NAME];
 
     //--------------------------------------------------------------------------
     //
@@ -51,7 +54,7 @@ export class PaymentModule extends TransportLazyModule<PaymentModule> {
     //
     //--------------------------------------------------------------------------
 
-    constructor(reference: NgModuleRef<PaymentModule>, transport: Transport, open: PaymentOpenHandler) {
+    constructor(reference: NgModuleRef<PaymentModule>, transport: Transport, widget: PaymentWidgetOpenHandler, open: PaymentOpenHandler) {
         super(reference, transport);
     }
 

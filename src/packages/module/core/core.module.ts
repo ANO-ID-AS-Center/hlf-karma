@@ -41,6 +41,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { CompanyMapCollection } from './lib/company';
 import { ProjectMapCollection } from './lib/project';
+import { PaymentMapCollection } from './lib/payment';
 
 //--------------------------------------------------------------------------
 //
@@ -166,7 +167,8 @@ class HammerConfig extends HammerGestureConfig {
 
         UserMapCollection,
         CompanyMapCollection,
-        ProjectMapCollection
+        ProjectMapCollection,
+        PaymentMapCollection
     ]
 })
 export class CoreModule { }

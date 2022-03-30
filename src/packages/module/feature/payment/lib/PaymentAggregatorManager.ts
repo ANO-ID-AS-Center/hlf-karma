@@ -1,7 +1,7 @@
 
 import { LoggerWrapper } from "@ts-core/common/logger";
 import { PipeService, UserService } from "@core/service";
-import { IPaymentOpenDto, IPaymentOpenDtoResponse } from "../transport";
+import { IPaymentWidgetOpenDto, IPaymentWidgetOpenDtoResponse } from "../transport";
 import { ScriptLoader } from "./ScriptLoader";
 import { APPLICATION_INJECTOR } from "@ts-core/angular";
 
@@ -31,7 +31,7 @@ export abstract class PaymentAggregatorManager extends LoggerWrapper {
     //
     // --------------------------------------------------------------------------
 
-    public abstract open(item: IPaymentOpenDto): Promise<IPaymentOpenDtoResponse>;
+    public abstract open(item: IPaymentWidgetOpenDto): Promise<IPaymentWidgetOpenDtoResponse>;
 
     // --------------------------------------------------------------------------
     //

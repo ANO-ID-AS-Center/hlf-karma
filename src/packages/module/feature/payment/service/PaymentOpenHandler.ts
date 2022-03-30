@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Client } from '@project/common/platform/api';
+import { WindowConfig, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
-import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
+import { Transport, TransportCommandHandler } from '@ts-core/common/transport';
 import * as _ from 'lodash';
-import { Client } from '@common/platform/api';
+import { PaymentContainerComponent } from '../component';
 import { PaymentOpenCommand } from '../transport';
-import { IPaymentOpenDto, IPaymentOpenDtoResponse } from '../transport/PaymentOpenCommand';
-import { PaymentService } from './PaymentService';
 
 @Injectable({ providedIn: 'root' })
-export class PaymentOpenHandler extends TransportCommandAsyncHandler<IPaymentOpenDto, IPaymentOpenDtoResponse, PaymentOpenCommand> {
+export class PaymentOpenHandler extends TransportCommandHandler<number, PaymentOpenCommand> {
     // --------------------------------------------------------------------------
     //
     //  Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(transport: Transport, logger: Logger, private api: Client, private service: PaymentService) {
+    constructor(transport: Transport, logger: Logger, private windows: WindowService, private api: Client) {
         super(logger, transport, PaymentOpenCommand.NAME);
     }
 
@@ -25,7 +25,18 @@ export class PaymentOpenHandler extends TransportCommandAsyncHandler<IPaymentOpe
     //
     // --------------------------------------------------------------------------
 
-    protected async execute(params: IPaymentOpenDto): Promise<IPaymentOpenDtoResponse> {
-        return this.service.getAggregator(params.aggregator.type).open(params);
+    protected async execute(params: number): Promise<void> {
+        let windowId = 'paymentOpen' + params;
+        if (this.windows.setOnTop(windowId)) {
+            return Promise.reject('Already opened');
+        }
+
+        let payment = await this.api.paymentGet(params);
+
+        let config = new WindowConfig(false, false, 800, 600);
+        config.id = windowId;
+
+        let content = this.windows.open(PaymentContainerComponent, config) as PaymentContainerComponent;
+        content.payment = payment;
     }
 }

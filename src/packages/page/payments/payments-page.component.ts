@@ -4,7 +4,7 @@ import { ICdkTableCellEvent, ICdkTableSettings, MenuTriggerForDirective, ViewUti
 import { PipeService, UserService } from '@core/service';
 import * as _ from 'lodash';
 import { PaymentMapCollection, PaymentTableSettings } from '@core/lib/payment';
-// import { PaymentMenu } from '@feature/payment/service';
+import { PaymentMenu } from '@feature/payment/service';
 import { Transport } from '@ts-core/common/transport';
 import { PaymentOpenCommand } from '@feature/payment/transport';
 import { Payment } from '@project/common/platform/payment';
@@ -34,7 +34,7 @@ export class PaymentsPageComponent extends DestroyableContainer {
         pipe: PipeService,
         user: UserService,
         private transport: Transport,
-        // public menu: PaymentMenu,
+        public menu: PaymentMenu,
         public items: PaymentMapCollection
     ) {
         super();
@@ -54,10 +54,10 @@ export class PaymentsPageComponent extends DestroyableContainer {
 
     public async cellClickedHandler(item: ICdkTableCellEvent<Payment>): Promise<void> {
         if (item.column !== PaymentTableSettings.COLUMN_NAME_MENU) {
-            // this.transport.send(new PaymentOpenCommand(item.data.id));
+            this.transport.send(new PaymentOpenCommand(item.data.id));
         }
         else {
-            // this.menu.refresh(item.data);
+            this.menu.refresh(item.data);
             this.trigger.openMenuOn(item.event.target);
         }
     }

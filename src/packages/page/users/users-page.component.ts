@@ -7,7 +7,7 @@ import { PipeService, UserService } from '@core/service';
 import { UserMapCollection, UserTableSettings } from '@core/lib/user';
 import * as _ from 'lodash';
 import { User } from '@common/platform/user';
-import { PaymentOpenCommand } from '@feature/payment/transport';
+import { PaymentWidgetOpenCommand } from '@feature/payment/transport';
 import { CoinObjectType } from '@common/transport/command/coin';
 import { UserMenu } from '@feature/user/service';
 import { UserOpenCommand } from '@feature/user/transport';

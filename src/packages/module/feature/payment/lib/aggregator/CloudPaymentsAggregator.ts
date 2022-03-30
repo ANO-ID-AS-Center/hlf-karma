@@ -1,5 +1,5 @@
 
-import { IPaymentOpenDto, IPaymentOpenDtoResponse } from "../../transport";
+import { IPaymentWidgetOpenDto, IPaymentWidgetOpenDtoResponse } from "../../transport";
 import { PaymentAggregatorManager } from "../PaymentAggregatorManager";
 import { IPaymentAggregatorGetDtoResponse } from "@project/common/platform/api/payment";
 import * as _ from 'lodash';
@@ -24,7 +24,7 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
     //
     // --------------------------------------------------------------------------
 
-    public async open(item: IPaymentOpenDto): Promise<IPaymentOpenDtoResponse> {
+    public async open(item: IPaymentWidgetOpenDto): Promise<IPaymentWidgetOpenDtoResponse> {
         await this.script.load();
 
         let options = {
@@ -43,7 +43,7 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
             // data: {myProp: 'myProp value'}
         }
 
-        let promise = PromiseHandler.create<IPaymentOpenDtoResponse, ExtendedError>();
+        let promise = PromiseHandler.create<IPaymentWidgetOpenDtoResponse, ExtendedError>();
         let widget = new window['cp'].CloudPayments();
         widget.pay('charge', options,
             {

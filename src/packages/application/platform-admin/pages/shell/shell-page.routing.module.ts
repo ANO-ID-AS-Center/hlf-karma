@@ -4,6 +4,7 @@ import { RouterService } from '@core/service';
 import { CompanyGuard, CompaniesGuard } from '@feature/company/guard';
 import { UsersGuard } from '@feature/user/guard';
 import { ProjectsGuard } from '@feature/project/guard';
+import { PaymentsGuard } from '@feature/payment/guard';
 import { ShellPageComponent } from './shell-page.component';
 
 const routes: Routes = [
@@ -38,6 +39,11 @@ const routes: Routes = [
                 path: RouterService.PROJECTS_URL,
                 canActivate: [ProjectsGuard],
                 loadChildren: async () => (await import('@page/projects/projects-page.module')).ProjectsPageModule
+            },
+            {
+                path: RouterService.PAYMENTS_URL,
+                canActivate: [PaymentsGuard],
+                loadChildren: async () => (await import('@page/payments/payments-page.module')).PaymentsPageModule
             },
             { path: '**', redirectTo: '/' }
         ]
