@@ -15,6 +15,8 @@
     </div>
 
     <company-users class="flex-grow-1 border rounded" [company]="company" *ngIf="tabs.selectedData === 'USERS'"></company-users>
+    
+    <payment-list class="flex-grow-1 border rounded" [type]="'COMPANY'" [items]="payments" *ngIf="tabs.selectedData === 'PAYMENTS'"></payment-list>
 
     <payment-widget-container class="p-3 flex-grow-1 border rounded" [target]="company" *ngIf="tabs.selectedData === 'DONATE'"></payment-widget-container>
 

@@ -5,10 +5,12 @@ import { CompanyMenu } from '@feature/company/service';
 import { LanguageService } from '@ts-core/frontend/language';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { UserCompany } from '@project/common/platform/user';
+import { PaymentMapCollection } from '@core/lib/payment';
 
 @Component({
     selector: 'company-container',
     templateUrl: 'company-container.component.html',
+    providers: [PaymentMapCollection]
 })
 export class CompanyContainerComponent extends CompanyBaseComponent {
     // --------------------------------------------------------------------------
@@ -22,6 +24,7 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
 
     public tabs: SelectListItems<ISelectListItem<string>>;
 
+
     // --------------------------------------------------------------------------
     //
     // 	Constructor
@@ -31,6 +34,7 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
     constructor(
         container: ViewContainerRef,
         language: LanguageService,
+        public payments: PaymentMapCollection,
         public menu: CompanyMenu,
     ) {
         super(container);
@@ -39,8 +43,20 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
         this.tabs = new SelectListItems(language);
         this.tabs.add(new SelectListItem('company.company', 0, 'COMPANY'));
         this.tabs.add(new SelectListItem('user.users', 1, 'USERS'));
-        this.tabs.add(new SelectListItem('payment.donate', 2, 'DONATE'));
+        this.tabs.add(new SelectListItem('payment.payment', 2, 'PAYMENTS'));
+        this.tabs.add(new SelectListItem('payment.donate', 3, 'DONATE'));
         this.tabs.complete(0);
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Private Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected commitCompanyProperties(): void {
+        this.payments.conditions.companyId = this.company.id;
+        this.payments.reload();
     }
 
     // --------------------------------------------------------------------------

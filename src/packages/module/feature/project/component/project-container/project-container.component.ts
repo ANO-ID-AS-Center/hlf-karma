@@ -5,10 +5,12 @@ import { Project } from '@common/platform/project';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { LanguageService } from '@ts-core/frontend/language';
 import { ProjectMenu } from '../../service';
+import { PaymentMapCollection } from '@core/lib/payment';
 
 @Component({
     selector: 'project-container',
-    templateUrl: 'project-container.component.html'
+    templateUrl: 'project-container.component.html',
+    providers: [PaymentMapCollection]
 })
 export class ProjectContainerComponent extends ProjectBaseComponent {
     // --------------------------------------------------------------------------
@@ -31,6 +33,7 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
     constructor(
         container: ViewContainerRef,
         language: LanguageService,
+        public payments: PaymentMapCollection,
         public menu: ProjectMenu,
     ) {
         super(container);
@@ -39,8 +42,20 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
         this.tabs = new SelectListItems(language);
         this.tabs.add(new SelectListItem('project.project', 0, 'PROJECT'));
         this.tabs.add(new SelectListItem('user.users', 1, 'USERS'));
-        this.tabs.add(new SelectListItem('payment.donate', 2, 'DONATE'));
+        this.tabs.add(new SelectListItem('payment.payment', 2, 'PAYMENTS'));
+        this.tabs.add(new SelectListItem('payment.donate', 3, 'DONATE'));
         this.tabs.complete(0);
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Private Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected commitProjectProperties(): void {
+        this.payments.conditions.projectId = this.project.id;
+        this.payments.reload();
     }
 
     // --------------------------------------------------------------------------

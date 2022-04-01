@@ -1,5 +1,5 @@
 import { Payment } from '@common/platform/payment';
-import { CdkTablePaginableMapCollection, ICdkTableColumn, ICdkTableSettings } from '@ts-core/angular';
+import { CdkTablePaginableMapCollection, ICdkTableColumn, ICdkTableSettings, PrettifyPipe } from '@ts-core/angular';
 import { IPagination } from '@ts-core/common/dto';
 import * as _ from 'lodash';
 import { Client } from '@common/platform/api';
@@ -57,7 +57,7 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
     //
     // --------------------------------------------------------------------------
 
-    constructor(pipe: PipeService, user: UserService) {
+    constructor(type: PaymentTableSettingsType, pipe: PipeService) {
         this.columns = [];
 
         this.columns.push({
@@ -71,40 +71,45 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
             name: 'amount',
             headerId: 'payment.amount',
             headerClassName: 'pl-3',
-            isDisableSort: true,
             format: item => pipe.paymentAmount.transform(item)
         })
         this.columns.push({
-            name: 'status',
-            headerId: 'payment.status.status',
-            className: item => {
-                switch (item.status) {
-                    case PaymentStatus.AUTHORIZED:
-                        return 'text-warning';
-                }
-                return null;
-            },
-            format: item => pipe.language.translate(`payment.status.${item.status}`)
+            name: 'userId',
+            headerId: 'user.user',
+            headerClassName: 'pl-3',
+            isDisableSort: true,
+            format: item => pipe.userTitle.transform(item.user)
         })
-        this.columns.push({
-            name: 'type',
-            headerId: 'payment.aggregator.aggregator',
-            format: item => pipe.language.translate(`payment.aggregator.type.${item.type}`)
-        })
-
-        if (user.isAdministrator) {
-            /*
+        if (type === PaymentTableSettingsType.ALL) {
+            this.columns.push({
+                name: 'companyId',
+                headerId: 'company.company',
+                format: item => !_.isNil(item.company) ? item.company.preferences.title : PrettifyPipe.EMPTY_SYMBOL
+            })
             this.columns.push({
                 name: 'type',
-                headerId: 'user.type.type',
-                format: item => pipe.language.translate(`user.type.${item.type}`)
+                headerId: 'payment.aggregator.aggregator',
+                format: item => pipe.language.translate(`payment.aggregator.type.${item.type}`)
             })
             this.columns.push({
-                name: 'login',
-                headerId: 'user.login',
-                format: item => item.login,
+                name: 'status',
+                headerId: 'payment.status.status',
+                className: item => {
+                    switch (item.status) {
+                        case PaymentStatus.AUTHORIZED:
+                            return 'text-warning';
+                    }
+                    return null;
+                },
+                format: item => pipe.language.translate(`payment.status.${item.status}`)
             })
-            */
+        }
+        if (type === PaymentTableSettingsType.ALL || type === PaymentTableSettingsType.COMPANY) {
+            this.columns.push({
+                name: 'projectId',
+                headerId: 'project.project',
+                format: item => !_.isNil(item.project) ? item.project.preferences.title : PrettifyPipe.EMPTY_SYMBOL
+            })
         }
 
         this.columns.push({
@@ -113,6 +118,10 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
             format: item => pipe.momentDate.transform(item.createdDate)
         });
     }
+}
 
-
+export enum PaymentTableSettingsType {
+    ALL = 'ALL',
+    COMPANY = 'COMPANY',
+    PROJECT = 'PROJECT',
 }

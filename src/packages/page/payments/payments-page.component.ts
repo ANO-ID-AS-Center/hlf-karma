@@ -3,7 +3,7 @@ import { DestroyableContainer } from '@ts-core/common';
 import { ICdkTableCellEvent, ICdkTableSettings, MenuTriggerForDirective, ViewUtil } from '@ts-core/angular';
 import { PipeService, UserService } from '@core/service';
 import * as _ from 'lodash';
-import { PaymentMapCollection, PaymentTableSettings } from '@core/lib/payment';
+import { PaymentMapCollection, PaymentTableSettings, PaymentTableSettingsType } from '@core/lib/payment';
 import { PaymentMenu } from '@feature/payment/service';
 import { Transport } from '@ts-core/common/transport';
 import { PaymentOpenCommand } from '@feature/payment/transport';
@@ -38,28 +38,7 @@ export class PaymentsPageComponent extends DestroyableContainer {
         public items: PaymentMapCollection
     ) {
         super();
-        ViewUtil.addClasses(element, 'd-block background border rounded');
-
-        this.settings = new PaymentTableSettings(pipe, user);
-        if (!this.items.isDirty) {
-            this.items.reload();
-        }
+        ViewUtil.addClasses(element, 'd-block');
+        this.settings = new PaymentTableSettings(PaymentTableSettingsType.ALL, pipe);
     }
-
-    // --------------------------------------------------------------------------
-    //
-    // 	Event Handlers
-    //
-    // --------------------------------------------------------------------------
-
-    public async cellClickedHandler(item: ICdkTableCellEvent<Payment>): Promise<void> {
-        if (item.column !== PaymentTableSettings.COLUMN_NAME_MENU) {
-            this.transport.send(new PaymentOpenCommand(item.data.id));
-        }
-        else {
-            this.menu.refresh(item.data);
-            this.trigger.openMenuOn(item.event.target);
-        }
-    }
-
 }
