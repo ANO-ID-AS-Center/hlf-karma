@@ -3,6 +3,10 @@
         "project": "Проект",
         "projects": "Проекты",
         "createdDate": "Создан",
+        "account": {
+            "required": "Нужно собрать",
+            "collected": "Собрано"
+        },
         "action": {
             "add": {
                 "add": "Добавить проект",

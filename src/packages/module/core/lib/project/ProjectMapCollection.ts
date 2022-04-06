@@ -73,15 +73,27 @@ export class ProjectTableSettings implements ICdkTableSettings<UserProject> {
             format: item => item.preferences.title
         })
         this.columns.push({
+            name: 'required',
+            headerId: 'project.account.required',
+            isDisableSort: true,
+            format: item => pipe.account.transform(item.balance.required)
+        })
+        this.columns.push({
+            name: 'collected',
+            headerId: 'project.account.collected',
+            isDisableSort: true,
+            format: item => pipe.account.transform(item.balance.collected)
+        })
+        this.columns.push({
             name: 'status',
             headerId: 'project.status.status',
             isDisableSort: true,
             className: item => {
-                switch(item.status) {
+                switch (item.status) {
                     case ProjectStatus.VERIFICATION_PROCESS:
                         return 'text-warning';
                     case ProjectStatus.REJECTED:
-                        case ProjectStatus.NON_ACTIVE:
+                    case ProjectStatus.NON_ACTIVE:
                         return 'text-danger';
                 }
                 return null;

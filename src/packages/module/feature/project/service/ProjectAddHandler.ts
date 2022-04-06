@@ -42,7 +42,7 @@ export class ProjectAddHandler extends TransportCommandAsyncHandler<void, IProje
         content.events.pipe(takeUntil(content.destroyed)).subscribe(async event => {
             switch (event) {
                 case ProjectAddComponent.EVENT_SUBMITTED:
-                    let item = await this.api.projectAdd({ preferences: content.serialize() });
+                    let item = await this.api.projectAdd(content.serialize());
                     this.notifications.info(`project.action.add.notification`);
                     promise.resolve(item);
                     content.close();

@@ -4,6 +4,7 @@ import { LanguageService } from '@ts-core/frontend/language';
 import { PipeBaseService } from '@ts-core/angular';
 import { UserTitlePipe, RolePipe } from '@shared/pipe';
 import { PaymentAmountPipe } from '@feature/payment/pipe';
+import { AccountPipe } from '@shared/pipe';
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +16,7 @@ export class PipeService extends PipeBaseService {
     //--------------------------------------------------------------------------
 
     private static ROLE: RolePipe;
+    private static ACCOUNT: AccountPipe;
     private static USER_TITLE: UserTitlePipe;
     private static PAYMENT_AMOUNT: PaymentAmountPipe;
 
@@ -39,6 +41,13 @@ export class PipeService extends PipeBaseService {
             PipeService.ROLE = new RolePipe(this.language);
         }
         return PipeService.ROLE;
+    }
+
+    public get account(): AccountPipe {
+        if (!PipeService.ACCOUNT) {
+            PipeService.ACCOUNT = new AccountPipe(this.language);
+        }
+        return PipeService.ACCOUNT;
     }
 
     public get userTitle(): UserTitlePipe {

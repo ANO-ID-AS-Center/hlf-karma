@@ -3,27 +3,13 @@ import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
 import { LanguageService } from '@ts-core/frontend/language';
 import { PrettifyPipe } from '@ts-core/angular';
-import { Payment } from '@project/common/platform/payment';
-import { MathUtil } from '@ts-core/common/util';
+import { PaymentAmountPipe } from '@feature/payment/pipe';
+import { Accounts } from '@project/common/platform/account';
 
 @Pipe({
-    name: 'paymentAmount'
+    name: 'account'
 })
-export class PaymentAmountPipe extends DestroyableContainer implements PipeTransform {
-    // --------------------------------------------------------------------------
-    //
-    //	Static Methods
-    //
-    // --------------------------------------------------------------------------
-
-    public static toCent(amount: string): string {
-        return MathUtil.multiply(amount, '100');
-    }
-
-    public static fromCent(amount: string): string {
-        return MathUtil.divide(amount, '100');
-    }
-
+export class AccountPipe extends DestroyableContainer implements PipeTransform {
     // --------------------------------------------------------------------------
     //
     //	Constructor
@@ -40,11 +26,15 @@ export class PaymentAmountPipe extends DestroyableContainer implements PipeTrans
     //
     // --------------------------------------------------------------------------
 
-    public transform(item: Payment): string {
+    public transform(item: Accounts): string {
         if (_.isNil(item)) {
             return PrettifyPipe.EMPTY_SYMBOL;
         }
-        return `${PaymentAmountPipe.fromCent(item.amount)} ${item.currency}`;
+        let items = [];
+        for (let currency in item) {
+            items.push(`${PaymentAmountPipe.fromCent(item[currency])} ${currency}`);
+        }
+        return items.join(',');
     }
 
     public destroy(): void {

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import { UserTitlePipe, MaxLengthPipe, RolePipe } from './pipe';
+import { UserTitlePipe, MaxLengthPipe, RolePipe, AccountPipe } from './pipe';
 
 //--------------------------------------------------------------------------
 //
@@ -16,7 +16,7 @@ import { UserTitlePipe, MaxLengthPipe, RolePipe } from './pipe';
 const providers = [];
 const imports = [VICommonModule, VIComponentModule, CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatTooltipModule];
 
-const declarations = [UserTitlePipe, MaxLengthPipe, RolePipe];
+const declarations = [UserTitlePipe, MaxLengthPipe, RolePipe, AccountPipe];
 
 @NgModule({
     imports: [CommonModule, ...imports],
