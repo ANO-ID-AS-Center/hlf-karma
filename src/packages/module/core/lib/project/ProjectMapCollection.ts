@@ -10,7 +10,7 @@ import { UserProject } from '@project/common/platform/user';
 import { ProjectStatus } from '@project/common/platform/project';
 
 @Injectable()
-export class ProjectMapCollection extends CdkTablePaginableMapCollection<Project, Project> {
+export class ProjectMapCollection extends CdkTablePaginableMapCollection<Project, UserProject> {
     // --------------------------------------------------------------------------
     //
     // 	Constructor
@@ -32,12 +32,12 @@ export class ProjectMapCollection extends CdkTablePaginableMapCollection<Project
         return true;
     }
 
-    protected request(): Promise<IPagination<Project>> {
+    protected request(): Promise<IPagination<UserProject>> {
         return this.api.projectList(this.createRequestData() as any);
     }
 
-    protected parseItem(item: Project): Project {
-        return TransformUtil.toClass(Project, item);
+    protected parseItem(item: UserProject): UserProject {
+        return TransformUtil.toClass(UserProject, item);
     }
 }
 

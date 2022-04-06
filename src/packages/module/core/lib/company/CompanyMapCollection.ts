@@ -10,7 +10,7 @@ import { UserCompany } from '@project/common/platform/user';
 import { CompanyStatus } from '@project/common/platform/company';
 
 @Injectable()
-export class CompanyMapCollection extends CdkTablePaginableMapCollection<Company, Company> {
+export class CompanyMapCollection extends CdkTablePaginableMapCollection<Company, UserCompany> {
 
     // --------------------------------------------------------------------------
     //
@@ -33,12 +33,12 @@ export class CompanyMapCollection extends CdkTablePaginableMapCollection<Company
         return true;
     }
 
-    protected request(): Promise<IPagination<Company>> {
+    protected request(): Promise<IPagination<UserCompany>> {
         return this.api.companyList(this.createRequestData() as any);
     }
 
-    protected parseItem(item: Company): Company {
-        return TransformUtil.toClass(Company, item);
+    protected parseItem(item: UserCompany):UserCompany {
+        return TransformUtil.toClass(UserCompany, item);
     }
 }
 
