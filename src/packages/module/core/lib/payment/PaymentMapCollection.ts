@@ -69,8 +69,8 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
         });
         this.columns.push({
             name: 'amount',
-            headerId: 'payment.amount',
-            headerClassName: 'pl-3',
+            headerId: 'payment.transaction.amount',
+            isDisableSort: true,
             format: item => pipe.paymentAmount.transform(item)
         })
         this.columns.push({

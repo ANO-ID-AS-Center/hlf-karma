@@ -71,6 +71,7 @@ export class PaymentContainerComponent extends PaymentBaseComponent {
     @Input()
     public set payment(value: Payment) {
         super.payment = value;
+        console.log(value);
     }
 
 }

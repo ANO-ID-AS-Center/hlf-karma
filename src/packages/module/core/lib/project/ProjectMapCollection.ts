@@ -116,8 +116,9 @@ export class ProjectTableSettings implements ICdkTableSettings<UserProject> {
         }
         */
         this.columns.push({
-            name: 'createdDate',
+            name: 'date',
             headerId: 'user.createdDate',
+            isDisableSort: true,
             format: item => pipe.momentDate.transform(item.createdDate)
         });
     }

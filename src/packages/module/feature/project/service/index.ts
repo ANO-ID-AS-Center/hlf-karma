@@ -6,4 +6,5 @@ export * from './ProjectRejectHandler';
 export * from './ProjectVerifyHandler';
 export * from './ProjectToVerifyHandler';
 export * from './ProjectActivateHandler';
+export * from './ProjectPurposeAddHandler';
 export * from './ProjectUserRoleEditHandler';

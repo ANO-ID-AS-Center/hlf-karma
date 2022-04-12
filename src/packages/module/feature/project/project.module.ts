@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule, NgModuleRef } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { TransportLazyModule } from '@ts-core/angular';
-import { ProjectAddHandler, ProjectToVerifyHandler, ProjectOpenHandler, ProjectVerifyHandler, ProjectRejectHandler, ProjectActivateHandler, ProjectUserRoleEditHandler } from './service';
+import { ProjectAddHandler, ProjectToVerifyHandler, ProjectOpenHandler, ProjectVerifyHandler, ProjectRejectHandler, ProjectActivateHandler, ProjectUserRoleEditHandler, ProjectPurposeAddHandler } from './service';
 import { Transport } from '@ts-core/common/transport';
-import { ProjectActivateCommand, ProjectAddCommand, ProjectOpenCommand, ProjectRejectCommand, ProjectToVerifyCommand, ProjectVerifyCommand, ProjectUserRoleEditCommand } from './transport';
+import { ProjectActivateCommand, ProjectAddCommand, ProjectOpenCommand, ProjectRejectCommand, ProjectToVerifyCommand, ProjectVerifyCommand, ProjectUserRoleEditCommand, ProjectPurposeAddCommand } from './transport';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { ProjectAddComponent, ProjectContainerComponent, ProjectDetailsComponent, ProjectUsersComponent, ProjectUserRoleEditComponent } from './component';
+import { ProjectAddComponent, ProjectContainerComponent, ProjectPurposesComponent, ProjectDetailsComponent, ProjectUsersComponent, ProjectUserRoleEditComponent, ProjectPurposeAddComponent } from './component';
 import { PaymentModule } from '@feature/payment';
 
 //--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ import { PaymentModule } from '@feature/payment';
 //--------------------------------------------------------------------------
 
 const providers = [];
-const declarations = [ProjectAddComponent, ProjectDetailsComponent, ProjectContainerComponent, ProjectUsersComponent, ProjectUserRoleEditComponent];
+const declarations = [ProjectAddComponent, ProjectPurposesComponent, ProjectPurposeAddComponent, ProjectDetailsComponent, ProjectContainerComponent, ProjectUsersComponent, ProjectUserRoleEditComponent];
 
 @NgModule({
     imports: [
@@ -53,7 +53,7 @@ export class ProjectModule extends TransportLazyModule<ProjectModule> {
     //--------------------------------------------------------------------------
 
     public static ID = 'ProjectModule';
-    public static COMMANDS = [ProjectAddCommand.NAME, ProjectToVerifyCommand.NAME, ProjectRejectCommand.NAME, ProjectVerifyCommand.NAME, ProjectActivateCommand.NAME, ProjectOpenCommand.NAME, ProjectUserRoleEditCommand.NAME];
+    public static COMMANDS = [ProjectAddCommand.NAME, ProjectPurposeAddCommand.NAME, ProjectToVerifyCommand.NAME, ProjectRejectCommand.NAME, ProjectVerifyCommand.NAME, ProjectActivateCommand.NAME, ProjectOpenCommand.NAME, ProjectUserRoleEditCommand.NAME];
 
     //--------------------------------------------------------------------------
     //
@@ -69,6 +69,7 @@ export class ProjectModule extends TransportLazyModule<ProjectModule> {
         reject: ProjectRejectHandler,
         activate: ProjectActivateHandler,
         open: ProjectOpenHandler,
+        purposeAdd: ProjectPurposeAddHandler,
         userRoleEdit: ProjectUserRoleEditHandler) {
         super(reference, transport);
     }

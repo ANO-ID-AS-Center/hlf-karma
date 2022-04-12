@@ -1,0 +1,52 @@
+<div class="d-flex flex-shrink-0 align-items-center p-3">
+    <p class="mat-title flex-grow-1 text-one-line mouse-inactive" [vi-translate]="'project.purpose.purpose'"></p>
+    <button class="flex-shrink-0 ml-2" mat-raised-button color="primary" [disabled]="form.invalid || form.pristine" (click)="submit()">
+        <span [vi-translate]="'general.add'"></span>
+    </button>
+</div>
+
+<form class="flex-grow-1 px-3 pt-3 pb-2 row no-gutters vertical-scroll-only border-top" #form="ngForm">
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <input
+                #nameInput="ngModel"
+                matInput
+                name="name"
+                [(ngModel)]="name"
+                type="text"
+                required
+                [minlength]="nameMinLength"
+                [maxlength]="nameMaxLength"
+            />
+            <mat-hint align="end" [innerHTML]="nameInput.value?.length | maxLength: nameMaxLength"></mat-hint>
+            <mat-placeholder [vi-translate]="'project.purpose.name'"></mat-placeholder>
+            <mat-error *ngIf="!(nameInput.valid || !nameInput.touched)" [innerHTML]="nameInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <mat-placeholder [vi-translate]="'payment.transaction.currency'"></mat-placeholder>
+            <mat-select #currencyInput="ngModel" name="currency" [(ngModel)]="currencies.selectedItem" required>
+                <mat-option *ngFor="let item of currencies.collection" [value]="item" [innerHTML]="item.label"></mat-option>
+            </mat-select>
+            <mat-error *ngIf="!(currencyInput.valid || !currencyInput.touched)" [innerHTML]="currencyInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12">
+        <mat-form-field class="d-block">
+            <input
+                #amountInput="ngModel"
+                matInput
+                name="amount"
+                [(ngModel)]="amount"
+                type="number"
+                required
+                [min]="0"
+            />
+            <mat-placeholder [vi-translate]="'payment.transaction.amount'"></mat-placeholder>
+            <mat-error *ngIf="!(amountInput.valid || !amountInput.touched)" [innerHTML]="amountInput.errors | viNgModelError"></mat-error>
+        </mat-form-field>
+    </div>
+</form>

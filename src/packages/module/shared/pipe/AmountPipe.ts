@@ -1,17 +1,27 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
-import { LanguageService } from '@ts-core/frontend/language';
 import { FinancePipe, PrettifyPipe } from '@ts-core/angular';
 import { MathUtil } from '@ts-core/common/util';
 import { LedgerCoinId } from '@project/common/ledger/coin';
-import { Payment } from '@project/common/platform/payment';
-import { AmountPipe } from '@shared/pipe';
 
 @Pipe({
-    name: 'paymentAmount'
+    name: 'amount'
 })
-export class PaymentAmountPipe extends DestroyableContainer implements PipeTransform {
+export class AmountPipe extends DestroyableContainer implements PipeTransform {
+    // --------------------------------------------------------------------------
+    //
+    //	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static toCent(amount: string): string {
+        return MathUtil.multiply(amount, '100');
+    }
+
+    public static fromCent(amount: string): string {
+        return MathUtil.divide(amount, '100');
+    }
 
     // --------------------------------------------------------------------------
     //
@@ -19,7 +29,7 @@ export class PaymentAmountPipe extends DestroyableContainer implements PipeTrans
     //
     // --------------------------------------------------------------------------
 
-    private amount: AmountPipe;
+    private finance: FinancePipe;
 
     // --------------------------------------------------------------------------
     //
@@ -29,7 +39,7 @@ export class PaymentAmountPipe extends DestroyableContainer implements PipeTrans
 
     constructor() {
         super();
-        this.amount = new AmountPipe();
+        this.finance = new FinancePipe();
     }
 
     // --------------------------------------------------------------------------
@@ -38,17 +48,11 @@ export class PaymentAmountPipe extends DestroyableContainer implements PipeTrans
     //
     // --------------------------------------------------------------------------
 
-    public transform(item: Payment): string {
-        if (_.isNil(item) || _.isEmpty(item.transactions)) {
+    public transform(item: IAmount): string {
+        if (_.isNil(item)) {
             return PrettifyPipe.EMPTY_SYMBOL;
         }
-        let amount = '0';
-        let currency = null;
-        for (let transaction of item.transactions) {
-            currency = transaction.currency;
-            amount = MathUtil.add(amount, transaction.amount);
-        }
-        return this.amount.transform({ amount, currency });
+        return `${this.finance.transform(AmountPipe.fromCent(item.amount))} ${item.currency}`;
     }
 
     public destroy(): void {
@@ -56,7 +60,11 @@ export class PaymentAmountPipe extends DestroyableContainer implements PipeTrans
             return;
         }
         super.destroy();
-        this.amount = null;
+        this.finance = null;
     }
 }
 
+export interface IAmount {
+    amount: string;
+    currency: LedgerCoinId;
+}

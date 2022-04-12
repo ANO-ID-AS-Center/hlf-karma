@@ -1,5 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { ISelectListItem, SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
+import { ViewUtil, WindowService } from '@ts-core/angular';
 import { PipeService } from '@core/service';
 import * as _ from 'lodash';
 import { ISerializable } from '@ts-core/common';
@@ -9,9 +9,6 @@ import { Project, ProjectPreferences } from '@project/common/platform/project';
 import { Client } from '@project/common/platform/api';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { IProjectAddDto } from '@project/common/platform/api/project';
-import { LedgerCoinId } from '@project/common/ledger/coin';
-import { Accounts } from '@project/common/platform/account';
-import { ObjectUtil } from '@ts-core/common/util';
 
 @Component({
     selector: 'project-add',
@@ -25,15 +22,6 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
     //--------------------------------------------------------------------------
 
     public static EVENT_SUBMITTED = 'EVENT_SUBMITTED';
-
-    //--------------------------------------------------------------------------
-    //
-    // 	Properties
-    //
-    //--------------------------------------------------------------------------
-
-    public amount: string;
-    public currencies: SelectListItems<ISelectListItem<LedgerCoinId>>;
 
     //--------------------------------------------------------------------------
     //
@@ -51,11 +39,8 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
 
-        this.currencies = new SelectListItems(pipe.language);
-        Object.values(LedgerCoinId).forEach((item, index) => this.currencies.add(new SelectListItem(item, index, item)));
-        this.currencies.complete(0);
-
         this.project = new Project();
+        this.project.purposes = [];
         this.project.preferences = new ProjectPreferences();
     }
 
@@ -81,7 +66,8 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
 
     public serialize(): IProjectAddDto {
         return {
-            required: { [this.currencies.selectedData]: this.amount.toString() } as Accounts,
+            // required: { [this.currencies.selectedData]: PaymentAmountPipe.toCent(this.amount.toString()) } as Accounts,
+            purposes: this.project.purposes,
             preferences: this.project.preferences
         }
     }

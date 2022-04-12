@@ -5,7 +5,7 @@ import { TransportLazyModule } from '@ts-core/angular';
 import { PaymentWidgetOpenHandler, PaymentOpenHandler } from './service';
 import { Transport } from '@ts-core/common/transport';
 import { PaymentWidgetOpenCommand, PaymentOpenCommand } from './transport';
-import { PaymentContainerComponent, PaymentWidgetContainer, PaymentDetailsComponent, PaymentListComponent } from './component';
+import { PaymentContainerComponent, PaymentWidgetContainer, PaymentTransactionsComponent, PaymentDetailsComponent, PaymentListComponent } from './component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,7 +21,7 @@ import { PaymentAmountPipe } from './pipe';
 //--------------------------------------------------------------------------
 
 const providers = [];
-const declarations = [PaymentContainerComponent, PaymentListComponent, PaymentWidgetContainer, PaymentDetailsComponent, PaymentAmountPipe];
+const declarations = [PaymentAmountPipe, PaymentContainerComponent, PaymentTransactionsComponent, PaymentListComponent, PaymentWidgetContainer, PaymentDetailsComponent];
 
 @NgModule({
     imports: [

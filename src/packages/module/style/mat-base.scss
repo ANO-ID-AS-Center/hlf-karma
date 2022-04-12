@@ -184,10 +184,14 @@ mat-expansion-panel-header {
     .mat-column-action {
         max-width: 240px;
     }
+
+    .mat-column-debet,
+    .mat-column-credit {
+        max-width: 100px;
+    }
     
-    .mat-column-date,
-    .mat-column-createdDate {
-        max-width: 200px;
+    .mat-column-date {
+        max-width: 220px;
     }
 
     .mat-tooltip {

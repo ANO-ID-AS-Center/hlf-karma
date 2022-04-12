@@ -12,10 +12,19 @@
             "COMPLETED": "Завершен",
             "AUTHORIZED": "Авторизован"
         },
-        "amount": "Сумма",
-        "currency": {
-            "currency": "Валюта"
+        "transaction": {
+            "amount": "Сумма",
+            "currency": "Валюта",
+            "activatedDate": "Зачислен",
+            "debet": "Со счета",
+            "credit": "На счет",
+            "type": {
+                "type": "Тип",
+                "DONATED": "Пожертвование",
+                "FEE_AGGREGATOR_DEDUCTED": "Комиссия аггрегатора"
+            }
         },
+
         "aggregator": {
             "uid": "UID проекта",
             "key": "API ключ",

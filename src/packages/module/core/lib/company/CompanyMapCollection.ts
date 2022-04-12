@@ -75,6 +75,12 @@ export class CompanyTableSettings implements ICdkTableSettings<UserCompany> {
             format: item => item.preferences.title
         })
         this.columns.push({
+            name: 'collected',
+            headerId: 'company.collected',
+            isDisableSort: true,
+            format: item => pipe.account.transform(item.balance)
+        })
+        this.columns.push({
             name: 'status',
             headerId: 'company.status.status',
             isDisableSort: true,
@@ -90,7 +96,6 @@ export class CompanyTableSettings implements ICdkTableSettings<UserCompany> {
             },
             format: item => pipe.language.translate(`company.status.${item.status}`)
         })
-
         this.columns.push({
             name: 'name',
             headerId: 'company.preferences.ceo',

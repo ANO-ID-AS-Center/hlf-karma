@@ -42,8 +42,9 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
         this.tabs = new SelectListItems(language);
         this.tabs.add(new SelectListItem('project.project', 0, 'PROJECT'));
         this.tabs.add(new SelectListItem('user.users', 1, 'USERS'));
-        this.tabs.add(new SelectListItem('payment.payment', 2, 'PAYMENTS'));
-        this.tabs.add(new SelectListItem('payment.donate', 3, 'DONATE'));
+        this.tabs.add(new SelectListItem('payment.payments', 2, 'PAYMENTS'));
+        this.tabs.add(new SelectListItem('project.purpose.purposes', 3, 'PURPOSES'));
+        this.tabs.add(new SelectListItem('payment.donate', 4, 'DONATE'));
         this.tabs.complete(0);
     }
 

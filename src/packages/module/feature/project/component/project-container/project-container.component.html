@@ -17,6 +17,8 @@
     
     <payment-list class="flex-grow-1 border rounded" [type]="'PROJECT'" [items]="payments" *ngIf="tabs.selectedData === 'PAYMENTS'"></payment-list>
 
+    <project-purposes class="flex-grow-1 border-top border-right border-left rounded" [project]="project" *ngIf="tabs.selectedData === 'PURPOSES'"></project-purposes>
+
     <payment-widget-container class="p-3 flex-grow-1 border rounded" [target]="project" *ngIf="tabs.selectedData === 'DONATE'"></payment-widget-container>
     
 </div>

@@ -1,6 +1,6 @@
 <div class="d-flex flex-shrink-0 align-items-center p-3">
     <p class="mat-title flex-grow-1 text-one-line mouse-inactive" [vi-translate]="'project.action.add.add'"></p>
-    <button class="flex-shrink-0 ml-2" mat-raised-button color="primary" [disabled]="form.invalid || form.pristine" (click)="submit()">
+    <button class="flex-shrink-0 ml-2" tabindex="-1" mat-raised-button color="primary" [disabled]="form.invalid || form.pristine || project?.purposes.length === 0" (click)="submit()">
         <span [vi-translate]="'project.action.save.save'"></span>
     </button>
 </div>
@@ -67,29 +67,7 @@
         </mat-form-field>
     </div>
 
-    <div class="col-12">
-        <mat-form-field class="d-block">
-            <mat-placeholder [vi-translate]="'payment.currency.currency'"></mat-placeholder>
-            <mat-select #currencyInput="ngModel" name="currency" [(ngModel)]="currencies.selectedItem" required>
-                <mat-option *ngFor="let item of currencies.collection" [value]="item" [innerHTML]="item.label"></mat-option>
-            </mat-select>
-            <mat-error *ngIf="!(currencyInput.valid || !currencyInput.touched)" [innerHTML]="currencyInput.errors | viNgModelError"></mat-error>
-        </mat-form-field>
-    </div>
-
-    <div class="col-12">
-        <mat-form-field class="d-block">
-            <input
-                #amountInput="ngModel"
-                matInput
-                name="amount"
-                [(ngModel)]="amount"
-                type="number"
-                required
-                [min]="0"
-            />
-            <mat-placeholder [vi-translate]="'payment.amount'"></mat-placeholder>
-            <mat-error *ngIf="!(amountInput.valid || !amountInput.touched)" [innerHTML]="amountInput.errors | viNgModelError"></mat-error>
-        </mat-form-field>
+    <div class="col-12 mt-3">
+        <project-purposes class="border rounded" [project]="project" [isEditable]="true"></project-purposes>
     </div>
 </form>

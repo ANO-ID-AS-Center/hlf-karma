@@ -3,8 +3,8 @@ import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
 import { LanguageService } from '@ts-core/frontend/language';
 import { PrettifyPipe } from '@ts-core/angular';
-import { PaymentAmountPipe } from '@feature/payment/pipe';
 import { Accounts } from '@project/common/platform/account';
+import { AmountPipe } from './AmountPipe';
 
 @Pipe({
     name: 'account'
@@ -32,9 +32,9 @@ export class AccountPipe extends DestroyableContainer implements PipeTransform {
         }
         let items = [];
         for (let currency in item) {
-            items.push(`${PaymentAmountPipe.fromCent(item[currency])} ${currency}`);
+            items.push(`${AmountPipe.fromCent(item[currency])} ${currency}`);
         }
-        return items.join(',');
+        return items.join(', ').trim();
     }
 
     public destroy(): void {
