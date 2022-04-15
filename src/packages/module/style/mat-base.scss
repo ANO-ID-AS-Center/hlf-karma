@@ -189,8 +189,9 @@ mat-expansion-panel-header {
     .mat-column-credit {
         max-width: 100px;
     }
-    
-    .mat-column-date {
+
+    .mat-column-createdDate,
+    .mat-column-activatedDate {
         max-width: 220px;
     }
 

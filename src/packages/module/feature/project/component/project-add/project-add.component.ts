@@ -1,11 +1,11 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { ViewUtil, WindowService } from '@ts-core/angular';
+import { SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
 import { PipeService } from '@core/service';
 import * as _ from 'lodash';
 import { ISerializable } from '@ts-core/common';
 import { } from '@common/platform/project';
 import { Transport } from '@ts-core/common/transport';
-import { Project, ProjectPreferences } from '@project/common/platform/project';
+import { Project, ProjectPreferences, ProjectTag } from '@project/common/platform/project';
 import { Client } from '@project/common/platform/api';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { IProjectAddDto } from '@project/common/platform/api/project';
@@ -25,6 +25,14 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
 
     //--------------------------------------------------------------------------
     //
+    // 	Properties
+    //
+    //--------------------------------------------------------------------------
+
+    public tagsAll: SelectListItems<SelectListItem<ProjectTag>>;
+
+    //--------------------------------------------------------------------------
+    //
     // 	Constructor
     //
     //--------------------------------------------------------------------------
@@ -38,6 +46,10 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
     ) {
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
+
+        this.tagsAll = this.addDestroyable(new SelectListItems(pipe.language));
+        Object.values(ProjectTag).forEach((item, index) => this.tagsAll.add(new SelectListItem(`project.tag.${item}`, index, item)));
+        this.tagsAll.complete();
 
         this.project = new Project();
         this.project.purposes = [];
@@ -66,7 +78,6 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
 
     public serialize(): IProjectAddDto {
         return {
-            // required: { [this.currencies.selectedData]: PaymentAmountPipe.toCent(this.amount.toString()) } as Accounts,
             purposes: this.project.purposes,
             preferences: this.project.preferences
         }

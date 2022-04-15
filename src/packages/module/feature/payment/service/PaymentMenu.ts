@@ -38,6 +38,7 @@ export class PaymentMenu extends ListItems<IListItem<void>> {
         item.action = (item, payment) => transport.send(new UserOpenCommand(payment.userId));
         this.add(item);
 
+        /*
         item = new ListItem('company.company', PaymentMenu.COMPANY, null, 'fas fa-building mr-2');
         item.checkEnabled = (item, payment) => !_.isNil(payment.companyId);
         item.action = (item, payment) => transport.send(new CompanyOpenCommand(payment.companyId));
@@ -48,31 +49,29 @@ export class PaymentMenu extends ListItems<IListItem<void>> {
         item.action = (item, payment) => transport.send(new ProjectOpenCommand(payment.projectId));
         this.add(item);
 
-        /*
-
-item = new ListItem('company.action.activate.activate', CompanyMenu.ACTIVATE, null, 'fas fa-check mr-2');
-item.checkEnabled = (item, company) => this.isCanActivate(company);
-item.action = (item, company) => transport.send(new CompanyActivateCommand());
-item.className = 'text-success';
-this.add(item);
-
-item = new ListItem('company.action.verify.verify', CompanyMenu.VERIFY, null, 'fas fa-check mr-2');
-item.checkEnabled = (item, company) => this.isCanVerify(company);
-item.action = (item, company) => transport.send(new CompanyVerifyCommand(company));
-item.className = 'text-success';
-this.add(item);
-
-item = new ListItem('company.action.reject.reject', CompanyMenu.REJECT, null, 'fas fa-times mr-2');
-item.checkEnabled = (item, company) => this.isCanReject(company);
-item.action = (item, company) => transport.send(new CompanyRejectCommand(company));
-item.className = 'text-danger';
-this.add(item);
-
-item = new ListItem('project.action.add.add', CompanyMenu.PROJECT_ADD, null, 'fas fa-cube mr-2');
-item.checkEnabled = (item, company) => this.isCanProjectAdd(company);
-item.action = (item, company) => transport.send(new ProjectAddCommand());
-this.add(item);
-*/
+        item = new ListItem('company.action.activate.activate', CompanyMenu.ACTIVATE, null, 'fas fa-check mr-2');
+        item.checkEnabled = (item, company) => this.isCanActivate(company);
+        item.action = (item, company) => transport.send(new CompanyActivateCommand());
+        item.className = 'text-success';
+        this.add(item);
+        
+        item = new ListItem('company.action.verify.verify', CompanyMenu.VERIFY, null, 'fas fa-check mr-2');
+        item.checkEnabled = (item, company) => this.isCanVerify(company);
+        item.action = (item, company) => transport.send(new CompanyVerifyCommand(company));
+        item.className = 'text-success';
+        this.add(item);
+        
+        item = new ListItem('company.action.reject.reject', CompanyMenu.REJECT, null, 'fas fa-times mr-2');
+        item.checkEnabled = (item, company) => this.isCanReject(company);
+        item.action = (item, company) => transport.send(new CompanyRejectCommand(company));
+        item.className = 'text-danger';
+        this.add(item);
+        
+        item = new ListItem('project.action.add.add', CompanyMenu.PROJECT_ADD, null, 'fas fa-cube mr-2');
+        item.checkEnabled = (item, company) => this.isCanProjectAdd(company);
+        item.action = (item, company) => transport.send(new ProjectAddCommand());
+        this.add(item);
+    */
 
         this.complete();
     }

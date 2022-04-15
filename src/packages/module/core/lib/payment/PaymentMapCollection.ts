@@ -80,12 +80,8 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
             isDisableSort: true,
             format: item => pipe.userTitle.transform(item.user)
         })
+    
         if (type === PaymentTableSettingsType.ALL) {
-            this.columns.push({
-                name: 'companyId',
-                headerId: 'company.company',
-                format: item => !_.isNil(item.company) ? item.company.preferences.title : PrettifyPipe.EMPTY_SYMBOL
-            })
             this.columns.push({
                 name: 'type',
                 headerId: 'payment.aggregator.aggregator',
@@ -104,14 +100,7 @@ export class PaymentTableSettings implements ICdkTableSettings<Payment> {
                 format: item => pipe.language.translate(`payment.status.${item.status}`)
             })
         }
-        if (type === PaymentTableSettingsType.ALL || type === PaymentTableSettingsType.COMPANY) {
-            this.columns.push({
-                name: 'projectId',
-                headerId: 'project.project',
-                format: item => !_.isNil(item.project) ? item.project.preferences.title : PrettifyPipe.EMPTY_SYMBOL
-            })
-        }
-
+      
         this.columns.push({
             name: 'createdDate',
             headerId: 'user.createdDate',

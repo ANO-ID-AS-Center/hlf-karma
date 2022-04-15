@@ -6,6 +6,11 @@ import { PaymentTransactionMapCollection, PaymentTransactionTableSettings } from
 import { PipeService, UserService } from '@core/service';
 import { Transport } from '@ts-core/common/transport';
 import { Payment, PaymentTransaction } from '@project/common/platform/payment';
+import { PaymentOpenCommand } from '../../transport';
+import { FilterableConditions } from '@ts-core/common/dto';
+import { ObjectUtil } from '@ts-core/common/util';
+import { CompanyOpenCommand } from '@feature/company/transport';
+import { ProjectOpenCommand } from '@feature/project/transport';
 
 @Component({
     selector: 'payment-transactions',
@@ -20,6 +25,7 @@ export class PaymentTransactionsComponent extends PaymentBaseComponent {
     //--------------------------------------------------------------------------
 
     public settings: ICdkTableSettings<PaymentTransaction>;
+    private _conditions: FilterableConditions<PaymentTransaction>;
 
     //--------------------------------------------------------------------------
     //
@@ -28,13 +34,15 @@ export class PaymentTransactionsComponent extends PaymentBaseComponent {
     //--------------------------------------------------------------------------
 
     constructor(container: ViewContainerRef,
-        private pipe: PipeService,
-        private user: UserService,
+        pipe: PipeService,
+        user: UserService,
         private transport: Transport,
         public items: PaymentTransactionMapCollection
     ) {
         super(container);
         ViewUtil.addClasses(container, 'd-flex');
+
+        this.settings = new PaymentTransactionTableSettings(pipe, user);
     }
 
     //--------------------------------------------------------------------------
@@ -43,20 +51,33 @@ export class PaymentTransactionsComponent extends PaymentBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    protected commitPaymentProperties(): void {
-        super.commitPaymentProperties();
-
-        this.settings = new PaymentTransactionTableSettings(this.pipe, this.user);
-
-        this.items.payment = this.payment;
+    protected commitConditionsProperties(): void {
+        ObjectUtil.copyPartial(this.conditions, this.items.conditions);
         this.items.reload();
     }
 
+    // --------------------------------------------------------------------------
+    //
+    // 	Event Handlers
+    //
+    // --------------------------------------------------------------------------
 
-    protected commitSettingsProperties(): void {
+    public async cellClickedHandler(item: ICdkTableCellEvent<PaymentTransaction>): Promise<void> {
+        switch (item.column) {
+            case PaymentTransactionTableSettings.COLUMN_NAME_TARGET:
+                if (!_.isNil(item.data.companyId)) {
+                    this.transport.send(new CompanyOpenCommand(item.data.companyId));
+                } else if (!_.isNil(item.data.projectId)) {
+                    this.transport.send(new ProjectOpenCommand(item.data.projectId));
+                } else {
+                    this.transport.send(new PaymentOpenCommand(item.data.paymentId));
+                }
+                break;
 
+            default:
+                this.transport.send(new PaymentOpenCommand(item.data.paymentId));
+        }
     }
-
     //--------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -83,12 +104,18 @@ export class PaymentTransactionsComponent extends PaymentBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get payment(): Payment {
-        return super.payment;
+    public get conditions(): FilterableConditions<PaymentTransaction> {
+        return this._conditions;
     }
     @Input()
-    public set payment(value: Payment) {
-        super.payment = value;
+    public set conditions(value: FilterableConditions<PaymentTransaction>) {
+        if (value === this._conditions) {
+            return;
+        }
+        this._conditions = value;
+        if (!_.isNil(value)) {
+            this.commitConditionsProperties();
+        }
     }
 
 }

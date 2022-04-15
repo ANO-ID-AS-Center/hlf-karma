@@ -5,7 +5,7 @@ import { CompanyMenu } from '@feature/company/service';
 import { LanguageService } from '@ts-core/frontend/language';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { UserCompany } from '@project/common/platform/user';
-import { PaymentMapCollection } from '@core/lib/payment';
+import { PaymentMapCollection, PaymentTransactionMapCollection } from '@core/lib/payment';
 
 @Component({
     selector: 'company-container',
@@ -24,7 +24,6 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
 
     public tabs: SelectListItems<ISelectListItem<string>>;
 
-
     // --------------------------------------------------------------------------
     //
     // 	Constructor
@@ -34,7 +33,7 @@ export class CompanyContainerComponent extends CompanyBaseComponent {
     constructor(
         container: ViewContainerRef,
         language: LanguageService,
-        public payments: PaymentMapCollection,
+        public payments: PaymentTransactionMapCollection,
         public menu: CompanyMenu,
     ) {
         super(container);

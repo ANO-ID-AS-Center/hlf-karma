@@ -1,11 +1,13 @@
-import { CdkTableFilterableMapCollection, ICdkTableColumn, ICdkTableSettings } from '@ts-core/angular';
+import { CdkTablePaginableMapCollection, ICdkTableColumn, ICdkTableSettings, PrettifyPipe } from '@ts-core/angular';
 import * as _ from 'lodash';
 import { PipeService, UserService } from '@core/service';
 import { Injectable } from '@angular/core';
 import { Payment, PaymentTransaction } from '@project/common/platform/payment';
+import { FilterableConditions, IPagination } from '@ts-core/common/dto';
+import { Client } from '@project/common/platform/api';
 
 @Injectable()
-export class PaymentTransactionMapCollection extends CdkTableFilterableMapCollection<PaymentTransaction, Array<PaymentTransaction>> {
+export class PaymentTransactionMapCollection extends CdkTablePaginableMapCollection<PaymentTransaction, PaymentTransaction> {
 
     // --------------------------------------------------------------------------
     //
@@ -21,8 +23,9 @@ export class PaymentTransactionMapCollection extends CdkTableFilterableMapCollec
     //
     // --------------------------------------------------------------------------
 
-    constructor() {
+    constructor(private api: Client) {
         super(`id`);
+        this.sort.createdDate = false;
     }
 
     // --------------------------------------------------------------------------
@@ -45,8 +48,17 @@ export class PaymentTransactionMapCollection extends CdkTableFilterableMapCollec
         return true;
     }
 
-    protected request(): Promise<Array<PaymentTransaction>> {
-        return Promise.resolve(this.payment.transactions);
+    protected async request(): Promise<IPagination<PaymentTransaction>> {
+        if (_.isNil(this.payment)) {
+            return this.api.paymentTransactionList(this.createRequestData());
+        }
+        return {
+            items: this.payment.transactions,
+            pages: 1,
+            total: 1,
+            pageIndex: 0,
+            pageSize: this.payment.transactions.length
+        }
     }
 
     protected parseItem(item: PaymentTransaction): PaymentTransaction {
@@ -94,9 +106,8 @@ export class PaymentTransactionTableSettings implements ICdkTableSettings<Paymen
     //
     // --------------------------------------------------------------------------
 
-    public isInteractive: boolean = false;
-
     public columns: Array<ICdkTableColumn<PaymentTransaction>>;
+    public static COLUMN_NAME_TARGET = 'target';
 
     // --------------------------------------------------------------------------
     //
@@ -111,33 +122,44 @@ export class PaymentTransactionTableSettings implements ICdkTableSettings<Paymen
             className: 'pl-3',
             headerClassName: 'pl-3',
             headerId: 'payment.transaction.type.type',
-            isDisableSort: true,
             format: item => pipe.language.translate(`payment.transaction.type.${item.type}`)
         })
+        /*
         if (user.isAdministrator) {
             this.columns.push({
                 name: 'debet',
                 headerId: 'payment.transaction.debet',
-                isDisableSort: true,
                 format: item => item.debet
             })
             this.columns.push({
                 name: 'credit',
                 headerId: 'payment.transaction.credit',
-                isDisableSort: true,
                 format: item => item.credit
             })
         }
+        */
         this.columns.push({
             name: 'amount',
             headerId: 'payment.transaction.amount',
-            isDisableSort: true,
             format: item => pipe.amount.transform(item)
         })
         this.columns.push({
-            name: 'date',
-            headerId: 'payment.transaction.activatedDate',
+            name: PaymentTransactionTableSettings.COLUMN_NAME_TARGET,
+            headerId: 'payment.transaction.target',
             isDisableSort: true,
+            format: item => {
+                if (!_.isNil(item.company)) {
+                    return item.company.preferences.nameShort
+                }
+                if (!_.isNil(item.project)) {
+                    return item.project.preferences.title
+                }
+                return PrettifyPipe.EMPTY_SYMBOL;
+            }
+        })
+        this.columns.push({
+            name: 'activatedDate',
+            headerId: 'payment.transaction.activatedDate',
             format: item => pipe.momentDate.transform(item.activatedDate)
         });
 

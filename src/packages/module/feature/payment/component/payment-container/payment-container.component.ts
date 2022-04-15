@@ -37,6 +37,7 @@ export class PaymentContainerComponent extends PaymentBaseComponent {
 
         this.tabs = new SelectListItems(language);
         this.tabs.add(new SelectListItem('payment.payment', 0, 'PAYMENT'));
+        this.tabs.add(new SelectListItem('payment.transaction.transactions', 1, 'TRANSACTIONS'));
         this.tabs.complete(0);
     }
 

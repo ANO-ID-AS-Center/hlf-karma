@@ -93,7 +93,7 @@ export class UserTableSettings implements ICdkTableSettings<User> {
             })
         }
         this.columns.push({
-            name: 'date',
+            name: 'createdDate',
             headerId: 'user.createdDate',
             format: item => pipe.momentDate.transform(item.createdDate)
         });

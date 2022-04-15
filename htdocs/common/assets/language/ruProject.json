@@ -10,6 +10,14 @@
             "amount": "⇛payment.transaction.amount",
             "purposes": "Статьи расходов"
         },
+        "tag": {
+            "tag": "Тег",
+            "tags": "Теги",
+            "AGED": "Пожилым",
+            "ADULT": "Взрослым",
+            "ANIMAL": "Животным",
+            "CHILDREN": "Детям"
+        },
         "account": {
             "required": "Нужно собрать",
             "collected": "Собрано"

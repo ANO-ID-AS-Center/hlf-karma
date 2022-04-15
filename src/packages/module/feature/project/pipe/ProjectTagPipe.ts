@@ -1,14 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
-import { User, UserRoleName } from '@project/common/platform/user';
 import { LanguageService } from '@ts-core/frontend/language';
 import { PrettifyPipe } from '@ts-core/angular';
+import { Project } from '@project/common/platform/project';
 
 @Pipe({
-    name: 'role'
+    name: 'projectTag'
 })
-export class RolePipe extends DestroyableContainer implements PipeTransform {
+export class ProjectTagPipe extends DestroyableContainer implements PipeTransform {
     // --------------------------------------------------------------------------
     //
     //	Constructor
@@ -25,14 +25,12 @@ export class RolePipe extends DestroyableContainer implements PipeTransform {
     //
     // --------------------------------------------------------------------------
 
-    public transform(item: UserRoleName | Array<UserRoleName>): string {
-        if (_.isNil(item)) {
+    public transform(item: Project): string {
+        if (_.isNil(item) || _.isNil(item.preferences) || _.isEmpty(item.preferences.tags)) {
             return PrettifyPipe.EMPTY_SYMBOL;
         }
-        if (!_.isArray(item)) {
-            item = [item];
-        }
-        let items = item.map((item, index) => index === 0 ? this.language.translate(`role.name.${item}`) : this.language.translate(`role.name.${item}`).toLowerCase());
+ 
+        let items = item.preferences.tags.map((item, index) => index === 0 ? this.language.translate(`project.tag.${item}`) : this.language.translate(`project.tag.${item}`).toLowerCase());
         return items.join(', ').trim();
     }
 

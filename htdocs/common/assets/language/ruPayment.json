@@ -3,6 +3,7 @@
         "donate": "Пожертвовать",
         "payment": "Платеж",
         "payments": "Платежи",
+        "payments": "Платежи",
         "description": {
             "company": "Пожертвование в пользу организации \"{name}\"",
             "project": "Пожертвование в пользу проекта \"{name}\""
@@ -13,6 +14,9 @@
             "AUTHORIZED": "Авторизован"
         },
         "transaction": {
+            "target": "Цель",
+            "transaction": "Транзакция",
+            "transactions": "Транзакции",
             "amount": "Сумма",
             "currency": "Валюта",
             "activatedDate": "Зачислен",

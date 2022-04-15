@@ -5,12 +5,12 @@ import { Project } from '@common/platform/project';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { LanguageService } from '@ts-core/frontend/language';
 import { ProjectMenu } from '../../service';
-import { PaymentMapCollection } from '@core/lib/payment';
+import { PaymentTransactionMapCollection } from '@core/lib/payment';
 
 @Component({
     selector: 'project-container',
     templateUrl: 'project-container.component.html',
-    providers: [PaymentMapCollection]
+    providers: [PaymentTransactionMapCollection]
 })
 export class ProjectContainerComponent extends ProjectBaseComponent {
     // --------------------------------------------------------------------------
@@ -23,7 +23,7 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
     public trigger: MenuTriggerForDirective;
 
     public tabs: SelectListItems<ISelectListItem<string>>;
-
+    
     // --------------------------------------------------------------------------
     //
     // 	Constructor
@@ -33,7 +33,6 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
     constructor(
         container: ViewContainerRef,
         language: LanguageService,
-        public payments: PaymentMapCollection,
         public menu: ProjectMenu,
     ) {
         super(container);
@@ -55,8 +54,7 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
     // --------------------------------------------------------------------------
 
     protected commitProjectProperties(): void {
-        this.payments.conditions.projectId = this.project.id;
-        this.payments.reload();
+       
     }
 
     // --------------------------------------------------------------------------
