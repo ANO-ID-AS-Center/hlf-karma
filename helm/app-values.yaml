@@ -4,7 +4,7 @@ volume:
 env:
   PORT: 80
   HTTP_PORT: 443
-  API_URL: https://explorer-api-dev.project-karma.com
+  API_URL: https://hlf-api-dev.project-karma.com
 
 ports:
   - internal: 80
