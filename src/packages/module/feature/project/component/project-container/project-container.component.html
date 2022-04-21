@@ -22,12 +22,19 @@
     ></payment-transactions>
 
     <project-purposes
-        class="flex-grow-1 border-top border-right border-left rounded"
+        class="flex-grow-1 border rounded"
         [project]="project"
         *ngIf="tabs.selectedData === 'PURPOSES'"
     ></project-purposes>
 
+    <project-files
+        class="flex-grow-1 border rounded"
+        [project]="project"
+        *ngIf="tabs.selectedData === 'FILES'"
+    ></project-files>
+
     <payment-widget-container class="p-3 flex-grow-1 border rounded" [target]="project" *ngIf="tabs.selectedData === 'DONATE'"></payment-widget-container>
+
 </div>
 
 <mat-menu #matMenu [overlapTrigger]="false">

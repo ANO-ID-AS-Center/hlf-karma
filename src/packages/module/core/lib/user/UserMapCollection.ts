@@ -32,7 +32,7 @@ export class UserMapCollection extends CdkTablePaginableMapCollection<User, User
     }
 
     protected request(): Promise<IPagination<User>> {
-        return this.api.userList(this.createRequestData() as any);
+        return this.api.userList(this.createRequestData());
     }
 
     protected parseItem(item: User): User {

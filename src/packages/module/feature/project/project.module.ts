@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { ProjectAddComponent, ProjectContainerComponent, ProjectPurposesComponent, ProjectDetailsComponent, ProjectUsersComponent, ProjectUserRoleEditComponent, ProjectPurposeAddComponent } from './component';
+import { ProjectAddComponent, ProjectFilesComponent, ProjectContainerComponent, ProjectPurposesComponent, ProjectDetailsComponent, ProjectUsersComponent, ProjectUserRoleEditComponent, ProjectPurposeAddComponent } from './component';
 import { PaymentModule } from '@feature/payment';
 import { ProjectTagPipe } from './pipe';
 
@@ -25,7 +25,7 @@ import { ProjectTagPipe } from './pipe';
 //--------------------------------------------------------------------------
 
 const providers = [];
-const declarations = [ProjectTagPipe, ProjectAddComponent, ProjectPurposesComponent, ProjectPurposeAddComponent, ProjectDetailsComponent, ProjectContainerComponent, ProjectUsersComponent, ProjectUserRoleEditComponent];
+const declarations = [ProjectTagPipe, ProjectAddComponent, ProjectPurposesComponent, ProjectPurposeAddComponent, ProjectDetailsComponent, ProjectContainerComponent, ProjectUsersComponent, ProjectUserRoleEditComponent, ProjectFilesComponent];
 
 @NgModule({
     imports: [

@@ -25,6 +25,7 @@ export class RootModule {
             return;
         }
         loader.prefixes.push(
+            'File.json',
             'User.json',
             'Role.json',
             'Login.json',

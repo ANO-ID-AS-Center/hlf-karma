@@ -57,7 +57,7 @@ export class ProjectUserMapCollection extends CdkTablePaginableMapCollection<Pro
     }
 
     protected request(): Promise<IPagination<ProjectUser>> {
-        return this.api.projectUserList(this.createRequestData() as any, this.projectId);
+        return this.api.projectUserList(this.createRequestData(), this.projectId);
     }
 
     protected parseItem(item: ProjectUser): ProjectUser {

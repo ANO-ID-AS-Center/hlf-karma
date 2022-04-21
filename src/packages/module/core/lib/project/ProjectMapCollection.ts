@@ -33,7 +33,7 @@ export class ProjectMapCollection extends CdkTablePaginableMapCollection<Project
     }
 
     protected request(): Promise<IPagination<UserProject>> {
-        return this.api.projectList(this.createRequestData() as any);
+        return this.api.projectList(this.createRequestData());
     }
 
     protected parseItem(item: UserProject): UserProject {
@@ -122,6 +122,4 @@ export class ProjectTableSettings implements ICdkTableSettings<UserProject> {
             format: item => pipe.momentDate.transform(item.createdDate)
         });
     }
-
-
 }

@@ -1,5 +1,6 @@
 export * from './ProjectMenu';
 export * from './ProjectUserMenu';
+export * from './ProjectFileMenu';
 export * from './ProjectAddHandler';
 export * from './ProjectOpenHandler';
 export * from './ProjectRejectHandler';

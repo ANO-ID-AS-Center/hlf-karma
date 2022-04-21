@@ -33,7 +33,7 @@ export class PaymentMapCollection extends CdkTablePaginableMapCollection<Payment
     }
 
     protected request(): Promise<IPagination<Payment>> {
-        return this.api.paymentList(this.createRequestData() as any);
+        return this.api.paymentList(this.createRequestData());
     }
 
     protected parseItem(item: Payment): Payment {

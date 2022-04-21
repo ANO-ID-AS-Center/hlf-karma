@@ -32,6 +32,5 @@ export class ProjectToVerifyHandler extends TransportCommandAsyncHandler<IProjec
         
         this.notifications.info(`project.action.toVerify.notification`);
         return item;
-
     }
 }

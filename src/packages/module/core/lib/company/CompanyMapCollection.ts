@@ -34,7 +34,7 @@ export class CompanyMapCollection extends CdkTablePaginableMapCollection<Company
     }
 
     protected request(): Promise<IPagination<UserCompany>> {
-        return this.api.companyList(this.createRequestData() as any);
+        return this.api.companyList(this.createRequestData());
     }
 
     protected parseItem(item: UserCompany):UserCompany {
