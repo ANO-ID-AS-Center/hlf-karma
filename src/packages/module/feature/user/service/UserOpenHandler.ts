@@ -32,7 +32,7 @@ export class UserOpenHandler extends TransportCommandHandler<UserUid, UserOpenCo
             return Promise.reject('Already opened');
         }
 
-        let user = await this.api.userGet(params);
+        let user = await this.api.userGet(Number(params));
 
         let config = new WindowConfig(false, false, 600);
         config.id = windowId;

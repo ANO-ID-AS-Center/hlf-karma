@@ -10,6 +10,8 @@ import { UserOpenCommand } from '@feature/user/transport';
 import { Transport } from '@ts-core/common/transport';
 import { Company } from '@project/common/platform/company';
 import { UserCompany } from '@project/common/platform/user';
+import { PermissionUtil } from '@project/common/util';
+import { CompanyUserAddCommand } from '../../transport';
 
 @Component({
     selector: 'company-users',
@@ -27,6 +29,8 @@ export class CompanyUsersComponent extends CompanyBaseComponent {
     @ViewChild(MenuTriggerForDirective, { static: true })
     public trigger: MenuTriggerForDirective;
     public settings: ICdkTableSettings<CompanyUser>;
+
+    public isCanRole: boolean;
 
     //--------------------------------------------------------------------------
     //
@@ -56,6 +60,8 @@ export class CompanyUsersComponent extends CompanyBaseComponent {
 
         this.items.companyId = this.company.id;
         this.settings = new CompanyUserTableSettings(this.pipe, this.user);
+
+        this.isCanRole = PermissionUtil.isCanCompanyUserEdit(this.company.roles);
     }
 
     // --------------------------------------------------------------------------
@@ -63,6 +69,11 @@ export class CompanyUsersComponent extends CompanyBaseComponent {
     // 	Event Handlers
     //
     // --------------------------------------------------------------------------
+
+    public async add(): Promise<void> {
+        await this.transport.sendListen(new CompanyUserAddCommand({ companyId: this.company.id }));
+        this.items.reload();
+    }
 
     public async cellClickedHandler(item: ICdkTableCellEvent<CompanyUser>): Promise<void> {
         if (item.column !== CompanyUserTableSettings.COLUMN_NAME_MENU) {

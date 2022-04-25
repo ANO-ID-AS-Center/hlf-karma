@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule, NgModuleRef } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { TransportLazyModule } from '@ts-core/angular';
-import { CompanyAddHandler, CompanyToVerifyHandler, CompanyUserRoleEditHandler, CompanyVerifyHandler, CompanyRejectHandler, CompanyActivateHandler } from './service';
+import { CompanyAddHandler, CompanyUserAddHandler, CompanyToVerifyHandler, CompanyUserRoleEditHandler, CompanyVerifyHandler, CompanyRejectHandler, CompanyActivateHandler } from './service';
 import { Transport } from '@ts-core/common/transport';
 import { CompanyActivateCommand, CompanyAddCommand, CompanyOpenCommand, CompanyRejectCommand, CompanyToVerifyCommand, CompanyUserRoleEditCommand, CompanyVerifyCommand } from './transport';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { CompanyAddComponent, CompanyUserRoleEditComponent, CompanyUsersComponent, CompanyNalogPreferencesComponent, CompanyContainerComponent, CompanyDetailsComponent } from './component';
+import { CompanyAddComponent, CompanyUserRoleEditComponent, CompanyUsersComponent, CompanyNalogPreferencesComponent, CompanyContainerComponent, CompanyDetailsComponent, CompanyUserAddComponent } from './component';
 import { CompanyOpenHandler } from './service/CompanyOpenHandler';
 import { PaymentModule } from '@feature/payment';
 
@@ -25,7 +25,7 @@ import { PaymentModule } from '@feature/payment';
 //--------------------------------------------------------------------------
 
 const providers = [];
-const declarations = [CompanyAddComponent, CompanyContainerComponent, CompanyUserRoleEditComponent, CompanyUsersComponent, CompanyNalogPreferencesComponent, CompanyDetailsComponent];
+const declarations = [CompanyAddComponent, CompanyUserAddComponent, CompanyContainerComponent, CompanyUserRoleEditComponent, CompanyUsersComponent, CompanyNalogPreferencesComponent, CompanyDetailsComponent];
 
 @NgModule({
     imports: [
@@ -71,6 +71,7 @@ export class CompanyModule extends TransportLazyModule<CompanyModule> {
         reject: CompanyRejectHandler,
         toVerify: CompanyToVerifyHandler,
         activate: CompanyActivateHandler,
+        userAdd: CompanyUserAddHandler,
         userRoleEdit: CompanyUserRoleEditHandler) {
         super(reference, transport);
     }

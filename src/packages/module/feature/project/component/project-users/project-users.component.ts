@@ -9,6 +9,9 @@ import { ProjectUserMenu } from '../../service';
 import { UserOpenCommand } from '@feature/user/transport';
 import { Transport } from '@ts-core/common/transport';
 import { Project } from '@project/common/platform/project';
+import { ProjectUserAddCommand } from '../../transport';
+import { PermissionUtil } from '@project/common/util';
+import { UserProject } from '@project/common/platform/user';
 
 @Component({
     selector: 'project-users',
@@ -26,6 +29,8 @@ export class ProjectUsersComponent extends ProjectBaseComponent {
     @ViewChild(MenuTriggerForDirective, { static: true })
     public trigger: MenuTriggerForDirective;
     public settings: ICdkTableSettings<ProjectUser>;
+
+    public isCanRole: boolean;
 
     //--------------------------------------------------------------------------
     //
@@ -55,6 +60,8 @@ export class ProjectUsersComponent extends ProjectBaseComponent {
 
         this.items.projectId = this.project.id;
         this.settings = new ProjectUserTableSettings(this.pipe, this.user);
+
+        this.isCanRole = PermissionUtil.isCanProjectUserEdit(this.project.roles);
     }
 
     // --------------------------------------------------------------------------
@@ -62,6 +69,11 @@ export class ProjectUsersComponent extends ProjectBaseComponent {
     // 	Event Handlers
     //
     // --------------------------------------------------------------------------
+
+    public async add(): Promise<void> {
+        await this.transport.sendListen(new ProjectUserAddCommand({ projectId: this.project.id }));
+        this.items.reload();
+    }
 
     public async cellClickedHandler(item: ICdkTableCellEvent<ProjectUser>): Promise<void> {
         if (item.column !== ProjectUserTableSettings.COLUMN_NAME_MENU) {
@@ -93,11 +105,11 @@ export class ProjectUsersComponent extends ProjectBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get project(): Project {
+    public get project(): UserProject {
         return super.project;
     }
     @Input()
-    public set project(value: Project) {
+    public set project(value: UserProject) {
         super.project = value;
     }
 

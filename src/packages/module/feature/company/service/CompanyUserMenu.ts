@@ -48,10 +48,8 @@ export class CompanyUserMenu extends ListItems<IListItem<void>> {
     // --------------------------------------------------------------------------
 
     private isCanRole(company: UserCompany, user: CompanyUser): boolean {
-        return PermissionUtil.isCanCompanyUserEdit(user.roles);
+        return PermissionUtil.isCanCompanyUserEdit(company.roles);
     }
-
-
 }
 
 class MenuListItem extends ListItem<void> {

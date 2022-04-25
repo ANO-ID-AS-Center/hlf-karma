@@ -9,6 +9,7 @@ import { Project, ProjectPreferences, ProjectTag } from '@project/common/platfor
 import { Client } from '@project/common/platform/api';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { IProjectAddDto } from '@project/common/platform/api/project';
+import { UserProject } from '@project/common/platform/user';
 
 @Component({
     selector: 'project-add',
@@ -51,7 +52,7 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
         Object.values(ProjectTag).forEach((item, index) => this.tagsAll.add(new SelectListItem(`project.tag.${item}`, index, item)));
         this.tagsAll.complete();
 
-        this.project = new Project();
+        this.project = new UserProject();
         this.project.purposes = [];
         this.project.preferences = new ProjectPreferences();
     }

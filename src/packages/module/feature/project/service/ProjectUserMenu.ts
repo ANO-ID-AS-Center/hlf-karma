@@ -46,9 +46,8 @@ export class ProjectUserMenu extends ListItems<IListItem<void>> {
     // --------------------------------------------------------------------------
 
     private isCanRole(project: UserProject, user: ProjectUser): boolean {
-        return PermissionUtil.isCanProjectUserEdit(user.roles);
+        return PermissionUtil.isCanProjectUserEdit(project.roles);
     }
-
 
 }
 

@@ -10,6 +10,7 @@ import { FileMapCollection, FileTableSettings } from '@core/lib/file';
 import { File, FileLinkType } from '@project/common/platform/file';
 import { FileUploadCommand, FileOpenCommand } from '@feature/file/transport';
 import { ProjectFileMenu } from '../../service';
+import { UserProject } from '@project/common/platform/user';
 
 @Component({
     selector: 'project-files',
@@ -108,11 +109,11 @@ export class ProjectFilesComponent extends ProjectBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get project(): Project {
+    public get project(): UserProject {
         return super.project;
     }
     @Input()
-    public set project(value: Project) {
+    public set project(value: UserProject) {
         super.project = value;
     }
 

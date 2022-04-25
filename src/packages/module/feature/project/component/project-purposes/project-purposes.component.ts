@@ -8,6 +8,7 @@ import { PipeService, UserService } from '@core/service';
 import { Transport } from '@ts-core/common/transport';
 import { Project, ProjectPurpose } from '@project/common/platform/project';
 import { ProjectPurposeAddCommand } from '../../transport';
+import { UserProject } from '@project/common/platform/user';
 
 @Component({
     selector: 'project-purposes',
@@ -109,11 +110,11 @@ export class ProjectPurposesComponent extends ProjectBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get project(): Project {
+    public get project(): UserProject {
         return super.project;
     }
     @Input()
-    public set project(value: Project) {
+    public set project(value: UserProject) {
         super.project = value;
     }
 

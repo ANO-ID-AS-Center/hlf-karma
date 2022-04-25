@@ -1,4 +1,5 @@
 import { PROJECT_PREFERENCES_TITLE_MIN_LENGTH, PROJECT_PREFERENCES_TITLE_MAX_LENGTH, PROJECT_PREFERENCES_DESCRIPTION_SHORT_MIN_LENGTH, PROJECT_PREFERENCES_DESCRIPTION_SHORT_MAX_LENGTH, PROJECT_PREFERENCES_TAGS_MAX_LENGTH, PROJECT_PREFERENCES_PICTURE_MAX_LENGTH, PROJECT_PREFERENCES_LOCATION_MAX_LENGTH, PROJECT_PREFERENCES_DESCRIPTION_MAX_LENGTH, PROJECT_PREFERENCES_DESCRIPTION_MIN_LENGTH, Project } from "@project/common/platform/project";
+import { UserProject } from "@project/common/platform/user";
 import { IWindowContent } from "@ts-core/angular";
 import * as _ from 'lodash';
 
@@ -10,7 +11,7 @@ export abstract class ProjectBaseComponent extends IWindowContent {
     //
     //--------------------------------------------------------------------------
 
-    protected _project: Project;
+    protected _project: UserProject;
 
     //--------------------------------------------------------------------------
     //
@@ -39,10 +40,10 @@ export abstract class ProjectBaseComponent extends IWindowContent {
     //
     //--------------------------------------------------------------------------
 
-    public get project(): Project {
+    public get project(): UserProject {
         return this._project;
     }
-    public set project(value: Project) {
+    public set project(value: UserProject) {
         if (value === this._project) {
             return;
         }

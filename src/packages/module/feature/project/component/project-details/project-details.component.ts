@@ -3,6 +3,7 @@ import { ViewUtil } from '@ts-core/angular';
 import * as _ from 'lodash';
 import { Project } from '@common/platform/project';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
+import { UserProject } from '@project/common/platform/user';
 
 @Component({
     selector: 'project-details',
@@ -26,11 +27,11 @@ export class ProjectDetailsComponent extends ProjectBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get project(): Project {
+    public get project(): UserProject {
         return super.project;
     }
     @Input()
-    public set project(value: Project) {
+    public set project(value: UserProject) {
         super.project = value;
     }
 }

@@ -6,6 +6,7 @@ import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { LanguageService } from '@ts-core/frontend/language';
 import { ProjectMenu } from '../../service';
 import { PaymentTransactionMapCollection } from '@core/lib/payment';
+import { UserProject } from '@project/common/platform/user';
 
 @Component({
     selector: 'project-container',
@@ -75,11 +76,11 @@ export class ProjectContainerComponent extends ProjectBaseComponent {
     //
     //--------------------------------------------------------------------------
 
-    public get project(): Project {
+    public get project(): UserProject {
         return super.project;
     }
     @Input()
-    public set project(value: Project) {
+    public set project(value: UserProject) {
         super.project = value;
     }
 }

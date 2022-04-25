@@ -3,6 +3,7 @@ export * from './CompanyUserMenu';
 export * from './CompanyUserMenu';
 export * from './CompanyAddHandler';
 export * from './CompanyRejectHandler';
+export * from './CompanyUserAddHandler';
 export * from './CompanyVerifyHandler';
 export * from './CompanyToVerifyHandler';
 export * from './CompanyActivateHandler';

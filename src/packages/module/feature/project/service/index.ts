@@ -4,6 +4,7 @@ export * from './ProjectFileMenu';
 export * from './ProjectAddHandler';
 export * from './ProjectOpenHandler';
 export * from './ProjectRejectHandler';
+export * from './ProjectUserAddHandler';
 export * from './ProjectVerifyHandler';
 export * from './ProjectToVerifyHandler';
 export * from './ProjectActivateHandler';

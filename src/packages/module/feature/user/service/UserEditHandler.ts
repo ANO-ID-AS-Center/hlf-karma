@@ -34,7 +34,7 @@ export class UserEditHandler extends TransportCommandAsyncHandler<UserUid, IUser
             return Promise.reject('Already opened');
         }
 
-        let item = await this.api.userGet(params);
+        let item = await this.api.userGet(Number(params));
 
         let config = new WindowConfig(false, false, 600);
         config.id = windowId;
