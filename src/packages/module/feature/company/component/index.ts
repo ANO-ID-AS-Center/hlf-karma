@@ -1,4 +1,5 @@
 export * from './company-add/company-add.component';
+export * from './company-edit/company-edit.component';
 export * from './company-users/company-users.component';
 export * from './company-details/company-details.component';
 export * from './company-container/company-container.component';

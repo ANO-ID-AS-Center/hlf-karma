@@ -10,12 +10,13 @@ import { UserType, UserStatus, USER_PREFERENCES_NAME_MIN_LENGTH, USER_PREFERENCE
 import moment, { Moment } from 'moment';
 import { LoginResource } from '@common/platform/api/login';
 import { Transport } from '@ts-core/common/transport';
+import { UserBaseComponent } from '../UserBaseComponent';
 
 @Component({
     selector: 'user-edit',
     templateUrl: 'user-edit.component.html'
 })
-export class UserEditComponent extends IWindowContent implements ISerializable<IUserEditDto> {
+export class UserEditComponent extends UserBaseComponent implements ISerializable<IUserEditDto> {
     //--------------------------------------------------------------------------
     //
     //  Constants
@@ -29,8 +30,6 @@ export class UserEditComponent extends IWindowContent implements ISerializable<I
     // 	Properties
     //
     //--------------------------------------------------------------------------
-
-    private _user: User;
 
     public types: SelectListItems<SelectListItem<UserType>>;
     public locales: SelectListItems<SelectListItem<string>>;
@@ -98,7 +97,9 @@ export class UserEditComponent extends IWindowContent implements ISerializable<I
     //
     //--------------------------------------------------------------------------
 
-    private commitUserProperties(): void {
+    protected commitUserProperties(): void {
+        super.commitUserProperties();
+        
         let value = null;
 
         value = this.user.type;
@@ -226,30 +227,15 @@ export class UserEditComponent extends IWindowContent implements ISerializable<I
     //
     //--------------------------------------------------------------------------
 
-    public get nameMinLength(): number {
-        return USER_PREFERENCES_NAME_MIN_LENGTH;
-    }
-    public get nameMaxLength(): number {
-        return USER_PREFERENCES_NAME_MAX_LENGTH;
-    }
-    public get descriptionMaxLength(): number {
-        return USER_PREFERENCES_DESCRIPTION_MAX_LENGTH;
-    }
     public get isAdministrator(): boolean {
         return this.service.isAdministrator;
     }
 
     public get user(): User {
-        return this._user;
+        return super.user;
     }
     @Input()
     public set user(value: User) {
-        if (value === this._user) {
-            return;
-        }
-        this._user = value;
-        if (!_.isNil(value)) {
-            this.commitUserProperties();
-        }
+        super.user = value;
     }
 }

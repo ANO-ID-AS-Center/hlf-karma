@@ -1,7 +1,6 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
 import { ViewUtil } from '@ts-core/angular';
 import * as _ from 'lodash';
-import { Company } from '@common/platform/company';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { UserCompany } from '@project/common/platform/user';
 

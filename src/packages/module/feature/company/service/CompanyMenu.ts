@@ -7,8 +7,9 @@ import { UserService } from '@core/service';
 import { UserCompany } from '@project/common/platform/user';
 import { LedgerCompanyRole } from '@project/common/ledger/role';
 import { CompanyStatus } from '@project/common/platform/company';
-import { CompanyVerifyCommand, CompanyToVerifyCommand, CompanyRejectCommand, CompanyActivateCommand } from '../transport';
+import { CompanyVerifyCommand, CompanyToVerifyCommand, CompanyRejectCommand, CompanyActivateCommand, CompanyEditCommand } from '../transport';
 import { ProjectAddCommand } from '@feature/project/transport';
+import { PermissionUtil } from '@project/common/util';
 
 
 @Injectable({ providedIn: 'root' })
@@ -23,8 +24,9 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
     private static VERIFY = 20;
     private static REJECT = 30;
     private static ACTIVATE = 40;
+    private static EDIT = 50;
 
-    private static PROJECT_ADD = 50;
+    private static PROJECT_ADD = 60;
 
     // --------------------------------------------------------------------------
     //
@@ -61,6 +63,11 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
         item.className = 'text-danger';
         this.add(item);
 
+        item = new ListItem('company.action.edit.edit', CompanyMenu.EDIT, null, 'fas fa-edit mr-2');
+        item.checkEnabled = (item, company) => this.isCanEdit(company);
+        item.action = (item, company) => transport.send(new CompanyEditCommand(company.id));
+        this.add(item);
+
         item = new ListItem('project.action.add.add', CompanyMenu.PROJECT_ADD, null, 'fas fa-cube mr-2');
         item.checkEnabled = (item, company) => this.isCanProjectAdd(company);
         item.action = (item, company) => transport.send(new ProjectAddCommand());
@@ -75,14 +82,18 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
     //
     // --------------------------------------------------------------------------
 
+    private isCanEdit(company: UserCompany): boolean {
+        if (this.user.isAdministrator) {
+            return true;
+        }
+        return (company.status === CompanyStatus.DRAFT || company.status === CompanyStatus.REJECTED) && PermissionUtil.isCanCompanyEdit(company.roles);
+    }
     private isCanVerify(company: UserCompany): boolean {
         return company.status === CompanyStatus.VERIFICATION_PROCESS && (this.user.isEditor || this.user.isAdministrator);
     }
-
     private isCanReject(company: UserCompany): boolean {
         return company.status === CompanyStatus.VERIFICATION_PROCESS && (this.user.isEditor || this.user.isAdministrator);
     }
-
     private isCanActivate(company: UserCompany): boolean {
         if (_.isEmpty(company.roles)) {
             return false;
