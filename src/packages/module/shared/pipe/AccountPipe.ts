@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
 import { LanguageService } from '@ts-core/frontend/language';
-import { PrettifyPipe } from '@ts-core/angular';
+import { FinancePipe, PrettifyPipe } from '@ts-core/angular';
 import { Accounts } from '@project/common/platform/account';
 import { AmountPipe } from './AmountPipe';
 
@@ -10,6 +10,15 @@ import { AmountPipe } from './AmountPipe';
     name: 'account'
 })
 export class AccountPipe extends DestroyableContainer implements PipeTransform {
+
+    // --------------------------------------------------------------------------
+    //
+    //	Properties
+    //
+    // --------------------------------------------------------------------------
+
+    private finance: FinancePipe;
+
     // --------------------------------------------------------------------------
     //
     //	Constructor
@@ -18,6 +27,7 @@ export class AccountPipe extends DestroyableContainer implements PipeTransform {
 
     constructor(private language: LanguageService) {
         super();
+        this.finance = new FinancePipe();
     }
 
     // --------------------------------------------------------------------------
@@ -32,7 +42,7 @@ export class AccountPipe extends DestroyableContainer implements PipeTransform {
         }
         let items = [];
         for (let currency in item) {
-            items.push(`${AmountPipe.fromCent(item[currency])} ${currency}`);
+            items.push(`${this.finance.transform(AmountPipe.fromCent(item[currency]))} ${currency}`);
         }
         return items.join(', ').trim();
     }

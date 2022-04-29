@@ -62,8 +62,8 @@ export class ProjectTableSettings implements ICdkTableSettings<UserProject> {
         this.columns.push({
             name: ProjectTableSettings.COLUMN_NAME_MENU,
             headerId: '',
-            headerClassName: 'pl-3',
-            className: 'pl-3 fas fa-ellipsis-v',
+            headerClassName: 'ps-3',
+            className: 'ps-3 fas fa-ellipsis-v',
             isDisableSort: true,
         });
         this.columns.push({

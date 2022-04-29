@@ -3,7 +3,7 @@ import { IWindowContent, ViewUtil, WindowService } from '@ts-core/angular';
 import { LoginService } from '@core/service';
 import { ISerializable } from '@ts-core/common';
 import { takeUntil } from 'rxjs';
-import { FacebookLoginProvider, GoogleLoginProvider, VKLoginProvider } from 'angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider, VKLoginProvider } from '@abacritt/angularx-social-login';
 import { LoginResource } from '@common/platform/api/login';
 
 @Component({

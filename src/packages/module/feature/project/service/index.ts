@@ -2,6 +2,7 @@ export * from './ProjectMenu';
 export * from './ProjectUserMenu';
 export * from './ProjectFileMenu';
 export * from './ProjectAddHandler';
+export * from './ProjectEditHandler';
 export * from './ProjectOpenHandler';
 export * from './ProjectRejectHandler';
 export * from './ProjectUserAddHandler';

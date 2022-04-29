@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { PipeService, UserService } from '@core/service';
 import { Injectable } from '@angular/core';
 import { Payment, PaymentTransaction } from '@project/common/platform/payment';
-import { FilterableConditions, IPagination } from '@ts-core/common/dto';
+import { IPagination } from '@ts-core/common/dto';
 import { Client } from '@project/common/platform/api';
 
 @Injectable()
@@ -119,25 +119,11 @@ export class PaymentTransactionTableSettings implements ICdkTableSettings<Paymen
         this.columns = [];
         this.columns.push({
             name: 'type',
-            className: 'pl-3',
-            headerClassName: 'pl-3',
+            className: 'ps-3',
+            headerClassName: 'ps-3',
             headerId: 'payment.transaction.type.type',
             format: item => pipe.language.translate(`payment.transaction.type.${item.type}`)
         })
-        /*
-        if (user.isAdministrator) {
-            this.columns.push({
-                name: 'debet',
-                headerId: 'payment.transaction.debet',
-                format: item => item.debet
-            })
-            this.columns.push({
-                name: 'credit',
-                headerId: 'payment.transaction.credit',
-                format: item => item.credit
-            })
-        }
-        */
         this.columns.push({
             name: 'amount',
             headerId: 'payment.transaction.amount',
@@ -149,10 +135,10 @@ export class PaymentTransactionTableSettings implements ICdkTableSettings<Paymen
             isDisableSort: true,
             format: item => {
                 if (!_.isNil(item.company)) {
-                    return item.company.preferences.nameShort
+                    return item.company.preferences.nameShort;
                 }
                 if (!_.isNil(item.project)) {
-                    return item.project.preferences.title
+                    return item.project.preferences.title;
                 }
                 return PrettifyPipe.EMPTY_SYMBOL;
             }

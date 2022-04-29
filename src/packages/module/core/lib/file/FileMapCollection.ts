@@ -76,8 +76,8 @@ export class FileTableSettings implements ICdkTableSettings<File> {
         this.columns.push({
             name: FileTableSettings.COLUMN_NAME_MENU,
             headerId: '',
-            headerClassName: 'pl-3',
-            className: 'pl-3 fas fa-ellipsis-v',
+            headerClassName: 'ps-3',
+            className: 'ps-3 fas fa-ellipsis-v',
             isDisableSort: true,
         });
         this.columns.push({

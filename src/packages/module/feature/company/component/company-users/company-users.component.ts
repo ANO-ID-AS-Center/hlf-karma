@@ -8,7 +8,7 @@ import { PipeService, UserService } from '@core/service';
 import { CompanyUserMenu } from '../../service';
 import { UserOpenCommand } from '@feature/user/transport';
 import { Transport } from '@ts-core/common/transport';
-import { Company } from '@project/common/platform/company';
+import { Company, CompanyUtil } from '@project/common/platform/company';
 import { UserCompany } from '@project/common/platform/user';
 import { PermissionUtil } from '@project/common/util';
 import { CompanyUserAddCommand } from '../../transport';
@@ -61,7 +61,7 @@ export class CompanyUsersComponent extends CompanyBaseComponent {
         this.items.companyId = this.company.id;
         this.settings = new CompanyUserTableSettings(this.pipe, this.user);
 
-        this.isCanRole = PermissionUtil.isCanCompanyUserEdit(this.company.roles);
+        this.isCanRole = CompanyUtil.isCanUserRoleSet(this.company);
     }
 
     // --------------------------------------------------------------------------

@@ -33,7 +33,7 @@ import { TRANSPORT_LAZY_MODULES } from './core.lazy.modules';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { DateUtil } from '@ts-core/common/util';
 import { Client } from '@common/platform/api';
-import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
+import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 import { UserMapCollection } from './lib/user';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';

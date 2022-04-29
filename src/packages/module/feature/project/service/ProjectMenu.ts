@@ -5,9 +5,8 @@ import { Injectable } from '@angular/core';
 import { Transport } from '@ts-core/common/transport';
 import { UserService } from '@core/service';
 import { UserProject } from '@project/common/platform/user';
-import { LedgerProjectRole } from '@project/common/ledger/role';
-import { ProjectStatus } from '@project/common/platform/project';
-import { ProjectVerifyCommand, ProjectToVerifyCommand, ProjectRejectCommand, ProjectActivateCommand } from '../transport';
+import { ProjectVerifyCommand, ProjectToVerifyCommand, ProjectRejectCommand, ProjectActivateCommand, ProjectEditCommand } from '../transport';
+import { ProjectUtil } from '@project/common/platform/project';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectMenu extends ListItems<IListItem<void>> {
@@ -21,6 +20,7 @@ export class ProjectMenu extends ListItems<IListItem<void>> {
     private static VERIFY = 20;
     private static REJECT = 30;
     private static ACTIVATE = 40;
+    private static EDIT = 50;
 
     // --------------------------------------------------------------------------
     //
@@ -33,25 +33,30 @@ export class ProjectMenu extends ListItems<IListItem<void>> {
 
         let item: MenuListItem = null;
 
-        item = new ListItem('project.action.toVerify.toVerify', ProjectMenu.TO_VERIFY, null, 'fas fa-arrow-right mr-2');
+        item = new ListItem('project.action.toVerify.toVerify', ProjectMenu.TO_VERIFY, null, 'fas fa-arrow-right me-2');
         item.checkEnabled = (item, project) => this.isCanToVerify(project);
         item.action = (item, project) => transport.send(new ProjectToVerifyCommand(project));
         item.className = 'text-success';
         this.add(item);
 
-        item = new ListItem('project.action.activate.activate', ProjectMenu.ACTIVATE, null, 'fas fa-check mr-2');
+        item = new ListItem('project.action.activate.activate', ProjectMenu.ACTIVATE, null, 'fas fa-check me-2');
         item.checkEnabled = (item, project) => this.isCanActivate(project);
         item.action = (item, project) => transport.send(new ProjectActivateCommand(project));
         item.className = 'text-success';
         this.add(item);
 
-        item = new ListItem('project.action.verify.verify', ProjectMenu.VERIFY, null, 'fas fa-check mr-2');
+        item = new ListItem('project.action.verify.verify', ProjectMenu.VERIFY, null, 'fas fa-check me-2');
         item.checkEnabled = (item, project) => this.isCanVerify(project);
         item.action = (item, project) => transport.send(new ProjectVerifyCommand(project));
         item.className = 'text-success';
         this.add(item);
 
-        item = new ListItem('project.action.reject.reject', ProjectMenu.REJECT, null, 'fas fa-times mr-2');
+        item = new ListItem('project.action.edit.edit', ProjectMenu.EDIT, null, 'fas fa-edit me-2');
+        item.checkEnabled = (item, project) => this.isCanEdit(project);
+        item.action = (item, project) => transport.send(new ProjectEditCommand(project.id));
+        this.add(item);
+
+        item = new ListItem('project.action.reject.reject', ProjectMenu.REJECT, null, 'fas fa-times me-2');
         item.checkEnabled = (item, project) => this.isCanReject(project);
         item.action = (item, project) => transport.send(new ProjectRejectCommand(project));
         item.className = 'text-danger';
@@ -66,26 +71,20 @@ export class ProjectMenu extends ListItems<IListItem<void>> {
     //
     // --------------------------------------------------------------------------
 
+    private isCanEdit(project: UserProject): boolean {
+        return ProjectUtil.isCanEdit(project);
+    }
     private isCanVerify(project: UserProject): boolean {
-        return project.status === ProjectStatus.VERIFICATION_PROCESS && (this.user.isEditor || this.user.isAdministrator);
+        return (this.user.isEditor || this.user.isAdministrator) && ProjectUtil.isCanVerify(project);
     }
-
     private isCanReject(project: UserProject): boolean {
-        return project.status === ProjectStatus.VERIFICATION_PROCESS && (this.user.isEditor || this.user.isAdministrator);
+        return (this.user.isEditor || this.user.isAdministrator) && ProjectUtil.isCanReject(project);
     }
-
     private isCanActivate(project: UserProject): boolean {
-        if (_.isEmpty(project.roles)) {
-            return false;
-        }
-        return project.status === ProjectStatus.VERIFIED && project.roles.includes(LedgerProjectRole.PROJECT_MANAGER);
+        return ProjectUtil.isCanActivate(project);
     }
     private isCanToVerify(project: UserProject): boolean {
-        if (_.isEmpty(project.roles)) {
-            return false;
-        }
-        return (project.status === ProjectStatus.DRAFT || project.status === ProjectStatus.REJECTED) &&
-            (project.roles.includes(LedgerProjectRole.PROJECT_MANAGER));
+        return ProjectUtil.isCanToVerify(project);
     }
 }
 

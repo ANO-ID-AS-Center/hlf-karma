@@ -5,12 +5,9 @@ import { Injectable } from '@angular/core';
 import { Transport } from '@ts-core/common/transport';
 import { UserService } from '@core/service';
 import { UserCompany } from '@project/common/platform/user';
-import { LedgerCompanyRole } from '@project/common/ledger/role';
-import { CompanyStatus, CompanyUser } from '@project/common/platform/company';
-import { CompanyVerifyCommand, CompanyToVerifyCommand, CompanyRejectCommand, CompanyActivateCommand, CompanyUserRoleEditCommand } from '../transport';
-import { ProjectAddCommand } from '@feature/project/transport';
+import { CompanyUser, CompanyUtil } from '@project/common/platform/company';
+import { CompanyUserRoleEditCommand } from '../transport';
 import { PermissionUtil } from '@project/common/util';
-
 
 @Injectable({ providedIn: 'root' })
 export class CompanyUserMenu extends ListItems<IListItem<void>> {
@@ -33,7 +30,7 @@ export class CompanyUserMenu extends ListItems<IListItem<void>> {
 
         let item: MenuListItem = null;
 
-        item = new ListItem('user.action.roleEdit.roleEdit', CompanyUserMenu.ROLE_EDIT, null, 'fas fa-user-tag mr-2');
+        item = new ListItem('user.action.roleEdit.roleEdit', CompanyUserMenu.ROLE_EDIT, null, 'fas fa-user-tag me-2');
         item.checkEnabled = (item, company, user) => this.isCanRole(company, user);
         item.action = (item, company, user) => transport.send(new CompanyUserRoleEditCommand({ companyId: company.id, userId: user.id }));
         this.add(item);
@@ -48,7 +45,7 @@ export class CompanyUserMenu extends ListItems<IListItem<void>> {
     // --------------------------------------------------------------------------
 
     private isCanRole(company: UserCompany, user: CompanyUser): boolean {
-        return PermissionUtil.isCanCompanyUserEdit(company.roles);
+        return CompanyUtil.isCanUserRoleSet(company);
     }
 }
 

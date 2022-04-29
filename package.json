@@ -16,6 +16,7 @@
     ],
     "private": true,
     "dependencies": {
+        "@abacritt/angularx-social-login": "^1.0.2",
         "@angular/animations": "^13.3.2",
         "@angular/cdk": "^13.3.2",
         "@angular/cli": "^13.3.2",
@@ -36,8 +37,7 @@
         "@ts-core/crypto-gost": "^2.0.1",
         "@ts-core/frontend": "^2.0.3",
         "@types/numeral": "^2.0.2",
-        "angularx-social-login": "^4.1.0",
-        "bootstrap": "^4.6.1",
+        "bootstrap": "^5.1.3",
         "classlist.js": "^1.1.20150312",
         "css-element-queries": "^1.2.3",
         "csshake": "^1.5.3",

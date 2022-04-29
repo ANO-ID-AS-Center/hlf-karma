@@ -31,7 +31,7 @@ export class ProjectUserMenu extends ListItems<IListItem<void>> {
 
         let item: MenuListItem = null;
 
-        item = new ListItem('user.action.roleEdit.roleEdit', ProjectUserMenu.ROLE_EDIT, null, 'fas fa-user-tag mr-2');
+        item = new ListItem('user.action.roleEdit.roleEdit', ProjectUserMenu.ROLE_EDIT, null, 'fas fa-user-tag me-2');
         item.checkEnabled = (item, project, user) => this.isCanRole(project, user);
         item.action = (item, project, user) => transport.send(new ProjectUserRoleEditCommand({ projectId: project.id, userId: user.id }));
         this.add(item);

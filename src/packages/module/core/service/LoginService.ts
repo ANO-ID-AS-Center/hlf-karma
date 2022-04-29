@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@common/platform/api';
 import { LoginBaseService, CookieService, LoginNotGuard, LoginGuard, WindowService, LoginBaseServiceEvent } from '@ts-core/angular';
-import { SocialAuthService, SocialUser } from 'angularx-social-login';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { ILoginDto, ILoginDtoResponse, IInitDtoResponse, LoginResource } from '@common/platform/api/login';
 import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';

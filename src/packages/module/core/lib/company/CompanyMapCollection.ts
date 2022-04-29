@@ -64,8 +64,8 @@ export class CompanyTableSettings implements ICdkTableSettings<UserCompany> {
         this.columns.push({
             name: CompanyTableSettings.COLUMN_NAME_MENU,
             headerId: '',
-            headerClassName: 'pl-3',
-            className: 'pl-3 fas fa-ellipsis-v',
+            headerClassName: 'ps-3',
+            className: 'ps-3 fas fa-ellipsis-v',
             isDisableSort: true,
         });
         this.columns.push({
@@ -99,7 +99,7 @@ export class CompanyTableSettings implements ICdkTableSettings<UserCompany> {
         this.columns.push({
             name: 'name',
             headerId: 'company.preferences.ceo',
-            headerClassName: 'pl-3',
+            headerClassName: 'ps-3',
             isDisableSort: true,
             format: item => item.preferences.ceo
         })

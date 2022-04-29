@@ -11,21 +11,17 @@
 @import 'mat-variables';
 
 @import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/utilities';
+
 @import '~bootstrap/scss/root';
 @import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/containers';
 @import '~bootstrap/scss/grid';
-@import '~bootstrap/scss/utilities/align';
-@import '~bootstrap/scss/utilities/clearfix';
-@import '~bootstrap/scss/utilities/display';
-@import '~bootstrap/scss/utilities/flex';
-@import '~bootstrap/scss/utilities/float';
-@import '~bootstrap/scss/utilities/overflow';
-@import '~bootstrap/scss/utilities/position';
-@import '~bootstrap/scss/utilities/shadows';
-@import '~bootstrap/scss/utilities/sizing';
-@import '~bootstrap/scss/utilities/spacing';
-@import '~bootstrap/scss/utilities/text';
-@import '~bootstrap/scss/utilities/visibility';
+@import '~bootstrap/scss/helpers';
+@import '~bootstrap/scss/utilities/api';
+
+@import '../../../../node_modules/@ts-core/angular/style/mat/vi-mat';
+@import 'mat-variables';
 
 /*--------------------------------------------------------------------------
 //

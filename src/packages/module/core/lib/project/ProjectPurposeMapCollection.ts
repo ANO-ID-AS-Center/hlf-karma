@@ -109,8 +109,8 @@ export class ProjectPurposeTableSettings implements ICdkTableSettings<ProjectPur
         this.columns = [];
         this.columns.push({
             name: 'name',
-            className: 'pl-3',
-            headerClassName: 'pl-3',
+            className: 'ps-3',
+            headerClassName: 'ps-3',
             headerId: 'project.purpose.name',
             isDisableSort: true,
             format: item => item.name
@@ -125,8 +125,8 @@ export class ProjectPurposeTableSettings implements ICdkTableSettings<ProjectPur
             this.columns.push({
                 name: ProjectPurposeTableSettings.COLUMN_NAME_REMOVE,
                 headerId: '',
-                headerClassName: 'pl-3',
-                className: 'pl-3 fas fa-minus-circle mouse-active text-danger',
+                headerClassName: 'ps-3',
+                className: 'ps-3 fas fa-minus-circle mouse-active text-danger',
                 isDisableSort: true,
             });
         }

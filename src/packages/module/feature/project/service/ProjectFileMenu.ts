@@ -32,11 +32,11 @@ export class ProjectFileMenu extends ListItems<IListItem<void>> {
 
         let item: MenuListItem = null;
 
-        item = new ListItem('file.action.open.open', ProjectFileMenu.OPEN, null, 'fas fa-file mr-2');
+        item = new ListItem('file.action.open.open', ProjectFileMenu.OPEN, null, 'fas fa-file me-2');
         item.action = (item, project, file) => transport.send(new FileOpenCommand(file));
         this.add(item);
 
-        item = new ListItem('file.action.remove.remove', ProjectFileMenu.REMOVE, null, 'fas fa-minus-circle test-danger mr-2');
+        item = new ListItem('file.action.remove.remove', ProjectFileMenu.REMOVE, null, 'fas fa-minus-circle test-danger me-2');
         item.checkEnabled = (item, project, file) => this.isCanRemove(project, file);
         item.action = (item, project, file) => transport.send(new FileRemoveCommand(file.id));
         this.add(item);

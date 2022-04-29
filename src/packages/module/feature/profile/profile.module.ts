@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Injector, NgModule, NgModuleRef } from '@angular/core';
+import { NgModule, NgModuleRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from '@shared/shared.module';

@@ -6,7 +6,7 @@
 
     <p class="mouse-inactive" [innerHTML]="tabs.selectedItem.label"></p>
 
-    <form class="row no-gutters mt-3" #form="ngForm" *ngIf="tabs.selectedData === 'UNDEFINED'">
+    <form class="row g-0 mt-3" #form="ngForm" *ngIf="tabs.selectedData === 'UNDEFINED'">
         <div class="col-12">
             <mat-radio-group class="d-flex flex-column" [(ngModel)]="type" required>
                 <mat-radio-button *ngFor="let item of types.collection" [value]="item.data">
@@ -25,15 +25,15 @@
 
 <div class="d-flex flex-shrink-0 p-3 justify-content-end border-top">
     <button class="d-flex" mat-stroked-button [disabled]="!type" *ngIf="tabs.selectedData === 'UNDEFINED'" (click)="tabs.selectedData = type">
-        <span class="text-one-line flex-grow-1 mr-2" [vi-translate]="'profile.quiz.forward'"></span>
+        <span class="text-one-line flex-grow-1 me-2" [vi-translate]="'profile.quiz.forward'"></span>
         <span class="fas fa-arrow-right flex-shrink-0"></span>
     </button>
     <button class="d-flex" mat-stroked-button [disabled]="!type" *ngIf="tabs.selectedData !== 'UNDEFINED'" (click)="tabs.selectedData = 'UNDEFINED'">
-        <span class="fas fa-arrow-left flex-shrink-0 mr-2"></span>
+        <span class="fas fa-arrow-left flex-shrink-0 me-2"></span>
         <span class="text-one-line flex-grow-1" [vi-translate]="'profile.quiz.backward'"></span>
     </button>
-    <button class="d-flex ml-3 text-success" mat-stroked-button [disabled]="!type" *ngIf="tabs.selectedData !== 'UNDEFINED'" (click)="finish()">
-        <span class="fas fa-check flex-shrink-0 mr-2"></span>
+    <button class="d-flex ms-3 text-success" mat-stroked-button [disabled]="!type" *ngIf="tabs.selectedData !== 'UNDEFINED'" (click)="finish()">
+        <span class="fas fa-check flex-shrink-0 me-2"></span>
         <span class="text-one-line flex-grow-1" [vi-translate]="'profile.quiz.finish'"></span>
     </button>
 </div>

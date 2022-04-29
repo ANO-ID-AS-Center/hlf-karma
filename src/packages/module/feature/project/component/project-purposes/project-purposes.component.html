@@ -1,7 +1,7 @@
 <vi-cdk-table-filterable class="d-block background flex-grow-1" [table]="items" [settings]="settings" (cellClicked)="cellClickedHandler($event)">
     <div class="d-flex flex-grow-1 align-items-center p-1 border-top" *ngIf="isEditable">
         <button class="flex-grow-1" mat-button (click)="add()" [disabled]="items?.isLoading">
-            <span class="fas fa-plus mr-2"></span>
+            <span class="fas fa-plus me-2"></span>
             <span [vi-translate]="'project.purpose.add'"></span>
         </button>
     </div>

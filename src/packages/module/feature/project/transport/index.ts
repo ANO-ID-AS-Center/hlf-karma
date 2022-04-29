@@ -1,4 +1,5 @@
 export * from './ProjectAddCommand';
+export * from './ProjectEditCommand';
 export * from './ProjectOpenCommand';
 export * from './ProjectVerifyCommand';
 export * from './ProjectRejectCommand';

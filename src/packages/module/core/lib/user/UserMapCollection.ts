@@ -63,8 +63,8 @@ export class UserTableSettings implements ICdkTableSettings<User> {
         this.columns.push({
             name: UserTableSettings.COLUMN_NAME_MENU,
             headerId: '',
-            headerClassName: 'pl-3',
-            className: 'pl-3 fas fa-ellipsis-v',
+            headerClassName: 'ps-3',
+            className: 'ps-3 fas fa-ellipsis-v',
             isDisableSort: true,
         });
         this.columns.push({

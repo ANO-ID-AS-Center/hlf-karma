@@ -5,12 +5,9 @@ import { Injectable } from '@angular/core';
 import { Transport } from '@ts-core/common/transport';
 import { UserService } from '@core/service';
 import { UserCompany } from '@project/common/platform/user';
-import { LedgerCompanyRole } from '@project/common/ledger/role';
-import { CompanyStatus } from '@project/common/platform/company';
 import { CompanyVerifyCommand, CompanyToVerifyCommand, CompanyRejectCommand, CompanyActivateCommand, CompanyEditCommand } from '../transport';
 import { ProjectAddCommand } from '@feature/project/transport';
-import { PermissionUtil } from '@project/common/util';
-
+import { CompanyUtil } from '@project/common/platform/company';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyMenu extends ListItems<IListItem<void>> {
@@ -39,36 +36,36 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
 
         let item: MenuListItem = null;
 
-        item = new ListItem('company.action.toVerify.toVerify', CompanyMenu.TO_VERIFY, null, 'fas fa-arrow-right mr-2');
+        item = new ListItem('company.action.toVerify.toVerify', CompanyMenu.TO_VERIFY, null, 'fas fa-arrow-right me-2');
         item.checkEnabled = (item, company) => this.isCanToVerify(company);
         item.action = (item, company) => transport.send(new CompanyToVerifyCommand());
         item.className = 'text-success';
         this.add(item);
 
-        item = new ListItem('company.action.activate.activate', CompanyMenu.ACTIVATE, null, 'fas fa-check mr-2');
+        item = new ListItem('company.action.activate.activate', CompanyMenu.ACTIVATE, null, 'fas fa-check me-2');
         item.checkEnabled = (item, company) => this.isCanActivate(company);
         item.action = (item, company) => transport.send(new CompanyActivateCommand());
         item.className = 'text-success';
         this.add(item);
 
-        item = new ListItem('company.action.verify.verify', CompanyMenu.VERIFY, null, 'fas fa-check mr-2');
+        item = new ListItem('company.action.verify.verify', CompanyMenu.VERIFY, null, 'fas fa-check me-2');
         item.checkEnabled = (item, company) => this.isCanVerify(company);
         item.action = (item, company) => transport.send(new CompanyVerifyCommand(company));
         item.className = 'text-success';
         this.add(item);
 
-        item = new ListItem('company.action.reject.reject', CompanyMenu.REJECT, null, 'fas fa-times mr-2');
+        item = new ListItem('company.action.reject.reject', CompanyMenu.REJECT, null, 'fas fa-times me-2');
         item.checkEnabled = (item, company) => this.isCanReject(company);
         item.action = (item, company) => transport.send(new CompanyRejectCommand(company));
         item.className = 'text-danger';
         this.add(item);
 
-        item = new ListItem('company.action.edit.edit', CompanyMenu.EDIT, null, 'fas fa-edit mr-2');
+        item = new ListItem('company.action.edit.edit', CompanyMenu.EDIT, null, 'fas fa-edit me-2');
         item.checkEnabled = (item, company) => this.isCanEdit(company);
         item.action = (item, company) => transport.send(new CompanyEditCommand(company.id));
         this.add(item);
 
-        item = new ListItem('project.action.add.add', CompanyMenu.PROJECT_ADD, null, 'fas fa-cube mr-2');
+        item = new ListItem('project.action.add.add', CompanyMenu.PROJECT_ADD, null, 'fas fa-cube me-2');
         item.checkEnabled = (item, company) => this.isCanProjectAdd(company);
         item.action = (item, company) => transport.send(new ProjectAddCommand());
         this.add(item);
@@ -83,32 +80,22 @@ export class CompanyMenu extends ListItems<IListItem<void>> {
     // --------------------------------------------------------------------------
 
     private isCanEdit(company: UserCompany): boolean {
-        if (this.user.isAdministrator) {
-            return true;
-        }
-        return (company.status === CompanyStatus.DRAFT || company.status === CompanyStatus.REJECTED) && PermissionUtil.isCanCompanyEdit(company.roles);
+        return this.user.isAdministrator || CompanyUtil.isCanEdit(company);
     }
     private isCanVerify(company: UserCompany): boolean {
-        return company.status === CompanyStatus.VERIFICATION_PROCESS && (this.user.isEditor || this.user.isAdministrator);
+        return (this.user.isEditor || this.user.isAdministrator) && CompanyUtil.isCanVerify(company);
     }
     private isCanReject(company: UserCompany): boolean {
-        return company.status === CompanyStatus.VERIFICATION_PROCESS && (this.user.isEditor || this.user.isAdministrator);
+        return (this.user.isEditor || this.user.isAdministrator) && CompanyUtil.isCanReject(company);
     }
     private isCanActivate(company: UserCompany): boolean {
-        if (_.isEmpty(company.roles)) {
-            return false;
-        }
-        return company.status === CompanyStatus.VERIFIED && company.roles.includes(LedgerCompanyRole.COMPANY_MANAGER);
+        return CompanyUtil.isCanActivate(company);
     }
     private isCanToVerify(company: UserCompany): boolean {
-        if (_.isEmpty(company.roles)) {
-            return false;
-        }
-        return (company.status === CompanyStatus.DRAFT || company.status === CompanyStatus.REJECTED) &&
-            (company.roles.includes(LedgerCompanyRole.COMPANY_MANAGER));
+        return CompanyUtil.isCanToVerify(company);
     }
     private isCanProjectAdd(company: UserCompany): boolean {
-        return company.status === CompanyStatus.ACTIVE && company.roles.includes(LedgerCompanyRole.PROJECT_MANAGER)
+        return CompanyUtil.isCanProjectAdd(company);
     }
 }
 

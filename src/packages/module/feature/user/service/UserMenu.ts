@@ -15,8 +15,6 @@ export class UserMenu extends ListItems<IListItem<void>> {
     // --------------------------------------------------------------------------
 
     private static EDIT = 10;
-    private static CRYPTO_KEY_CHANGE = 20;
-    private static REMOVE = 1000;
 
     // --------------------------------------------------------------------------
     //
@@ -29,7 +27,7 @@ export class UserMenu extends ListItems<IListItem<void>> {
 
         let item: IListItem<void> = null;
 
-        item = new ListItem('user.action.edit.edit', UserMenu.EDIT, null, 'fas fa-edit mr-2');
+        item = new ListItem('user.action.edit.edit', UserMenu.EDIT, null, 'fas fa-edit me-2');
         item.checkEnabled = (item, user) => service.isAdministrator || service.isUser(user);
         item.action = (item, user) => transport.send(new UserEditCommand(user.id));
         this.add(item)

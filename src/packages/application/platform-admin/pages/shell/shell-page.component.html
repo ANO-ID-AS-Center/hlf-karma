@@ -20,12 +20,12 @@
     </mat-sidenav>
 
     <mat-sidenav-content #container class="vertical-scroll-only" [vi-scroll-check]="300" (limitExceed)="isNeedScrollButton = $event" style="overflow-x: hidden">
-        <div class="container-fluid h-100 no-gutters pl-0 pr-0 d-flex flex-column">
+        <div class="container-fluid h-100 g-0 ps-0 pe-0 d-flex flex-column">
             <div class="background border-bottom flex-shrink-0">
                 <shell-header class="container flex-shrink-0 my-3" [isNeedMenu]="isNeedSide" (openMenu)="toggleMenu()"></shell-header>
             </div>
 
-            <div class="flex-grow-1 py-3 container">
+            <div class="flex-grow-1 p-3 container">
                 <router-outlet></router-outlet>
             </div>
         </div>

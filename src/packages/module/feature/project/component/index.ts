@@ -1,4 +1,5 @@
 export * from './project-add/project-add.component';
+export * from './project-edit/project-edit.component';
 export * from './project-users/project-users.component';
 export * from './project-files/project-files.component';
 export * from './project-details/project-details.component';

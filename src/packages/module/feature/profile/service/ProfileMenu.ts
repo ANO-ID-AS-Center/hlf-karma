@@ -39,12 +39,12 @@ export class ProfileMenu extends ListItems<IListItem<void>> {
 
         let item: MenuListItem = null;
 
-        item = new MenuListItem('login.login.login', ProfileMenu.LOGIN, null, 'fas fa fa-sign-in-alt mr-2');
+        item = new MenuListItem('login.login.login', ProfileMenu.LOGIN, null, 'fas fa fa-sign-in-alt me-2');
         item.checkEnabled = () => !login.isLoading && !user.isLogined;
         item.action = async () => transport.sendListen(new LoginOpenCommand());
         this.add(item);
 
-        item = new MenuListItem('login.logout.logout', ProfileMenu.LOGIN, null, 'fas fa fa-sign-out-alt mr-2');
+        item = new MenuListItem('login.logout.logout', ProfileMenu.LOGIN, null, 'fas fa fa-sign-out-alt me-2');
         item.checkEnabled = () => !login.isLoading && user.isLogined;
         item.action = async () => {
             await windows.question('login.logout.confirmation').yesNotPromise;
@@ -52,7 +52,7 @@ export class ProfileMenu extends ListItems<IListItem<void>> {
         };
         this.add(item);
 
-        item = new MenuListItem('user.preferences.preferences', ProfileMenu.PREFERENCES, null, 'fas fa fa-cog mr-2');
+        item = new MenuListItem('user.preferences.preferences', ProfileMenu.PREFERENCES, null, 'fas fa fa-cog me-2');
         item.checkEnabled = () => user.isLogined;
         item.action = async () => transport.send(new UserEditCommand(user.user.id));
         this.add(item);
