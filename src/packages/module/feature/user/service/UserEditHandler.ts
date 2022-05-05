@@ -53,8 +53,6 @@ export class UserEditHandler extends TransportCommandAsyncHandler<UserUid, IUser
                     finally {
                         content.isDisabled = false;
                     }
-
-
                     promise.resolve(item);
                     content.close();
                     break;

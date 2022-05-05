@@ -12,11 +12,9 @@
             <vi-select-list [list]="menu"></vi-select-list>
         </mat-nav-list>
 
-        <p
-            class="d-block flex-shrink-0 border-top mat-caption p-2 text-one-line text-center mouse-inactive mt-auto"
-            tabindex="-1"
-            [vi-translate]="'general.footer'"
-        ></p>
+        <div class="flex-shrink-0 text-center p-2 mouse-active border-top background">
+            <p class="font-family-title mat-caption" [innerHTML]="version"></p>
+        </div>
     </mat-sidenav>
 
     <mat-sidenav-content #container class="vertical-scroll-only" [vi-scroll-check]="300" (limitExceed)="isNeedScrollButton = $event" style="overflow-x: hidden">

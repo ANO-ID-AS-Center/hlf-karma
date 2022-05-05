@@ -213,7 +213,9 @@ export class Uploader<T = any> extends Loadable<UploaderEvent, UploaderEventData
         file.file.remove();
         _.remove(this._files, file as any);
         this._hasFiles = !_.isEmpty(this.files);
-        this.observer.next(new ObservableData(UploaderEvent.FILE_REMOVED, { file }));
+        if (!_.isNil(this.observer)) {
+            this.observer.next(new ObservableData(UploaderEvent.FILE_REMOVED, { file }));
+        }
         file.destroy();
     }
 
@@ -245,7 +247,6 @@ export class Uploader<T = any> extends Loadable<UploaderEvent, UploaderEventData
             return;
         }
         super.destroy();
-
         if (!_.isNil(this.filesMap)) {
             this.removeAll();
             this.filesMap = null;
@@ -362,12 +363,12 @@ export interface IFileAddingError {
 export interface IFileContainer<T> {
     file: UploaderFile<T>;
 }
-export interface IFileAdd<T> extends IFileContainer<T> {}
-export interface IFileRemove<T> extends IFileContainer<T> {}
-export interface IFileError<T> extends IUploaderFileError, IFileContainer<T> {}
-export interface IFileCancel<T> extends IUploaderFileCancel, IFileContainer<T> {}
-export interface IFileComplete<T> extends IUploaderFileComplete, IFileContainer<T> {}
-export interface IFileProgress<T> extends IUploaderFileProgress, IFileContainer<T> {}
+export interface IFileAdd<T> extends IFileContainer<T> { }
+export interface IFileRemove<T> extends IFileContainer<T> { }
+export interface IFileError<T> extends IUploaderFileError, IFileContainer<T> { }
+export interface IFileCancel<T> extends IUploaderFileCancel, IFileContainer<T> { }
+export interface IFileComplete<T> extends IUploaderFileComplete, IFileContainer<T> { }
+export interface IFileProgress<T> extends IUploaderFileProgress, IFileContainer<T> { }
 
 export type UploaderEventData<T> =
     | IFilesAdded<T>

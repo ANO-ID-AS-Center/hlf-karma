@@ -2,18 +2,17 @@
     "general": {
         "uid": "UID",
         "menu": "Меню",
+        "image": "Изображение",
         "add": "Добавить",
         "open": "Открыть",
         "edit": "Редактировать",
-        "save": {
-            "save": "Сохранить"
-        },
+        "save": "Сохранить",
         "remove": "Удалить",
         "selected": "Выбрано",
         "description": "Описание",
         "createdDate": "Создание",
         "header": "Platform Admin",
-        "footer": "<a href='https://platform-admin.com' target='_blank' tabindex='-1'>Platform Admin</a> © 2022"
+        "footer": "{version} от {versionDate}"
     },
     "serviceWorker": {
         "update": {

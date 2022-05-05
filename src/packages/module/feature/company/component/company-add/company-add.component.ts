@@ -11,6 +11,8 @@ import { ICompanyAddDto } from '@project/common/platform/api/company';
 import { PaymentAggregator, PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
 import { PipeService } from '@core/service';
 import { UserCompany } from '@project/common/platform/user';
+import { ImageCropCommand } from '@feature/image-crop/transport';
+import { Transport } from '@ts-core/common/transport';
 
 @Component({
     selector: 'company-add',
@@ -42,6 +44,7 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
 
     constructor(
         container: ViewContainerRef,
+        private transport: Transport,
         private pipe: PipeService,
         private api: Client,
         private windows: WindowService,
@@ -98,6 +101,11 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
     public async submit(): Promise<void> {
         await this.windows.question('company.action.save.confirmation').yesNotPromise;
         this.emit(CompanyAddComponent.EVENT_SUBMITTED);
+    }
+
+    public async pictureEdit(): Promise<void> {
+        let item = await this.transport.sendListen(new ImageCropCommand({ imageBase64: this.company.preferences.picture }));
+        this.company.preferences.picture = item.source;
     }
 
     public async geoSelect(): Promise<void> {

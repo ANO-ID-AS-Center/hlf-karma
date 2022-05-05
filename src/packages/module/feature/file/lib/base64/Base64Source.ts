@@ -42,7 +42,7 @@ export class Base64Source {
             return;
         }
         let index = source.indexOf(Base64Source.PREFIX);
-        this.source = index == -1 ? source : source.substr(index + Base64Source.PREFIX.length);
+        this.source = index === -1 ? source : source.substr(index + Base64Source.PREFIX.length);
     }
 
     //--------------------------------------------------------------------------
@@ -52,6 +52,6 @@ export class Base64Source {
     //--------------------------------------------------------------------------
 
     public get image(): string {
-        return 'data:image/jpeg;base64,' + this.source.replace(/(\r\n|\n|\r)/gm, '');
+        return 'data:image/png;base64,' + this.source.replace(/(\r\n|\n|\r)/gm, '');
     }
 }

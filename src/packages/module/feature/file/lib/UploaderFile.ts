@@ -22,7 +22,7 @@ export class UploaderFile<T> extends Loadable<UploaderFileEvent, UploaderFileEve
             }
         }
         if (_.isNil(item)) {
-            item = ExtendedError.create(new Error(response));
+            item = ExtendedError.create(new Error(!_.isEmpty(response) ? response : 'Unknown file error'));
         }
         return item;
     }

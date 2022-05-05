@@ -78,7 +78,7 @@ function initializerFactory(settings: SettingsService): () => Promise<void> {
 }
 
 function transportFactory(logger: ILogger, loader: LazyModuleLoader<ITransportLazyModuleData>): Transport {
-    let item = new TransportLazy(logger, loader);
+    let item = new TransportLazy(logger, loader, { defaultTimeout: DateUtil.MILISECONDS_DAY });
     loader.modules.addItems(TRANSPORT_LAZY_MODULES);
     return item;
 }

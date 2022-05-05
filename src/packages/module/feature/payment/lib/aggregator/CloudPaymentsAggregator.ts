@@ -32,22 +32,21 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
             publicId: item.aggregator.uid,
             currency: item.currency,
             accountId: item.details,
-            description: this.pipe.language.translate(`payment.description.${item.target.type === CoinObjectType.COMPANY ? 'company' : 'project'}`, { name: item.target.value.preferences.title })
-        } as any;
-
+            description: this.pipe.language.translate(`payment.description.${item.target.type === CoinObjectType.COMPANY ? 'company' : 'project'}`, { name: item.target.value.preferences.title }),
+            email: null
+        }
 
         if (!_.isNil(this.user.preferences)) {
             options.email = this.user.preferences.email;
-            // skin: 'mini'
-            // description: 'Оплата товаров в example.com',
-            // data: {myProp: 'myProp value'}
         }
 
         let promise = PromiseHandler.create<IPaymentWidgetOpenDtoResponse, ExtendedError>();
         let widget = new window['cp'].CloudPayments();
         widget.pay('charge', options,
             {
-                onFail: (reason, options) => promise.reject(new ExtendedError(reason)),
+                onFail: (reason, options) => {
+                    promise.reject(new ExtendedError(reason));
+                },
                 onSuccess: (options) => promise.resolve({}),
                 onComplete: (result, options) => {
                     if (result.success) {

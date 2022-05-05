@@ -10,6 +10,7 @@ import { Client } from '@project/common/platform/api';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { IProjectAddDto } from '@project/common/platform/api/project';
 import { UserProject } from '@project/common/platform/user';
+import { ImageCropCommand } from '@feature/image-crop/transport';
 
 @Component({
     selector: 'project-add',
@@ -66,6 +67,11 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
     public async submit(): Promise<void> {
         await this.windows.question('project.action.save.confirmation').yesNotPromise;
         this.emit(ProjectAddComponent.EVENT_SUBMITTED);
+    }
+
+    public async pictureEdit(): Promise<void> {
+        let item = await this.transport.sendListen(new ImageCropCommand({ imageBase64: this.project.preferences.picture }));
+        this.project.preferences.picture = item.source;
     }
 
     public async geoSelect(): Promise<void> {

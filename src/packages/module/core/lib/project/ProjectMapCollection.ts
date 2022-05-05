@@ -67,6 +67,16 @@ export class ProjectTableSettings implements ICdkTableSettings<UserProject> {
             isDisableSort: true,
         });
         this.columns.push({
+            name: 'picture',
+            headerId: '',
+            isImage: true,
+            cellStyleName: () => {
+                return { width: '21px' };
+            },
+            cellClassName: 'border rounded my-2',
+            format: item => item.preferences.picture
+        })
+        this.columns.push({
             name: 'title',
             headerId: 'project.preferences.title',
             isDisableSort: true,

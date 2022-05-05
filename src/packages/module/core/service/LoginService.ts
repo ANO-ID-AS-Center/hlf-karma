@@ -49,7 +49,6 @@ export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoR
     //--------------------------------------------------------------------------
 
     protected loginRequest(data: ILoginDto): Promise<ILoginDtoResponse> {
-        this._resource = data.resource;
         return this.api.login(data);
     }
 
@@ -63,9 +62,6 @@ export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoR
     }
 
     protected loginSidRequest(): Promise<IInitDtoResponse> {
-        if (!this._resource) {
-            this._resource = this.getSavedResource();
-        }
         this.api.sid = this.sid;
         return this.api.init();
     }
@@ -127,10 +123,6 @@ export class LoginService extends LoginBaseService<LoginServiceEvent, ILoginDtoR
 
     protected getSavedSid(): string {
         return this.cookies.get('sid');
-    }
-
-    protected getSavedResource(): string {
-        return this.cookies.get('resource');
     }
 
     //--------------------------------------------------------------------------

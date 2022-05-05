@@ -18,7 +18,7 @@ export class Base64Util {
         loader.addToQueue([file]);
 
         let item = loader.queue[loader.queue.length - 1];
-        if (Base64Util.isBase64File(item)) {
+        if (!Base64Util.isBase64File(item)) {
             return null;
         }
         if (base64 instanceof Base64Source) {
@@ -45,6 +45,6 @@ export class Base64Util {
     }
 
     public static isBase64File(item: FileItem): boolean {
-        return item ? item._file instanceof Base64File : false;
+        return !_.isNil(item) ? item._file instanceof Base64File : false;
     }
 }
