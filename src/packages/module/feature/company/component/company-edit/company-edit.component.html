@@ -9,9 +9,8 @@
 <mat-progress-bar class="border flex-shrink-0" [mode]="isDisabled ? 'indeterminate' : 'determinate'"></mat-progress-bar>
 
 <form class="flex-grow-1 px-3 pt-3 pb-2 row g-0 vertical-scroll-only" #form="ngForm">
-
     <company-nalog-preferences [company]="company"></company-nalog-preferences>
-    
+
     <div class="col-12">
         <mat-form-field class="d-block">
             <input
@@ -86,7 +85,10 @@
             <mat-select #paymentAggregatorTypeInput="ngModel" name="type" [(ngModel)]="company.paymentAggregator.type" required>
                 <mat-option *ngFor="let item of paymentAggregatorTypes.collection" [value]="item.data" [innerHTML]="item.label"></mat-option>
             </mat-select>
-            <mat-error *ngIf="!(paymentAggregatorTypeInput.valid || !paymentAggregatorTypeInput.touched)" [innerHTML]="paymentAggregatorTypeInput.errors | viNgModelError"></mat-error>
+            <mat-error
+                *ngIf="!(paymentAggregatorTypeInput.valid || !paymentAggregatorTypeInput.touched)"
+                [innerHTML]="paymentAggregatorTypeInput.errors | viNgModelError"
+            ></mat-error>
         </mat-form-field>
     </div>
 
@@ -103,7 +105,10 @@
                 [disabled]="isDisabled"
             />
             <mat-placeholder [vi-translate]="'payment.aggregator.uid'"></mat-placeholder>
-            <mat-error *ngIf="!(paymentAggregatorUidInput.valid || !paymentAggregatorUidInput.touched)" [innerHTML]="paymentAggregatorUidInput.errors | viNgModelError"></mat-error>
+            <mat-error
+                *ngIf="!(paymentAggregatorUidInput.valid || !paymentAggregatorUidInput.touched)"
+                [innerHTML]="paymentAggregatorUidInput.errors | viNgModelError"
+            ></mat-error>
         </mat-form-field>
     </div>
 
@@ -120,8 +125,20 @@
                 [disabled]="isDisabled"
             />
             <mat-placeholder [vi-translate]="'payment.aggregator.key'"></mat-placeholder>
-            <mat-error *ngIf="!(paymentAggregatorKeyInput.valid || !paymentAggregatorKeyInput.touched)" [innerHTML]="paymentAggregatorKeyInput.errors | viNgModelError"></mat-error>
+            <mat-error
+                *ngIf="!(paymentAggregatorKeyInput.valid || !paymentAggregatorKeyInput.touched)"
+                [innerHTML]="paymentAggregatorKeyInput.errors | viNgModelError"
+            ></mat-error>
         </mat-form-field>
     </div>
+
+    <ckeditor
+        class="col-12 mt-3"
+        required
+        name="description"
+        [(ngModel)]="company.preferences.description"
+        [editor]="descriptionEditor"
+        [config]="ckeditor.descriptionSettings"
+    ></ckeditor>
 
 </form>

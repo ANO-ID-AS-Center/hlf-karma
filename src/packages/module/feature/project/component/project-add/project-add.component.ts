@@ -1,9 +1,8 @@
-import { Component, ViewContainerRef } from '@angular/core';
-import { SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
-import { PipeService } from '@core/service';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { IRouterDeactivatable, SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
+import { LoginService, PipeService, SettingsService } from '@core/service';
 import * as _ from 'lodash';
 import { ISerializable } from '@ts-core/common';
-import { } from '@common/platform/project';
 import { Transport } from '@ts-core/common/transport';
 import { Project, ProjectPreferences, ProjectTag } from '@project/common/platform/project';
 import { Client } from '@project/common/platform/api';
@@ -11,12 +10,17 @@ import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { IProjectAddDto } from '@project/common/platform/api/project';
 import { UserProject } from '@project/common/platform/user';
 import { ImageCropCommand } from '@feature/image-crop/transport';
+import * as Editor from '@feature/ckeditor/script/ckeditor.js';
+import { UrlTree } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ProjectOpenCommand } from '../../transport';
+import { RouterService, CkeditorService } from '@core/service';
 
 @Component({
     selector: 'project-add',
     templateUrl: 'project-add.component.html'
 })
-export class ProjectAddComponent extends ProjectBaseComponent implements ISerializable<IProjectAddDto> {
+export class ProjectAddComponent extends ProjectBaseComponent implements IRouterDeactivatable, ISerializable<IProjectAddDto> {
     //--------------------------------------------------------------------------
     //
     //  Constants
@@ -31,7 +35,13 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
     //
     //--------------------------------------------------------------------------
 
+    @ViewChild('form', { read: NgForm, static: false })
+    private form: NgForm;
+
+    @ViewChild('myEditor') myEditor: any;
     public tagsAll: SelectListItems<SelectListItem<ProjectTag>>;
+    public descriptionEditor: any;
+    public isForceDeactivate: boolean;
 
     //--------------------------------------------------------------------------
     //
@@ -41,10 +51,12 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
 
     constructor(
         container: ViewContainerRef,
+        pipe: PipeService,
         private transport: Transport,
-        private pipe: PipeService,
         private api: Client,
+        private router: RouterService,
         private windows: WindowService,
+        public ckeditor: CkeditorService,
     ) {
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
@@ -56,6 +68,9 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
         this.project = new UserProject();
         this.project.purposes = [];
         this.project.preferences = new ProjectPreferences();
+        this.project.preferences.description = '';
+
+        this.descriptionEditor = Editor;
     }
 
     //--------------------------------------------------------------------------
@@ -64,9 +79,22 @@ export class ProjectAddComponent extends ProjectBaseComponent implements ISerial
     //
     //--------------------------------------------------------------------------
 
+    public async isCanDeactivate(): Promise<boolean | UrlTree> {
+        if (!_.isNil(this.form) && !this.form.dirty) {
+            return true;
+        }
+        await this.windows.question('project.add.exitConfirmation').yesNotPromise;
+        this.isForceDeactivate = true;
+        return true;
+    }
+
     public async submit(): Promise<void> {
         await this.windows.question('project.action.save.confirmation').yesNotPromise;
-        this.emit(ProjectAddComponent.EVENT_SUBMITTED);
+        let item = await this.api.projectAdd(this.serialize());
+
+        this.isForceDeactivate = true;
+        this.transport.send(new ProjectOpenCommand(item.id));
+        this.router.navigate(RouterService.COMPANY_URL);
     }
 
     public async pictureEdit(): Promise<void> {

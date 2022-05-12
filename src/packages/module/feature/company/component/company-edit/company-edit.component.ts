@@ -1,7 +1,6 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
-import { IWindowContent, SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
-import { LanguageService } from '@ts-core/frontend/language';
-import { CompanyService, PipeService, UserService } from '@core/service';
+import { SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
+import { CkeditorService, PipeService, UserService } from '@core/service';
 import * as _ from 'lodash';
 import { CompanyPreferences, CompanyStatus } from '@common/platform/company';
 import { ISerializable } from '@ts-core/common';
@@ -9,6 +8,7 @@ import { ICompanyEditDto } from '@common/platform/api/company';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { UserCompany } from '@project/common/platform/user';
 import { PaymentAggregator, PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
+import * as Editor from '@feature/ckeditor/script/ckeditor.js';
 
 @Component({
     selector: 'company-edit',
@@ -32,6 +32,7 @@ export class CompanyEditComponent extends CompanyBaseComponent implements ISeria
     public status: CompanyStatus;
     public statuses: SelectListItems<SelectListItem<CompanyStatus>>;
 
+    public descriptionEditor: any;
     public paymentAggregatorTypes: SelectListItems<SelectListItem<PaymentAggregatorType>>;
 
     //--------------------------------------------------------------------------
@@ -42,20 +43,23 @@ export class CompanyEditComponent extends CompanyBaseComponent implements ISeria
 
     constructor(
         container: ViewContainerRef,
-        private pipe: PipeService,
+        pipe: PipeService,
         private user: UserService,
         private windows: WindowService,
+        public ckeditor: CkeditorService,
     ) {
         super(container);
         ViewUtil.addClasses(container, 'd-flex flex-column');
 
-        this.statuses = this.addDestroyable(new SelectListItems(this.pipe.language));
+        this.statuses = this.addDestroyable(new SelectListItems(pipe.language));
         Object.values(CompanyStatus).forEach((item, index) => this.statuses.add(new SelectListItem(`company.status.${item}`, index, item)));
         this.statuses.complete();
 
-        this.paymentAggregatorTypes = this.addDestroyable(new SelectListItems(this.pipe.language));
+        this.paymentAggregatorTypes = this.addDestroyable(new SelectListItems(pipe.language));
         Object.values(PaymentAggregatorType).forEach((item, index) => this.paymentAggregatorTypes.add(new SelectListItem(`payment.aggregator.type.${item}`, index, item)));
         this.paymentAggregatorTypes.complete();
+
+        this.descriptionEditor = Editor;
     }
 
     //--------------------------------------------------------------------------

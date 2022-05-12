@@ -1,23 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Client } from '@project/common/platform/api';
-import { NotificationService, WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
-import { PromiseHandler } from '@ts-core/common/promise';
-import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
+import { Transport, TransportCommandHandler } from '@ts-core/common/transport';
 import * as _ from 'lodash';
-import { takeUntil } from 'rxjs';
-import { ProjectAddComponent } from '../component/project-add/project-add.component';
-import { ProjectAddCommand, IProjectAddDtoResponse } from '../transport';
+import { RouterService } from '@core/service';
+import { ProjectAddCommand } from '../transport';
 
 @Injectable({ providedIn: 'root' })
-export class ProjectAddHandler extends TransportCommandAsyncHandler<void, IProjectAddDtoResponse, ProjectAddCommand> {
+export class ProjectAddHandler extends TransportCommandHandler<void, ProjectAddCommand> {
     // --------------------------------------------------------------------------
     //
     //  Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(transport: Transport, logger: Logger, private notifications: NotificationService, private windows: WindowService, private api: Client) {
+    constructor(transport: Transport, logger: Logger, private router: RouterService) {
         super(logger, transport, ProjectAddCommand.NAME);
     }
 
@@ -27,7 +23,9 @@ export class ProjectAddHandler extends TransportCommandAsyncHandler<void, IProje
     //
     // --------------------------------------------------------------------------
 
-    protected async execute(): Promise<IProjectAddDtoResponse> {
+    protected async execute(): Promise<void> {
+        this.router.navigate(RouterService.PROJECT_ADD_URL);
+        /*
         let windowId = 'projectAdd';
         if (this.windows.setOnTop(windowId)) {
             return Promise.reject('Already opened');
@@ -53,6 +51,6 @@ export class ProjectAddHandler extends TransportCommandAsyncHandler<void, IProje
             }
         });
         return promise.promise;
-
+        */
     }
 }

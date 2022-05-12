@@ -1,7 +1,6 @@
-import { Project } from '@project/common/platform/project';
-import { TransportCommandAsync } from '@ts-core/common/transport';
+import { TransportCommand } from '@ts-core/common/transport';
 
-export class ProjectAddCommand extends TransportCommandAsync<void, IProjectAddDtoResponse> {
+export class ProjectAddCommand extends TransportCommand<void> {
     // --------------------------------------------------------------------------
     //
     //  Public Static Properties
@@ -20,5 +19,3 @@ export class ProjectAddCommand extends TransportCommandAsync<void, IProjectAddDt
         super(ProjectAddCommand.NAME);
     }
 }
-
-export type IProjectAddDtoResponse = Project;

@@ -54,6 +54,7 @@
                             "htdocs/common/assets/font/awesome/css/all.css",
                             "htdocs/platform-admin/assets/font/google/roboto/all.css",
 
+                            "src/packages/module/feature/ckeditor/style/ckeditor.css",
                             "src/packages/application/platform-admin/style/preloader.css",
                             "src/packages/application/platform-admin/style/mat.scss"
                         ],

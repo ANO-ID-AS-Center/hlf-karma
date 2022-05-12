@@ -18,6 +18,7 @@ import { CompanyAddComponent, CompanyUserRoleEditComponent, CompanyUsersComponen
 import { CompanyOpenHandler } from './service/CompanyOpenHandler';
 import { PaymentModule } from '@feature/payment';
 import { CompanyEditHandler } from './service/CompanyEditHandler';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 //--------------------------------------------------------------------------
 //
@@ -40,6 +41,7 @@ const declarations = [CompanyAddComponent, CompanyEditComponent, CompanyUserAddC
         MatMenuModule,
         MatProgressBarModule,
         MatDatepickerModule,
+        CKEditorModule,
         PaymentModule,
         SharedModule
     ],

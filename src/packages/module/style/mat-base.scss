@@ -125,6 +125,7 @@ mat-expansion-panel-header {
     $border-color: map-get($foreground, divider);
 
     $text-base: map-get($foreground, base);
+    $text-warn: mat-color($warn);
     $text-primary: mat-color($primary, $text-primary-default);
 
     @if $is-dark {
@@ -164,6 +165,39 @@ mat-expansion-panel-header {
         }
     }
 
+    ckeditor {
+        .ck-toolbar {
+            border-color: $border-color !important;
+            border-top-left-radius: $border-radius !important;
+            border-top-right-radius: $border-radius !important;
+        }
+
+        /*
+        .ck-editor__editable_inline {
+            min-height: 500px !important;
+        }
+        */
+
+        .ck-content {
+            border-top-left-radius: 0 !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-left-radius: $border-radius !important;
+            border-bottom-right-radius: $border-radius !important;
+
+            &.ck-focused {
+                border-color: $text-primary !important;
+            }
+            &.ck-blurred {
+                border-color: $border-color !important;
+            }
+        }
+
+        &.ng-touched.ng-invalid {
+            .ck-content {
+                border-color: $text-warn !important;
+            }
+        }
+    }
     /*
     .mat-dialog-container,
     vi-notification {

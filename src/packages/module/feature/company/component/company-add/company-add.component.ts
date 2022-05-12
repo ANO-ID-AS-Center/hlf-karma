@@ -9,10 +9,11 @@ import { ObjectUtil } from '@ts-core/common/util';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { ICompanyAddDto } from '@project/common/platform/api/company';
 import { PaymentAggregator, PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
-import { PipeService } from '@core/service';
+import { PipeService, CkeditorService } from '@core/service';
 import { UserCompany } from '@project/common/platform/user';
 import { ImageCropCommand } from '@feature/image-crop/transport';
 import { Transport } from '@ts-core/common/transport';
+import * as Editor from '@feature/ckeditor/script/ckeditor.js';
 
 @Component({
     selector: 'company-add',
@@ -35,6 +36,8 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
 
     public isNalogLoaded: boolean;
     public paymentAggregatorTypes: SelectListItems<SelectListItem<PaymentAggregatorType>>;
+    public descriptionEditor: any;
+    public isForceDeactivate: boolean;
 
     //--------------------------------------------------------------------------
     //
@@ -48,6 +51,7 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
         private pipe: PipeService,
         private api: Client,
         private windows: WindowService,
+        public ckeditor: CkeditorService,
     ) {
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
@@ -64,6 +68,8 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
         this.company.paymentAggregator.type = PaymentAggregatorType.CLOUD_PAYMENTS;
         this.company.paymentAggregator.uid = 'pk_7cf84ef18b04bbe7611e317958dc0';
         this.company.paymentAggregator.key = '484fad603e581acc459923ac9476e4b9';
+
+        this.descriptionEditor = Editor;
     }
 
     //--------------------------------------------------------------------------

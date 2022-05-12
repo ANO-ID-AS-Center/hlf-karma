@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { ProjectAddComponent, ProjectEditComponent, ProjectUserAddComponent, ProjectFilesComponent, ProjectContainerComponent, ProjectPurposesComponent, ProjectDetailsComponent, ProjectUsersComponent, ProjectUserRoleEditComponent, ProjectPurposeAddComponent } from './component';
 import { PaymentModule } from '@feature/payment';
 import { ProjectTagPipe } from './pipe';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 //--------------------------------------------------------------------------
 //
@@ -39,6 +40,7 @@ const declarations = [ProjectTagPipe, ProjectUserAddComponent, ProjectEditCompon
         MatMenuModule,
         MatProgressBarModule,
         MatDatepickerModule,
+        CKEditorModule,
         PaymentModule,
         SharedModule
     ],

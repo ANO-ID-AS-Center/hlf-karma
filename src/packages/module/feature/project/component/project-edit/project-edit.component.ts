@@ -1,6 +1,6 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
 import { SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
-import { PipeService, UserService } from '@core/service';
+import { PipeService, UserService, CkeditorService } from '@core/service';
 import * as _ from 'lodash';
 import { ProjectPreferences, ProjectTag, ProjectStatus } from '@common/platform/project';
 import { ISerializable } from '@ts-core/common';
@@ -8,6 +8,7 @@ import { IProjectEditDto } from '@common/platform/api/project';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { UserProject } from '@project/common/platform/user';
 import { PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
+import * as Editor from '@feature/ckeditor/script/ckeditor.js';
 
 @Component({
     selector: 'project-edit',
@@ -33,6 +34,7 @@ export class ProjectEditComponent extends ProjectBaseComponent implements ISeria
     public status: ProjectStatus;
     public statuses: SelectListItems<SelectListItem<ProjectStatus>>;
 
+    public descriptionEditor: any;
     public paymentAggregatorTypes: SelectListItems<SelectListItem<PaymentAggregatorType>>;
 
     //--------------------------------------------------------------------------
@@ -46,6 +48,7 @@ export class ProjectEditComponent extends ProjectBaseComponent implements ISeria
         private pipe: PipeService,
         private user: UserService,
         private windows: WindowService,
+        public ckeditor: CkeditorService,
     ) {
         super(container);
         ViewUtil.addClasses(container, 'd-flex flex-column');
@@ -61,6 +64,8 @@ export class ProjectEditComponent extends ProjectBaseComponent implements ISeria
         this.paymentAggregatorTypes = this.addDestroyable(new SelectListItems(this.pipe.language));
         Object.values(PaymentAggregatorType).forEach((item, index) => this.paymentAggregatorTypes.add(new SelectListItem(`payment.aggregator.type.${item}`, index, item)));
         this.paymentAggregatorTypes.complete();
+
+        this.descriptionEditor = Editor;
     }
 
     //--------------------------------------------------------------------------
