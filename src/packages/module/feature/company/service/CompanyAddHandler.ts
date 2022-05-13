@@ -1,24 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Client } from '@project/common/platform/api';
-import { NotificationService, WindowConfig, WindowEvent, WindowService } from '@ts-core/angular';
 import { Logger } from '@ts-core/common/logger';
-import { PromiseHandler } from '@ts-core/common/promise';
-import { Transport, TransportCommandAsyncHandler } from '@ts-core/common/transport';
+import { Transport, TransportCommandHandler } from '@ts-core/common/transport';
 import * as _ from 'lodash';
-import { takeUntil } from 'rxjs';
-import { CompanyService } from '@core/service';
-import { CompanyAddComponent } from '../component/company-add/company-add.component';
-import { CompanyAddCommand, ICompanyAddDtoResponse } from '../transport';
+import { RouterService } from '@core/service';
+import { CompanyAddCommand } from '../transport';
 
 @Injectable({ providedIn: 'root' })
-export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompanyAddDtoResponse, CompanyAddCommand> {
+export class CompanyAddHandler extends TransportCommandHandler<void, CompanyAddCommand> {
     // --------------------------------------------------------------------------
     //
     //  Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(transport: Transport, logger: Logger, private windows: WindowService, private notifications: NotificationService, private company: CompanyService, private api: Client) {
+    constructor(transport: Transport, logger: Logger, private router: RouterService) {
         super(logger, transport, CompanyAddCommand.NAME);
     }
 
@@ -28,6 +23,11 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
     //
     // --------------------------------------------------------------------------
 
+    protected async execute(): Promise<void> {
+        this.router.navigate(RouterService.COMPANY_ADD_URL);
+    }
+
+    /*
     protected async execute(): Promise<ICompanyAddDtoResponse> {
         let windowId = 'companyAdd';
         if (this.windows.setOnTop(windowId)) {
@@ -55,4 +55,5 @@ export class CompanyAddHandler extends TransportCommandAsyncHandler<void, ICompa
         });
         return promise.promise;
     }
+    */
 }

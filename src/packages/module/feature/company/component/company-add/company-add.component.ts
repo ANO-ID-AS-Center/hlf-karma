@@ -1,38 +1,33 @@
-import { Component, ViewContainerRef } from '@angular/core';
-import { SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { IRouterDeactivatable, SelectListItem, SelectListItems, ViewUtil, WindowService } from '@ts-core/angular';
 import * as _ from 'lodash';
 import { ISerializable } from '@ts-core/common';
-import { } from '@common/platform/company';
-import { Company, CompanyPreferences } from '@project/common/platform/company';
+import { CompanyPreferences } from '@project/common/platform/company';
 import { Client } from '@project/common/platform/api';
 import { ObjectUtil } from '@ts-core/common/util';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { ICompanyAddDto } from '@project/common/platform/api/company';
 import { PaymentAggregator, PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
-import { PipeService, CkeditorService } from '@core/service';
+import { PipeService, RouterService, CkeditorService, CompanyService } from '@core/service';
 import { UserCompany } from '@project/common/platform/user';
 import { ImageCropCommand } from '@feature/image-crop/transport';
 import { Transport } from '@ts-core/common/transport';
-import * as Editor from '@feature/ckeditor/script/ckeditor.js';
+import Editor from '@feature/ckeditor/script/ckeditor.js';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'company-add',
     templateUrl: 'company-add.component.html'
 })
-export class CompanyAddComponent extends CompanyBaseComponent implements ISerializable<ICompanyAddDto> {
-    //--------------------------------------------------------------------------
-    //
-    //  Constants
-    //
-    //--------------------------------------------------------------------------
-
-    public static EVENT_SUBMITTED = 'EVENT_SUBMITTED';
-
+export class CompanyAddComponent extends CompanyBaseComponent implements IRouterDeactivatable, ISerializable<ICompanyAddDto> {
     //--------------------------------------------------------------------------
     //
     // 	Properties
     //
     //--------------------------------------------------------------------------
+
+    @ViewChild('form', { read: NgForm, static: false })
+    private form: NgForm;
 
     public isNalogLoaded: boolean;
     public paymentAggregatorTypes: SelectListItems<SelectListItem<PaymentAggregatorType>>;
@@ -51,6 +46,8 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
         private pipe: PipeService,
         private api: Client,
         private windows: WindowService,
+        private service: CompanyService,
+        private router: RouterService,
         public ckeditor: CkeditorService,
     ) {
         super(container);
@@ -63,6 +60,7 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
         this.company = new UserCompany();
         this.company.preferences = new CompanyPreferences();
         this.company.preferences.inn = '7751161170';
+        this.company.preferences.description = '';
 
         this.company.paymentAggregator = new PaymentAggregator();
         this.company.paymentAggregator.type = PaymentAggregatorType.CLOUD_PAYMENTS;
@@ -104,9 +102,21 @@ export class CompanyAddComponent extends CompanyBaseComponent implements ISerial
         }
     }
 
+    public async isCanDeactivate(): Promise<boolean> {
+        if (!_.isNil(this.form) && !this.form.dirty) {
+            return true;
+        }
+        await this.windows.question('project.add.exitConfirmation').yesNotPromise;
+        this.isForceDeactivate = true;
+        return true;
+    }
+
     public async submit(): Promise<void> {
         await this.windows.question('company.action.save.confirmation').yesNotPromise;
-        this.emit(CompanyAddComponent.EVENT_SUBMITTED);
+
+        this.service.company = await this.api.companyAdd(this.serialize());
+        this.isForceDeactivate = true;
+        this.router.navigate(RouterService.COMPANY_URL);
     }
 
     public async pictureEdit(): Promise<void> {

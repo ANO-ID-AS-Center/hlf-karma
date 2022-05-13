@@ -10,8 +10,7 @@ import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { IProjectAddDto } from '@project/common/platform/api/project';
 import { UserProject } from '@project/common/platform/user';
 import { ImageCropCommand } from '@feature/image-crop/transport';
-import * as Editor from '@feature/ckeditor/script/ckeditor.js';
-import { UrlTree } from '@angular/router';
+import Editor from '@feature/ckeditor/script/ckeditor.js';
 import { NgForm } from '@angular/forms';
 import { ProjectOpenCommand } from '../../transport';
 import { RouterService, CkeditorService } from '@core/service';
@@ -21,14 +20,6 @@ import { RouterService, CkeditorService } from '@core/service';
     templateUrl: 'project-add.component.html'
 })
 export class ProjectAddComponent extends ProjectBaseComponent implements IRouterDeactivatable, ISerializable<IProjectAddDto> {
-    //--------------------------------------------------------------------------
-    //
-    //  Constants
-    //
-    //--------------------------------------------------------------------------
-
-    public static EVENT_SUBMITTED = 'EVENT_SUBMITTED';
-
     //--------------------------------------------------------------------------
     //
     // 	Properties
@@ -79,7 +70,7 @@ export class ProjectAddComponent extends ProjectBaseComponent implements IRouter
     //
     //--------------------------------------------------------------------------
 
-    public async isCanDeactivate(): Promise<boolean | UrlTree> {
+    public async isCanDeactivate(): Promise<boolean> {
         if (!_.isNil(this.form) && !this.form.dirty) {
             return true;
         }

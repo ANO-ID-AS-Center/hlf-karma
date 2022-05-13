@@ -21,6 +21,7 @@ export class ProfileQuizComponent extends IWindowContent implements ISerializabl
     //--------------------------------------------------------------------------
 
     public static EVENT_SUBMITTED = 'EVENT_SUBMITTED';
+
     //--------------------------------------------------------------------------
     //
     // 	Properties
@@ -83,7 +84,6 @@ export class ProfileQuizComponent extends IWindowContent implements ISerializabl
 
     private commitUserProperties(): void {
         let value = null;
-
         this.type = this.tabs.selectedData = this.user.user.type;
     }
 

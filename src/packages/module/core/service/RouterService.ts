@@ -16,11 +16,14 @@ export class RouterService extends RouterBaseService {
     public static LOGIN_URL = 'login';
     public static USER_URL = 'user';
     public static USERS_URL = 'users';
+
     public static COMPANY_URL = 'company';
+    public static COMPANY_ADD_URL = 'companyAdd';
+    public static COMPANIES_URL = 'companies';
+
     public static PROJECTS_URL = 'projects';
     public static PROJECT_ADD_URL = 'projectAdd';
     public static PAYMENTS_URL = 'payments';
-    public static COMPANIES_URL = 'companies';
 
     public static MESSAGE_URL = 'message';
 

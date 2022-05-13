@@ -8,7 +8,7 @@ import { IProjectEditDto } from '@common/platform/api/project';
 import { ProjectBaseComponent } from '../ProjectBaseComponent';
 import { UserProject } from '@project/common/platform/user';
 import { PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
-import * as Editor from '@feature/ckeditor/script/ckeditor.js';
+import Editor from '@feature/ckeditor/script/ckeditor.js';
 
 @Component({
     selector: 'project-edit',

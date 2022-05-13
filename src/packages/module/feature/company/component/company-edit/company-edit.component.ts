@@ -8,7 +8,7 @@ import { ICompanyEditDto } from '@common/platform/api/company';
 import { CompanyBaseComponent } from '../CompanyBaseComponent';
 import { UserCompany } from '@project/common/platform/user';
 import { PaymentAggregator, PaymentAggregatorType } from '@project/common/platform/payment/aggregator';
-import * as Editor from '@feature/ckeditor/script/ckeditor.js';
+import Editor from '@feature/ckeditor/script/ckeditor.js';
 
 @Component({
     selector: 'company-edit',

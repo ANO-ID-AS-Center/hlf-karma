@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RouterService } from '@core/service';
-import { CompanyGuard, CompaniesGuard } from '@feature/company/guard';
+import { CompanyGuard, CompaniesGuard, CompanyAddGuard } from '@feature/company/guard';
 import { UsersGuard } from '@feature/user/guard';
 import { ProjectsGuard, ProjectAddGuard } from '@feature/project/guard';
 import { PaymentsGuard } from '@feature/payment/guard';
@@ -20,6 +20,11 @@ const routes: Routes = [
                 path: RouterService.PROJECT_ADD_URL,
                 canActivate: [ProjectAddGuard],
                 loadChildren: async () => (await import('@page/project-add/project-add-page.module')).ProjectAddPageModule
+            },
+            {
+                path: RouterService.COMPANY_ADD_URL,
+                canActivate: [CompanyAddGuard],
+                loadChildren: async () => (await import('@page/company-add/company-add-page.module')).CompanyAddPageModule
             },
             {
                 path: RouterService.USER_URL,

@@ -34,7 +34,7 @@ export class ProjectAddPageComponent extends DestroyableContainer implements IRo
     //
     //--------------------------------------------------------------------------
 
-    public async isCanDeactivate(): Promise<boolean | UrlTree> {
+    public async isCanDeactivate(): Promise<boolean> {
         return this.addContainer.isCanDeactivate();
     }
 
