@@ -3,6 +3,7 @@
         "project": "Проект",
         "projects": "Проекты",
         "createdDate": "Создан",
+        "ledgerUid": "UID в реестре",
         "purpose": {
             "add": "Добавить статью расходов",
             "name": "⇛project.purpose.purpose",

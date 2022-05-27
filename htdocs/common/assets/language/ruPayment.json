@@ -18,7 +18,7 @@
             "transaction": "Транзакция",
             "transactions": "Транзакции",
             "amount": "Сумма",
-            "currency": "Валюта",
+            "coinId": "Валюта",
             "activatedDate": "Зачислен",
             "debet": "Со счета",
             "credit": "На счет",

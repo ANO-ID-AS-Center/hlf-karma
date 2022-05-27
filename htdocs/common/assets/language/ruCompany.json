@@ -4,6 +4,7 @@
         "companies": "Компании",
         "createdDate": "Создан",
         "collected": "Собрано",
+        "ledgerUid": "UID в реестре",
         "add": {
             "nalogObject": "Данные из налоговой",
             "noNalogObject": "Не удалось найти организацию с таким ИНН"

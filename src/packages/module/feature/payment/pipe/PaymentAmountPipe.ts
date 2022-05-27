@@ -43,12 +43,12 @@ export class PaymentAmountPipe extends DestroyableContainer implements PipeTrans
             return PrettifyPipe.EMPTY_SYMBOL;
         }
         let amount = '0';
-        let currency = null;
+        let coinId = null;
         for (let transaction of item.transactions) {
-            currency = transaction.currency;
+            coinId = transaction.coinId;
             amount = MathUtil.add(amount, transaction.amount);
         }
-        return this.amount.transform({ amount, currency });
+        return this.amount.transform({ amount, coinId });
     }
 
     public destroy(): void {

@@ -41,8 +41,8 @@ export class AccountPipe extends DestroyableContainer implements PipeTransform {
             return PrettifyPipe.EMPTY_SYMBOL;
         }
         let items = [];
-        for (let currency in item) {
-            items.push(`${this.finance.transform(AmountPipe.fromCent(item[currency]))} ${currency}`);
+        for (let coinId in item) {
+            items.push(`${this.finance.transform(AmountPipe.fromCent(item[coinId]))} ${coinId}`);
         }
         return items.join(', ').trim();
     }

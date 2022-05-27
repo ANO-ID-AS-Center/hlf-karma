@@ -25,7 +25,7 @@ export class PaymentWidgetContainer extends IWindowContent {
     protected _paymentAggregator: IPaymentAggregatorGetDtoResponse;
 
     public amounts: SelectListItems<ISelectListItem<number>>;
-    public currencies: SelectListItems<ISelectListItem<string>>;
+    public coinIds: SelectListItems<ISelectListItem<string>>;
 
     //--------------------------------------------------------------------------
     //
@@ -43,7 +43,7 @@ export class PaymentWidgetContainer extends IWindowContent {
         ViewUtil.addClasses(container, 'd-block');
 
         this.amounts = new SelectListItems(pipe.language);
-        this.currencies = new SelectListItems(pipe.language);
+        this.coinIds = new SelectListItems(pipe.language);
     }
 
     //--------------------------------------------------------------------------
@@ -57,10 +57,10 @@ export class PaymentWidgetContainer extends IWindowContent {
     }
 
     protected commitPaymentAggregatorProperties(): void {
-        this.currencies.clear();
-        if (!_.isEmpty(this.paymentAggregator.currencies)) {
-            this.paymentAggregator.currencies.forEach((item, index) => this.currencies.add(new SelectListItem(item, index, item)));
-            this.currencies.complete(!_.isNil(this.paymentAggregator.currency) ? this.paymentAggregator.currency : 0);
+        this.coinIds.clear();
+        if (!_.isEmpty(this.paymentAggregator.coinIds)) {
+            this.paymentAggregator.coinIds.forEach((item, index) => this.coinIds.add(new SelectListItem(item, index, item)));
+            this.coinIds.complete(!_.isNil(this.paymentAggregator.coinId) ? this.paymentAggregator.coinId : 0);
         }
         this.amounts.clear();
         if (!_.isEmpty(this.paymentAggregator.amounts)) {
@@ -94,7 +94,7 @@ export class PaymentWidgetContainer extends IWindowContent {
     public submit(): void {
         this.transport.send(new PaymentWidgetOpenCommand({
             amount: this.amounts.selectedData,
-            currency: this.currencies.selectedData,
+            coinId: this.coinIds.selectedData,
 
             target: this.paymentAggregator.target,
             details: this.paymentAggregator.details,
@@ -112,9 +112,9 @@ export class PaymentWidgetContainer extends IWindowContent {
             this.amounts.destroy();
             this.amounts = null;
         }
-        if (!_.isNil(this.currencies)) {
-            this.currencies.destroy();
-            this.currencies = null;
+        if (!_.isNil(this.coinIds)) {
+            this.coinIds.destroy();
+            this.coinIds = null;
         }
 
         this.target = null;

@@ -7,10 +7,11 @@ import { RootRoutingModule } from './root.routing.module';
 import { MatButtonModule } from '@angular/material/button';
 import { LanguageService } from '@ts-core/frontend/language';
 import { LanguageFileLoader } from '@ts-core/language/loader';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [RootComponent],
-    imports: [CoreModule, RootRoutingModule, MatButtonModule, MatProgressBarModule]
+    imports: [CoreModule, CommonModule, RootRoutingModule, MatButtonModule, MatProgressBarModule]
 })
 export class RootModule {
     //--------------------------------------------------------------------------

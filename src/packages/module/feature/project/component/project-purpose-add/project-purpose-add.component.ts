@@ -5,9 +5,10 @@ import * as _ from 'lodash';
 import { ISerializable } from '@ts-core/common';
 import { } from '@common/platform/project';
 import { LedgerCoinId } from '@project/common/ledger/coin';
-import { ProjectPurpose, PROJECT_PURPOSE_MIN_LENGTH, PROJECT_PURPOSE_MAX_LENGTH } from '@project/common/platform/project';
+import { ProjectPurpose } from '@project/common/platform/project';
 import { RandomUtil, TransformUtil } from '@ts-core/common/util';
 import { AmountPipe } from '@shared/pipe';
+import { ValidateUtil } from '@project/common/util';
 
 @Component({
     selector: 'project-purpose-add',
@@ -30,7 +31,7 @@ export class ProjectPurposeAddComponent extends IWindowContent implements ISeria
 
     public name: string;
     public amount: string;
-    public currencies: SelectListItems<ISelectListItem<LedgerCoinId>>;
+    public coinIds: SelectListItems<ISelectListItem<LedgerCoinId>>;
 
     //--------------------------------------------------------------------------
     //
@@ -45,9 +46,9 @@ export class ProjectPurposeAddComponent extends IWindowContent implements ISeria
         super(container);
         ViewUtil.addClasses(container.element, 'd-flex flex-column');
 
-        this.currencies = new SelectListItems(pipe.language);
-        Object.values(LedgerCoinId).forEach((item, index) => this.currencies.add(new SelectListItem(item, index, item)));
-        this.currencies.complete(0);
+        this.coinIds = new SelectListItems(pipe.language);
+        Object.values(LedgerCoinId).forEach((item, index) => this.coinIds.add(new SelectListItem(item, index, item)));
+        this.coinIds.complete(0);
 
     }
 
@@ -58,10 +59,10 @@ export class ProjectPurposeAddComponent extends IWindowContent implements ISeria
     //--------------------------------------------------------------------------
 
     public get nameMinLength(): number {
-        return PROJECT_PURPOSE_MIN_LENGTH;
+        return ValidateUtil.PROJECT_PURPOSES_NAME_MIN_LENGTH;
     }
     public get nameMaxLength(): number {
-        return PROJECT_PURPOSE_MAX_LENGTH;
+        return ValidateUtil.PROJECT_PURPOSES_NAME_MAX_LENGTH;
     }
 
     public async submit(): Promise<void> {
@@ -73,7 +74,7 @@ export class ProjectPurposeAddComponent extends IWindowContent implements ISeria
             id: new Date().getTime(),
             name: this.name,
             amount: AmountPipe.toCent(this.amount),
-            currency: this.currencies.selectedData,
+            coinId: this.coinIds.selectedData,
         })
     }
 

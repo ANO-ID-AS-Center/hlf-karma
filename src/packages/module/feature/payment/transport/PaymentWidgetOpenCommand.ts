@@ -29,7 +29,7 @@ export interface IPaymentWidgetOpenDto {
     aggregator: Partial<PaymentAggregator>;
 
     amount: number;
-    currency: string;
+    coinId: string;
 }
 export interface IPaymentWidgetOpenDtoResponse { }
 

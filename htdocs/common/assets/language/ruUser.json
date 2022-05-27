@@ -4,6 +4,7 @@
         "users": "Пользователи",
         "login": "Логин",
         "uid": "Уникальный номер",
+        "ledgerUid": "UID в реестре",
         "createdDate": "Создан",
         "action": {
             "save": {

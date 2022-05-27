@@ -30,7 +30,7 @@ export class CloudPaymentsAggregator extends PaymentAggregatorManager {
         let options = {
             amount: item.amount,
             publicId: item.aggregator.uid,
-            currency: item.currency,
+            currency: item.coinId,
             accountId: item.details,
             description: this.pipe.language.translate(`payment.description.${item.target.type === CoinObjectType.COMPANY ? 'company' : 'project'}`, { name: item.target.value.preferences.title }),
             email: null

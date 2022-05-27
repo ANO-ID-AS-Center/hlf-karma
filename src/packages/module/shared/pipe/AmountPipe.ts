@@ -52,7 +52,7 @@ export class AmountPipe extends DestroyableContainer implements PipeTransform {
         if (_.isNil(item)) {
             return PrettifyPipe.EMPTY_SYMBOL;
         }
-        return `${this.finance.transform(AmountPipe.fromCent(item.amount))} ${item.currency}`;
+        return `${this.finance.transform(AmountPipe.fromCent(item.amount))} ${item.coinId}`;
     }
 
     public destroy(): void {
@@ -66,5 +66,5 @@ export class AmountPipe extends DestroyableContainer implements PipeTransform {
 
 export interface IAmount {
     amount: string;
-    currency: LedgerCoinId;
+    coinId: LedgerCoinId;
 }

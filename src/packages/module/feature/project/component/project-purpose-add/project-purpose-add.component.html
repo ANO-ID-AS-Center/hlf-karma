@@ -26,11 +26,11 @@
 
     <div class="col-12">
         <mat-form-field class="d-block">
-            <mat-placeholder [vi-translate]="'payment.transaction.currency'"></mat-placeholder>
-            <mat-select #currencyInput="ngModel" name="currency" [(ngModel)]="currencies.selectedItem" required>
-                <mat-option *ngFor="let item of currencies.collection" [value]="item" [innerHTML]="item.label"></mat-option>
+            <mat-placeholder [vi-translate]="'payment.transaction.coinId'"></mat-placeholder>
+            <mat-select #coinIdInput="ngModel" name="coinId" [(ngModel)]="coinIds.selectedItem" required>
+                <mat-option *ngFor="let item of coinIds.collection" [value]="item" [innerHTML]="item.label"></mat-option>
             </mat-select>
-            <mat-error *ngIf="!(currencyInput.valid || !currencyInput.touched)" [innerHTML]="currencyInput.errors | viNgModelError"></mat-error>
+            <mat-error *ngIf="!(coinIdInput.valid || !coinIdInput.touched)" [innerHTML]="coinIdInput.errors | viNgModelError"></mat-error>
         </mat-form-field>
     </div>
 
