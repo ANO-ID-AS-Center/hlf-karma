@@ -10,8 +10,7 @@
         "api:docker:container:run": "docker-compose up -d karma-chaincode",
         "api:docker:container:start": "docker start karma-chaincode",
         "api:docker:container:stop": "docker stop karma-chaincode",
-        "api:docker:container:remove": "docker rm karma-chaincode",
-        "submodules:update": "git submodule update --init"
+        "api:docker:container:remove": "docker rm karma-chaincode"
     },
     "author": "Renat Gubaev",
     "license": "ISC",
