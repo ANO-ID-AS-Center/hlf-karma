@@ -1,4 +1,4 @@
-FROM registry.project-karma.com/karma/application/common/node:12 as build
+FROM node:12 as build
 # Set directory
 WORKDIR /build
 # Install dependencies and building
@@ -11,7 +11,7 @@ RUN cp /build/patch/index.d.ts /build/node_modules/fabric-shim/types/index.d.ts
 
 RUN cd /build/src/packages/application/chaincode && npm i && npm run build
 
-FROM registry.project-karma.com/karma/application/common/node:12
+FROM node:12
 # Set directory
 WORKDIR /application
 # Copy global node_modules
