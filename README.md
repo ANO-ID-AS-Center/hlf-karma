@@ -41,10 +41,10 @@ in an immutable distributed ledger, participants can be confident in the systemâ
 
 ## Our team
 
-[Renat Gubaev](https://github.com/ManhattanDoctor)
-[Artem Barger](https://github.com/C0rWin)
-[Olga Ilyina](https://github.com/olgailyina)
-[Alexander Zemtsov](https://github.com/zemtsov)
-[Ksenia Tagirova](https://github.com/niamint)
-Nikita Loshkarev
-[Alexander Belenov](https://github.com/BelenovAleksandr)
+* [Renat Gubaev](https://github.com/ManhattanDoctor)
+* [Artem Barger](https://github.com/C0rWin)
+* [Olga Ilyina](https://github.com/olgailyina)
+* [Alexander Zemtsov](https://github.com/zemtsov)
+* [Ksenia Tagirova](https://github.com/niamint)
+* Nikita Loshkarev
+* [Alexander Belenov](https://github.com/BelenovAleksandr)
