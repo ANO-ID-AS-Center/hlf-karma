@@ -1,4 +1,4 @@
-FROM registry.project-karma.com/karma/application/backend-explorer/node:12 as build
+FROM node:14 as build
 # Set directory
 WORKDIR /build
 # Install dependencies and building
@@ -6,7 +6,7 @@ COPY . .
 RUN npm i
 RUN cd /build/src/packages/application/api && npm i && npm run build
 
-FROM registry.project-karma.com/karma/application/backend-explorer/node:12
+FROM node:14
 # Set directory
 WORKDIR /application
 # Copy global node_modules
