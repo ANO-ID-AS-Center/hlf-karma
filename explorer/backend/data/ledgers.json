@@ -1,0 +1,74 @@
+{
+    "ledgers": [
+        {
+            "uid": "Karma",
+            "passwordToReset": "04e77bf8f95cb3e1a36a59d1e93857c411930db646b46c218a0352e432023cf2",
+
+            "fabricIdentity": "user",
+            "fabricIdentityMspId": "Org1",
+            "fabricIdentityPrivateKey": "/application/build/data/key.pem",
+	        "fabricIdentityCertificate": "/application/build/data/cert.pem",
+
+            "fabricNetworkName": "primary",
+            "fabricChaincodeName": "main",
+
+            "fabricIsDiscoveryEnabled": false,
+            "fabricIsDiscoveryAsLocalhost": false,
+
+            "batch": {
+                "timeout": 10000000,
+                "key": {
+                    "publicKey": "e365007e85508c6b44d5101a1d59d0061a48fd1bcd393186ccb5e7ae938a59a8",
+                    "privateKey": "e87501bc00a3db3ba436f7109198e0cb65c5f929eabcedbbb5a9874abc2c73a3e365007e85508c6b44d5101a1d59d0061a48fd1bcd393186ccb5e7ae938a59a8"
+                }
+            },
+
+            "fabricConnectionSettings": {
+                "name": "karma-ledger-network",
+                "version": "1.0.0",
+                "client": {
+                    "organization": "org1",
+                    "connection": {
+                        "timeout": {
+                            "peer": {
+                                "endorser": "300"
+                            }
+                        }
+                    }
+                },
+                "channels": {
+                    "primary": {
+                        "orderers": ["orderer.example.com"],
+                        "peers": {
+                            "peer0.org1.example.com": {}
+                        }
+                    }
+                },
+                "organizations": {
+                    "org1": {
+                        "mspid": "Org1",
+                        "peers": ["peer0.org1.example.com"]
+                    }
+                },
+                "peers": {
+                    "peer0.org1.example.com": {
+                        "url": "grpcs://org1-peer0-svc:7051",
+                        "grpcOptions": {
+                            "ssl-target-name-override": "org1-peer0-svc:7051",
+                            "hostnameOverride": "org1-peer0-svc:7051"
+                        }
+                    }
+                },
+                "orderers": {
+                    "orderer.example.com": {
+                        "url": "grpcs://ordering-orderer-svc:7050",
+                        "grpcOptions": {
+                            "ssl-target-name-override": "ordering-orderer-svc:7050",
+                            "hostnameOverride": "ordering-orderer-svc:7050"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
