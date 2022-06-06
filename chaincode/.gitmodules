@@ -1,3 +1,2 @@
 [submodule "src/externals/common"]
-	path = src/externals/common
-	url = ../../../karma/application/common.git
+	path = ../common
