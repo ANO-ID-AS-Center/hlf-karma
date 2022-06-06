@@ -34,4 +34,5 @@ volumes:
 
 networks:
   ledger:
+    external:
       name: ledger_network
