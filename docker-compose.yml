@@ -1,9 +1,0 @@
-version: '3.2'
-
-services:
-  karma-chaincode:
-    image: karma-chaincode
-    env_file:
-      - ./docker/chaincode/.env
-    working_dir: /application/build
-    command: node main.js --chaincode-id-name='main_1.20.0:209800e2693b775a6cb83e2cad517bef0c90f3194bf05bd3c2f966bc8dc83c46' --peer.address grpc://167.99.216.174:7052
