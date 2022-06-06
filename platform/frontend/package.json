@@ -32,7 +32,7 @@
         "@angular/service-worker": "^13.3.2",
         "@ckeditor/ckeditor5-angular": "^4.0.0",
         "@nguniversal/express-engine": "^13.1.0",
-        "@project/common": "file:./src/externals/common/",
+        "@project/common": "file:./../../common/",
         "@ts-core/angular": "^13.0.28",
         "@ts-core/common": "^2.0.6",
         "@ts-core/crypto-gost": "^2.0.1",
